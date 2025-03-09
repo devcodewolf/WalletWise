@@ -37,14 +37,19 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4.0.9",
+    "@types/bcrypt": "^5.0.2",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "bcrypt": "^5.1.1",
     "eslint": "^9",
     "eslint-config-next": "15.2.2-canary.0",
     "prisma": "^6.4.1",
     "tailwindcss": "^4.0.9",
     "tsx": "^4.19.3",
     "typescript": "^5"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
   }
 }
