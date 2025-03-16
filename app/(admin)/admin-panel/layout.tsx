@@ -6,12 +6,19 @@ import {
 	SidebarTrigger,
 } from '@/components/ui/sidebar';
 import { Separator } from '@/components/ui/separator';
+import { auth } from '@/auth';
+import { redirect } from 'next/navigation';
 
-export default function AdminLayout({
+export default async function AdminLayout({
 	children,
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
+	const session = await auth();
+
+	if (!session || !session?.user || !session?.user?.id) {
+		return redirect('/');
+	}
 	return (
 		<SidebarProvider>
 			<AppSidebar />
