@@ -21,22 +21,21 @@ import {
 import { useRouter } from 'next/navigation';
 import { logOut } from '@/actions/logout';
 import { toast } from 'sonner';
+import { useUserStore } from '@/store/user-store';
+import { User } from 'next-auth';
 
-export function NavUser({
-	user,
-}: {
-	user: {
-		name: string;
-		email: string;
-		avatar: string;
-	};
-}) {
+export function NavUser(user: User) {
 	const { isMobile } = useSidebar();
 	const router = useRouter();
+	const { clearUser } = useUserStore();
+
+	const initials = user.name?.substring(0, 2).toUpperCase() ?? '';
 
 	const handleLogout = async () => {
 		logOut().then((data) => {
 			if (data.success) {
+				// Clear user data from Zustand store
+				clearUser();
 				toast('Logged out successfully');
 				router.push('/');
 			}
@@ -73,8 +72,10 @@ export function NavUser({
 						<DropdownMenuLabel className="p-0 font-normal">
 							<div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
 								<Avatar className="h-8 w-8 rounded-lg">
-									<AvatarImage src={user.avatar} alt={user.name} />
-									<AvatarFallback className="rounded-lg">CN</AvatarFallback>
+									{/* <AvatarImage src={user.avatar} alt={user.name} /> */}
+									<AvatarFallback className="rounded-lg">
+										{initials}
+									</AvatarFallback>
 								</Avatar>
 								<div className="grid flex-1 text-left text-sm leading-tight">
 									{/* <span className="truncate font-medium">{user.name}</span> */}

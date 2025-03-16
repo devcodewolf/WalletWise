@@ -8,6 +8,7 @@ import {
 import { Separator } from '@/components/ui/separator';
 import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
+import { AdminUserStore } from '@/components/AdminUserStore';
 
 export default async function AdminLayout({
 	children,
@@ -19,8 +20,11 @@ export default async function AdminLayout({
 	if (!session || !session?.user || !session?.user?.id) {
 		return redirect('/');
 	}
+
 	return (
 		<SidebarProvider>
+			{/* opcion para poder hacerlo en un server component */}
+			<AdminUserStore user={session.user} />
 			<AppSidebar />
 			<SidebarInset>
 				<header className="flex h-16 shrink-0 px-4 items-center justify-between gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">

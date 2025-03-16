@@ -14,6 +14,7 @@ import {
 	SidebarHeader,
 	SidebarRail,
 } from '@/components/ui/sidebar';
+import { useUserStore } from '@/store/user-store';
 
 // This is sample data.
 const data = {
@@ -44,14 +45,16 @@ const data = {
 		// 	icon: Settings,
 		// },
 	],
-	user: {
-		name: 'shadcn',
-		email: 'm@example.com',
-		avatar: '/avatars/shadcn.jpg',
-	},
+	// user: {
+	// 	name: 'shadcn',
+	// 	email: 'm@example.com',
+	// 	avatar: '/avatars/shadcn.jpg',
+	// },
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+	const { user } = useUserStore();
+
 	return (
 		<Sidebar>
 			<SidebarHeader>{/* <TeamSwitcher teams={data.teams} /> */}</SidebarHeader>
@@ -59,9 +62,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 				<NavMain items={data.items} />
 				{/* <NavProjects projects={data.projects} /> */}
 			</SidebarContent>
-			<SidebarFooter>
-				<NavUser user={data.user} />
-			</SidebarFooter>
+			<SidebarFooter>{user && <NavUser {...user} />}</SidebarFooter>
 		</Sidebar>
 	);
 }
