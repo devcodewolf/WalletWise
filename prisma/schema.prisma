@@ -50,10 +50,10 @@ model Transaction {
   date        DateTime
   amount      Float
   description String?
-  walletId    Int
-  wallet      Wallet    @relation(fields: [walletId], references: [id])
-  categoryId  Int
-  category    Category  @relation(fields: [categoryId], references: [id])
+  walletId    Int?
+  wallet      Wallet?   @relation(fields: [walletId], references: [id])
+  categoryId  Int?
+  category    Category? @relation(fields: [categoryId], references: [id])
   userId      Int
   user        User      @relation(fields: [userId], references: [id])
   createdAt   DateTime  @default(now())
