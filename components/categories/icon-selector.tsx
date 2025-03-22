@@ -24,6 +24,7 @@ import { cn } from '@/lib/utils';
 interface IconSelectorProps {
 	selectedIcon: string;
 	onSelectIcon: (iconName: string) => void;
+	color?: string;
 }
 
 type IconOption = {
@@ -34,6 +35,7 @@ type IconOption = {
 export function IconSelector({
 	selectedIcon,
 	onSelectIcon,
+	color = '#fff',
 }: IconSelectorProps) {
 	const icons: IconOption[] = [
 		{ name: 'ShoppingBag', icon: ShoppingBag },
@@ -68,7 +70,10 @@ export function IconSelector({
 								: 'border-muted hover:border-primary'
 						)}
 						onClick={() => onSelectIcon(iconOption.name)}>
-						<Icon className="h-5 w-5" />
+						<Icon
+							className="h-5 w-5"
+							style={selectedIcon === iconOption.name ? { color } : undefined}
+						/>
 					</div>
 				);
 			})}

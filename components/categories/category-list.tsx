@@ -12,10 +12,23 @@ import {
 	Home,
 	Car,
 	Briefcase,
+	Utensils,
+	Plane,
+	Gift,
+	CreditCard,
+	DollarSign,
+	HeartPulse,
+	GraduationCap,
+	Smartphone,
+	Wifi,
+	Shirt,
+	Gamepad2,
 } from 'lucide-react';
-import { Category } from '@/types';
+
 import { AddCategory } from './add-category';
-import { useState } from 'react';
+import { EditCategory } from './edit-category';
+import { useEffect, useState } from 'react';
+import { Category } from '@prisma/client';
 
 const columns: ColumnDef<Category>[] = [
 	{
@@ -30,9 +43,21 @@ const columns: ColumnDef<Category>[] = [
 				Home,
 				Car,
 				Briefcase,
+				Utensils,
+				Plane,
+				Gift,
+				CreditCard,
+				DollarSign,
+				HeartPulse,
+				GraduationCap,
+				Smartphone,
+				Wifi,
+				Shirt,
+				Gamepad2,
 			};
 			const Icon = IconMap[iconName] || ShoppingBag;
-			return <Icon className="h-4 w-4" />;
+			const color = row.original.color;
+			return <Icon className="h-4 w-4" style={{ color }} />;
 		},
 	},
 	{
@@ -66,9 +91,7 @@ const columns: ColumnDef<Category>[] = [
 		cell: ({ row }) => {
 			return (
 				<div className="flex  justify-end">
-					<Button variant="ghost" size="sm">
-						<Edit className="h-4 w-4" />
-					</Button>
+					<EditCategory category={row.original} />
 					<Button variant="ghost" size="sm">
 						<Trash2 className="h-4 w-4 text-red-500" />
 					</Button>
@@ -81,15 +104,16 @@ const columns: ColumnDef<Category>[] = [
 export const CategoryList = ({ data: initialData }: { data: Category[] }) => {
 	const [categories, setCategories] = useState<Category[]>(initialData);
 
-	const handleAddCategory = (newCategory: Omit<Category, 'id'>) => {
-		const id = (categories.length + 1).toString();
-		const categoryWithId = { ...newCategory, id };
-		setCategories([...categories, categoryWithId]);
-	};
+	// Update categories when initialData changes
+	useEffect(() => {
+		console.log('hola effect');
+		setCategories(initialData);
+	}, [initialData]);
 
 	return (
 		<div className="space-y-4">
-			<AddCategory onAddCategory={handleAddCategory} />
+			{/* <AddCategory onAddCategory={handleAddCategory} /> */}
+			<AddCategory />
 			<DataTable columns={columns} data={categories} />
 		</div>
 	);
