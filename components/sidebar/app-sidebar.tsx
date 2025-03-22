@@ -31,25 +31,16 @@ const data = {
 		},
 		{
 			title: 'Wallets',
-			url: '#',
+			url: '/admin-panel/wallets',
 			icon: Wallet,
 		},
 		// {
-		// 	title: 'Search',
-		// 	url: '#',
-		// 	icon: Search,
+		// 	title: 'Transactions',
+		// 	url: '/admin-panel/transactions',
+		// 	icon: Home,
 		// },
 		// {
-		// 	title: 'Settings',
-		// 	url: '#',
-		// 	icon: Settings,
-		// },
 	],
-	// user: {
-	// 	name: 'shadcn',
-	// 	email: 'm@example.com',
-	// 	avatar: '/avatars/shadcn.jpg',
-	// },
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
