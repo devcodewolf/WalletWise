@@ -5,16 +5,14 @@ import { Button } from '@/components/ui/button';
 import { Category } from '@prisma/client';
 import { updateCategory } from '@/actions/categories';
 import { CategoryForm } from './category-form';
-import { createCategorySchema } from '@/lib/zod';
-import { z } from 'zod';
+import { CategoryFormValues } from '@/lib/zod';
 
 interface EditCategoryProps {
 	category: Category;
 }
-type FormValues = z.infer<typeof createCategorySchema>;
 
 export function EditCategory({ category }: EditCategoryProps) {
-	const handleSubmit = async (values: FormValues) => {
+	const handleSubmit = async (values: CategoryFormValues) => {
 		return await updateCategory(category.id, values);
 	};
 

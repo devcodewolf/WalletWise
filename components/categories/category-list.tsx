@@ -4,8 +4,6 @@ import { DataTable } from '@/components/ui/data-table';
 import { ColumnDef } from '@tanstack/react-table';
 import { Button } from '@/components/ui/button';
 import {
-	Edit,
-	Trash2,
 	ArrowUpDown,
 	ShoppingBag,
 	Coffee,

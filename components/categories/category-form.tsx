@@ -1,9 +1,8 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
-import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { createCategorySchema } from '@/lib/zod';
+import { CategoryFormValues, categorySchema } from '@/lib/zod';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -32,12 +31,10 @@ import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
-type FormValues = z.infer<typeof createCategorySchema>;
-
 interface CategoryFormProps {
 	mode: 'create' | 'edit';
 	category?: Category;
-	onSubmit: (values: FormValues) => Promise<{ success: boolean }>;
+	onSubmit: (values: CategoryFormValues) => Promise<{ success: boolean }>;
 	triggerButton: React.ReactNode;
 	dialogTitle: string;
 	dialogDescription: string;
@@ -56,8 +53,8 @@ export function CategoryForm({
 	const [open, setOpen] = useState(false);
 	const router = useRouter();
 
-	const form = useForm<FormValues>({
-		resolver: zodResolver(createCategorySchema),
+	const form = useForm<CategoryFormValues>({
+		resolver: zodResolver(categorySchema),
 		defaultValues: {
 			name: category?.name || '',
 			type: (category?.type as 'Gasto' | 'Ingreso') || 'Gasto',
@@ -77,7 +74,7 @@ export function CategoryForm({
 		}
 	}, [category, form]);
 
-	async function handleSubmit(values: FormValues) {
+	async function handleSubmit(values: CategoryFormValues) {
 		try {
 			const response = await onSubmit(values);
 
