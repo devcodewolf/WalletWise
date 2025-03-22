@@ -27,6 +27,7 @@ import {
 
 import { AddCategory } from './add-category';
 import { EditCategory } from './edit-category';
+import { DeleteCategory } from './delete-category';
 import { useEffect, useState } from 'react';
 import { Category } from '@prisma/client';
 
@@ -90,11 +91,9 @@ const columns: ColumnDef<Category>[] = [
 		id: 'actions',
 		cell: ({ row }) => {
 			return (
-				<div className="flex  justify-end">
+				<div className="flex justify-end">
 					<EditCategory category={row.original} />
-					<Button variant="ghost" size="sm">
-						<Trash2 className="h-4 w-4 text-red-500" />
-					</Button>
+					<DeleteCategory category={row.original} />
 				</div>
 			);
 		},
@@ -112,7 +111,6 @@ export const CategoryList = ({ data: initialData }: { data: Category[] }) => {
 
 	return (
 		<div className="space-y-4">
-			{/* <AddCategory onAddCategory={handleAddCategory} /> */}
 			<AddCategory />
 			<DataTable columns={columns} data={categories} />
 		</div>

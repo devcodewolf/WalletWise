@@ -75,6 +75,16 @@ export async function deleteCategory(id: number) {
 		return { success: true };
 	} catch (error) {
 		console.error('Error deleting category:', error);
-		return { success: false, error: 'Failed to delete category' };
+		if (error instanceof Error && error.message.includes('foreign key')) {
+			return {
+				success: false,
+				error:
+					'No se puede eliminar esta categoría porque tiene transacciones asociadas.',
+			};
+		}
+		return {
+			success: false,
+			error: 'Ha habido en fallo al borrar la categoría',
+		};
 	}
 }
