@@ -15,8 +15,8 @@ import { Button } from '@/components/ui/button';
 import { Trash2 } from 'lucide-react';
 import { deleteCategory } from '@/actions/categories';
 import { Category } from '@prisma/client';
-import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
 
 interface DeleteCategoryProps {
 	category: Category;
@@ -30,17 +30,15 @@ export function DeleteCategory({ category }: DeleteCategoryProps) {
 			const response = await deleteCategory(category.id);
 
 			if (!response.success) {
-				toast.error(
-					response.error || 'Ha ocurrido un error al borrar la categoría'
-				);
+				toast(`Ha ocurrido un error al eliminar la categoría`);
 				return;
 			}
 
-			toast.success(`Categoría ${category.name} borrada correctamente`);
+			toast(`Categoría eliminada con éxito: ${category.name}`);
 			router.refresh();
 		} catch (error) {
-			console.error(`Error al borrar categoría:`, error);
-			toast.error(`Ha ocurrido un error al borrar la categoría`);
+			console.error(`Error al eliminar categoría:`, error);
+			toast('Ha ocurrido un error inesperado');
 		}
 	};
 
@@ -53,10 +51,10 @@ export function DeleteCategory({ category }: DeleteCategoryProps) {
 			</AlertDialogTrigger>
 			<AlertDialogContent>
 				<AlertDialogHeader>
-					<AlertDialogTitle>Borrar categoria</AlertDialogTitle>
+					<AlertDialogTitle>Borrar categoría</AlertDialogTitle>
 					<AlertDialogDescription>
-						¿Estás seguro de que quieres borrar la categoria "{category.name}"?
-						Esta acción no se puede deshacer.
+						¿Estás seguro de que quieres eliminar la categoría "{category.name}
+						"? Esta acción no se puede deshacer.
 					</AlertDialogDescription>
 				</AlertDialogHeader>
 				<AlertDialogFooter>
@@ -64,7 +62,7 @@ export function DeleteCategory({ category }: DeleteCategoryProps) {
 					<AlertDialogAction
 						onClick={handleDelete}
 						className="bg-red-500 hover:bg-red-600">
-						Borrar
+						Delete
 					</AlertDialogAction>
 				</AlertDialogFooter>
 			</AlertDialogContent>

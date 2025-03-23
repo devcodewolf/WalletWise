@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Category } from '@prisma/client';
 import { updateCategory } from '@/actions/categories';
 import { CategoryForm } from './category-form';
-import { CategoryFormValues } from '@/lib/zod';
+import { CategoryFormValues } from '@/lib/schemas/category';
 
 interface EditCategoryProps {
 	category: Category;

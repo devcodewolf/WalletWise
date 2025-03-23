@@ -2,7 +2,7 @@
 
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { CategoryFormValues, categorySchema } from '@/lib/zod';
+import { CategoryFormValues, categorySchema } from '@/lib/schemas/category';
 
 import { Button } from '@/components/ui/button';
 import {

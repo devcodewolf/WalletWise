@@ -1,8 +1,8 @@
 'use server';
 
 import { db } from '@/lib/db';
-import { createCategorySchema } from '@/lib/zod';
-import { revalidatePath } from 'next/cache';
+import { categorySchema } from '@/lib/schemas/category';
+
 import { z } from 'zod';
 
 // Get all categories
@@ -22,10 +22,8 @@ export async function getCategories() {
 }
 
 // Create a new category
-export async function createCategory(
-	values: z.infer<typeof createCategorySchema>
-) {
-	const validateFields = createCategorySchema.safeParse(values);
+export async function createCategory(values: z.infer<typeof categorySchema>) {
+	const validateFields = categorySchema.safeParse(values);
 	if (!validateFields.success) return { error: 'Invalid fields' };
 
 	try {

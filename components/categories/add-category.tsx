@@ -4,7 +4,7 @@ import { PlusCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { createCategory } from '@/actions/categories';
 import { CategoryForm } from './category-form';
-import { CategoryFormValues } from '@/lib/zod';
+import { CategoryFormValues } from '@/lib/schemas/category';
 
 export function AddCategory() {
 	const handleSubmit = async (values: CategoryFormValues) => {
