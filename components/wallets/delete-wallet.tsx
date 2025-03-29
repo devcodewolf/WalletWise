@@ -29,7 +29,7 @@ export function DeleteWallet({ wallet }: DeleteWalletProps) {
 	async function onDelete() {
 		const result = await deleteWallet(wallet.id);
 		if (!result.success) {
-			return toast.error(result.error);
+			return toast.error((result as { error?: string }).error);
 		}
 		setOpen(false);
 		setTimeout(() => {

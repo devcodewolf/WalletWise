@@ -48,7 +48,7 @@ export function EditWallet({ wallet }: EditWalletProps) {
 		const result = await updateWallet(wallet.id, values);
 
 		if (!result.success) {
-			toast.error(result.error);
+			toast.error((result as { error?: string }).error);
 			return;
 		}
 

@@ -45,8 +45,9 @@ export function AddWallet() {
 
 	async function handleSubmit(values: WalletsFormSchema) {
 		const response = await createWallet(values);
+		console.log(response);
 		if (!response.success) {
-			toast.error(response.error);
+			toast.error((response as { error?: string }).error);
 			return;
 		}
 
