@@ -13,7 +13,8 @@ interface EditCategoryProps {
 
 export function EditCategory({ category }: EditCategoryProps) {
 	const handleSubmit = async (values: CategoryFormValues) => {
-		return await updateCategory(category.id, values);
+		const result = await updateCategory(category.id, values);
+		return { success: !!result.success };
 	};
 
 	return (

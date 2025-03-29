@@ -9,7 +9,7 @@ import { CategoryFormValues } from '@/lib/schemas/category';
 export function AddCategory() {
 	const handleSubmit = async (values: CategoryFormValues) => {
 		const result = await createCategory(values);
-		return { success: !!result.success };
+		return { success: !!result.success }; //to respect the return type of the onSubmit function
 	};
 
 	return (

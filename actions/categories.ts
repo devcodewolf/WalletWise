@@ -1,9 +1,7 @@
 'use server';
 
 import { db } from '@/lib/db';
-import { categorySchema } from '@/lib/schemas/category';
-
-import { z } from 'zod';
+import { CategoryFormValues, categorySchema } from '@/lib/schemas/category';
 
 // Get all categories
 export async function getCategories() {
@@ -22,7 +20,7 @@ export async function getCategories() {
 }
 
 // Create a new category
-export async function createCategory(values: z.infer<typeof categorySchema>) {
+export async function createCategory(values: CategoryFormValues) {
 	const validateFields = categorySchema.safeParse(values);
 	if (!validateFields.success) return { error: 'Invalid fields' };
 
@@ -41,19 +39,16 @@ export async function createCategory(values: z.infer<typeof categorySchema>) {
 }
 
 // Update a category
-export async function updateCategory(
-	id: number,
-	data: {
-		name?: string;
-		type?: string;
-		iconName?: string;
-		color?: string;
-	}
-) {
+export async function updateCategory(id: number, values: CategoryFormValues) {
+	const validateFields = categorySchema.safeParse(values);
+	if (!validateFields.success) return { error: 'Invalid fields' };
+
 	try {
 		const category = await db.category.update({
 			where: { id },
-			data,
+			data: {
+				...validateFields.data,
+			},
 		});
 
 		return { success: true, data: category };

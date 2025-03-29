@@ -87,11 +87,11 @@ export function CategoryForm({
 				return;
 			}
 
-			setOpen(false);
-			form.reset();
 			toast(
 				`Categoría ${mode === 'create' ? 'creada' : 'editada'} correctamente`
 			);
+			form.reset();
+			setOpen(false);
 			setTimeout(() => {
 				router.refresh();
 			}, 300);
