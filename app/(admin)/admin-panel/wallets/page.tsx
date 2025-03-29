@@ -4,7 +4,10 @@ import { Wallet } from '@prisma/client';
 
 export default async function WalletsPage() {
 	const response = await getWallets();
-	const wallets: Wallet[] = response.data || [];
+
+	// soluciona problema de typos porque la respuesta puede ser de varios tipos union
+	const wallets: Wallet[] =
+		response.success && 'data' in response ? response.data : [];
 
 	return (
 		<div className="flex flex-1 flex-col gap-4 p-4 pt-0">
