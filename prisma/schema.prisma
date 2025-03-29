@@ -20,6 +20,7 @@ model User {
   updatedAt    DateTime      @updatedAt
   wallets      Wallet[]
   transactions Transaction[]
+  categories   Category[]
 }
 
 model Wallet {
@@ -38,7 +39,9 @@ model Category {
   name         String
   type         String        // "Expense" or "Income"
   iconName     String
-  color        String        @default("#000000")
+  color        String        @default("#fff")
+  userId       Int
+  user         User          @relation(fields: [userId], references: [id])
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
   transactions Transaction[]
