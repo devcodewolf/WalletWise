@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { Home, Inbox, Wallet } from 'lucide-react';
+import { CircleDollarSign, Home, Inbox, PiggyBank, Wallet } from 'lucide-react';
 
 import { NavMain } from '@/components/sidebar/nav-main';
 
@@ -34,11 +34,11 @@ const data = {
 			url: '/admin-panel/wallets',
 			icon: Wallet,
 		},
-		// {
-		// 	title: 'Transactions',
-		// 	url: '/admin-panel/transactions',
-		// 	icon: Home,
-		// },
+		{
+			title: 'Transactions',
+			url: '/admin-panel/transactions',
+			icon: CircleDollarSign,
+		},
 		// {
 	],
 };

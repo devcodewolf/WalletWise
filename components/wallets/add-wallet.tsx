@@ -64,7 +64,7 @@ export function AddWallet() {
 			<DialogTrigger asChild>
 				<Button className="ml-auto flex">
 					<PlusCircle className="mr-2 h-4 w-4" />
-					Add Wallet
+					Nuevo Wallet
 				</Button>
 			</DialogTrigger>
 			<DialogContent className="sm:max-w-[425px]">
