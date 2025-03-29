@@ -1,21 +1,20 @@
 'use client';
-import { useState } from 'react';
-
-import { useForm } from 'react-hook-form';
-import { PlusCircle } from 'lucide-react';
-
-import { zodResolver } from '@hookform/resolvers/zod';
 
 import { Button } from '@/components/ui/button';
+import { Edit } from 'lucide-react';
+import { Wallet } from '@prisma/client';
+import { updateWallet } from '@/actions/wallets';
+import { useState } from 'react';
 import {
 	Dialog,
 	DialogContent,
 	DialogDescription,
-	DialogFooter,
 	DialogHeader,
 	DialogTitle,
-	DialogTrigger,
 } from '@/components/ui/dialog';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
 import {
 	Form,
 	FormControl,
@@ -25,66 +24,61 @@ import {
 	FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-
-import { createWallet } from '@/actions/wallets';
 import { WalletsFormSchema, walletsSchema } from '@/lib/schemas/wallets';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 
-export function AddWallet() {
+interface EditWalletProps {
+	wallet: Wallet;
+}
+
+export function EditWallet({ wallet }: EditWalletProps) {
 	const [open, setOpen] = useState(false);
 	const router = useRouter();
 
 	const form = useForm<WalletsFormSchema>({
 		resolver: zodResolver(walletsSchema),
 		defaultValues: {
-			name: '',
-			initialBalance: 0,
+			name: wallet.name,
+			initialBalance: wallet.initialBalance,
 		},
 	});
 
-	async function handleSubmit(values: WalletsFormSchema) {
-		const response = await createWallet(values);
-		if (!response.success) {
-			toast.error(response.error);
+	async function onSubmit(values: WalletsFormSchema) {
+		const result = await updateWallet(wallet.id, values);
+
+		if (!result.success) {
+			toast.error(result.error);
 			return;
 		}
 
-		toast.success('Cartera creada con éxito');
-		form.reset();
+		toast.success('Cartera editada con éxito');
 		setOpen(false);
-		setTimeout(() => {
-			router.refresh();
-		}, 300);
+		router.refresh();
 	}
 
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
-			<DialogTrigger asChild>
-				<Button className="ml-auto flex">
-					<PlusCircle className="mr-2 h-4 w-4" />
-					Add Wallet
-				</Button>
-			</DialogTrigger>
+			<Button variant="ghost" size="sm" onClick={() => setOpen(true)}>
+				<Edit className="h-4 w-4" />
+			</Button>
 			<DialogContent className="sm:max-w-[425px]">
 				<DialogHeader>
-					<DialogTitle>Add New Wallet</DialogTitle>
+					<DialogTitle>Editar Cartera</DialogTitle>
 					<DialogDescription>
-						Create a new wallet for tracking your expenses and income.
+						Modifica los detalles de tu cartera aquí.
 					</DialogDescription>
 				</DialogHeader>
 				<Form {...form}>
-					<form
-						onSubmit={form.handleSubmit(handleSubmit)}
-						className="space-y-4">
+					<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
 						<FormField
 							control={form.control}
 							name="name"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Name</FormLabel>
+									<FormLabel>Nombre</FormLabel>
 									<FormControl>
-										<Input placeholder="Wallet name" {...field} />
+										<Input placeholder="Nombre de la cartera" {...field} />
 									</FormControl>
 									<FormMessage />
 								</FormItem>
@@ -95,7 +89,7 @@ export function AddWallet() {
 							name="initialBalance"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Initial Balance</FormLabel>
+									<FormLabel>Saldo Inicial</FormLabel>
 									<FormControl>
 										<Input
 											type="number"
@@ -108,9 +102,7 @@ export function AddWallet() {
 								</FormItem>
 							)}
 						/>
-						<DialogFooter>
-							<Button type="submit">Save Wallet</Button>
-						</DialogFooter>
+						<Button type="submit">Guardar Cambios</Button>
 					</form>
 				</Form>
 			</DialogContent>

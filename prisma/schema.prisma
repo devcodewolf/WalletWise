@@ -23,14 +23,14 @@ model User {
 }
 
 model Wallet {
-  id           Int           @id @default(autoincrement())
-  name         String
-  initialBalance Float        @default(0)
-  userId       Int
-  user         User          @relation(fields: [userId], references: [id])
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
-  transactions Transaction[]
+  id              Int           @id @default(autoincrement())
+  name            String
+  initialBalance  Float        @default(0)
+  userId          Int
+  user            User          @relation(fields: [userId], references: [id])
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  transactions    Transaction[]
 }
 
 model Category {
