@@ -83,6 +83,7 @@ export function EditTransaction({
 	async function onSubmit(values: TransactionsFormSchema) {
 		const result = await updateTransaction(transaction.id, values);
 
+		console.log('result', result);
 		if (!result.success) {
 			return toast.error((result as { error?: string }).error);
 		}
@@ -126,7 +127,7 @@ export function EditTransaction({
 											</FormControl>
 											<SelectContent>
 												<SelectItem value="Gasto">Gasto</SelectItem>
-												<SelectItem value="Income">Ingreso</SelectItem>
+												<SelectItem value="Ingreso">Ingreso</SelectItem>
 											</SelectContent>
 										</Select>
 										<FormMessage />

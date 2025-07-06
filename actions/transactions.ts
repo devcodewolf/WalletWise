@@ -129,6 +129,12 @@ export async function updateTransaction(
 			if (oldWalletId) {
 				const oldIncrementValue =
 					oldType === 'Ingreso' ? -oldAmount : oldAmount;
+				// console.log(
+				// 	'Revertir saldo anterior - Wallet ID:',
+				// 	oldWalletId,
+				// 	'Monto:',
+				// 	oldIncrementValue
+				// );
 				await prisma.wallet.update({
 					where: { id: oldWalletId },
 					data: {
@@ -142,13 +148,22 @@ export async function updateTransaction(
 			// 2. Actualizar la transacción
 			const updatedTransaction = await prisma.transaction.update({
 				where: { id },
-				data,
+				data: {
+					...data,
+					amount: newAmount, // Asegurarse de que el monto sea un número
+				},
 			});
 
 			// 3. Aplicar el nuevo saldo a la nueva billetera si se especificó
-			if (newWalletId) {
+			if (newWalletId && newWalletId !== oldWalletId) {
 				const newIncrementValue =
 					newType === 'Ingreso' ? newAmount : -newAmount;
+				// console.log(
+				// 	'Aplicar nuevo saldo - Wallet ID:',
+				// 	newWalletId,
+				// 	'Monto:',
+				// 	newIncrementValue
+				// );
 				await prisma.wallet.update({
 					where: { id: newWalletId },
 					data: {

@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 export const transactionsSchema = z.object({
 	type: z.enum(['Gasto', 'Ingreso'], {
-		message: 'El tipo debe ser Expense o Income',
+		message: 'El tipo debe ser Gasto o Ingreso',
 	}),
 	date: z.coerce.date({
 		message: 'La fecha es requerida',
