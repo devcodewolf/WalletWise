@@ -45,6 +45,7 @@ export async function createWallet(values: WalletsFormSchema) {
 		const wallet = await db.wallet.create({
 			data: {
 				...validatedFields.data,
+				currentBalance: validatedFields.data.initialBalance, // Asignar el mismo valor que initialBalance
 				userId: Number(authResult.user!.id),
 			},
 		});

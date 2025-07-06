@@ -43,6 +43,27 @@ export const columns: ColumnDef<Wallet>[] = [
 		},
 	},
 	{
+		accessorKey: 'currentBalance',
+		header: ({ column }) => {
+			return (
+				<Button
+					variant="ghost"
+					onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+					Saldo Actual
+					<ArrowUpDown className="ml-2 h-4 w-4" />
+				</Button>
+			);
+		},
+		cell: ({ row }) => {
+			const amount = parseFloat(row.getValue('currentBalance'));
+			const formatted = new Intl.NumberFormat('es-ES', {
+				style: 'currency',
+				currency: 'EUR',
+			}).format(amount);
+			return <div>{formatted}</div>;
+		},
+	},
+	{
 		id: 'actions',
 		cell: ({ row }) => {
 			const wallet = row.original;

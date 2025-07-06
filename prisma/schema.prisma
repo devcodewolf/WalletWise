@@ -26,7 +26,8 @@ model User {
 model Wallet {
   id              Int           @id @default(autoincrement())
   name            String
-  initialBalance  Float        @default(0)
+  initialBalance  Float         @default(0)
+  currentBalance  Float         @default(0)
   userId          Int
   user            User          @relation(fields: [userId], references: [id])
   createdAt       DateTime      @default(now())

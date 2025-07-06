@@ -7,6 +7,7 @@ export const walletsSchema = z.object({
 	initialBalance: z.coerce.number().min(0, {
 		message: 'El saldo inicial debe ser un número positivo.',
 	}),
+	currentBalance: z.coerce.number().optional(), // Hacerlo opcional ya que se establecerá en el servidor
 });
 
 export type WalletsFormSchema = z.infer<typeof walletsSchema>;
