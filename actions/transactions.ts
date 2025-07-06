@@ -70,7 +70,7 @@ export async function createTransaction(values: TransactionsFormSchema) {
 				await prisma.wallet.update({
 					where: { id: walletId },
 					data: {
-						initialBalance: {
+						currentBalance: {
 							increment: incrementValue,
 						},
 					},
@@ -138,7 +138,7 @@ export async function updateTransaction(
 				await prisma.wallet.update({
 					where: { id: oldWalletId },
 					data: {
-						initialBalance: {
+						currentBalance: {
 							increment: oldIncrementValue,
 						},
 					},
@@ -167,7 +167,7 @@ export async function updateTransaction(
 				await prisma.wallet.update({
 					where: { id: newWalletId },
 					data: {
-						initialBalance: {
+						currentBalance: {
 							increment: newIncrementValue,
 						},
 					},
@@ -220,7 +220,7 @@ export async function deleteTransaction(id: number) {
 				await prisma.wallet.update({
 					where: { id: walletId },
 					data: {
-						initialBalance: {
+						currentBalance: {
 							increment: incrementValue,
 						},
 					},
