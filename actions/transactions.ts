@@ -42,6 +42,7 @@ export async function createTransaction(values: TransactionsFormSchema) {
 		if (!authResult.success) {
 			return authResult;
 		}
+
 		const validatedFields = transactionsSchema.safeParse(values);
 		if (!validatedFields.success) {
 			return {
@@ -49,14 +50,37 @@ export async function createTransaction(values: TransactionsFormSchema) {
 				error: 'Hay campos vacíos o no válidos',
 			};
 		}
-		const transaction = await db.transaction.create({
-			data: {
-				...validatedFields.data,
-				userId: Number(authResult.user!.id),
-			},
+
+		const { walletId, amount, type } = validatedFields.data;
+
+		// Iniciar una transacción para asegurar la consistencia de los datos
+		const result = await db.$transaction(async (prisma) => {
+			// 1. Crear la transacción
+			const transaction = await prisma.transaction.create({
+				data: {
+					...validatedFields.data,
+					userId: Number(authResult.user!.id),
+				},
+			});
+
+			// 2. Actualizar el saldo de la billetera si se especificó una billetera
+			if (walletId) {
+				const incrementValue = type === 'Ingreso' ? amount : -amount;
+
+				await prisma.wallet.update({
+					where: { id: walletId },
+					data: {
+						initialBalance: {
+							increment: incrementValue,
+						},
+					},
+				});
+			}
+
+			return transaction;
 		});
 
-		return { success: true, data: transaction };
+		return { success: true, data: result };
 	} catch (error) {
 		console.error('Error creating transaction:', error);
 		return { success: false, error: 'Error al crear la transacción' };
@@ -80,6 +104,9 @@ export async function updateTransaction(
 				id,
 				userId: Number(authResult.user!.id),
 			},
+			include: {
+				wallet: true,
+			},
 		});
 
 		if (!existingTransaction) {
@@ -89,12 +116,53 @@ export async function updateTransaction(
 			};
 		}
 
-		const transaction = await db.transaction.update({
-			where: { id },
-			data,
+		const { walletId: newWalletId, amount: newAmount, type: newType } = data;
+		const {
+			walletId: oldWalletId,
+			amount: oldAmount,
+			type: oldType,
+		} = existingTransaction;
+
+		// Iniciar una transacción para asegurar la consistencia de los datos
+		const result = await db.$transaction(async (prisma) => {
+			// 1. Revertir el saldo de la billetera anterior si existía
+			if (oldWalletId) {
+				const oldIncrementValue =
+					oldType === 'Ingreso' ? -oldAmount : oldAmount;
+				await prisma.wallet.update({
+					where: { id: oldWalletId },
+					data: {
+						initialBalance: {
+							increment: oldIncrementValue,
+						},
+					},
+				});
+			}
+
+			// 2. Actualizar la transacción
+			const updatedTransaction = await prisma.transaction.update({
+				where: { id },
+				data,
+			});
+
+			// 3. Aplicar el nuevo saldo a la nueva billetera si se especificó
+			if (newWalletId) {
+				const newIncrementValue =
+					newType === 'Ingreso' ? newAmount : -newAmount;
+				await prisma.wallet.update({
+					where: { id: newWalletId },
+					data: {
+						initialBalance: {
+							increment: newIncrementValue,
+						},
+					},
+				});
+			}
+
+			return updatedTransaction;
 		});
 
-		return { success: true, data: transaction };
+		return { success: true, data: result };
 	} catch (error) {
 		console.error('Error updating transaction:', error);
 		return { success: false, error: 'Error al actualizar la transacción' };
@@ -115,6 +183,9 @@ export async function deleteTransaction(id: number) {
 				id,
 				userId: Number(authResult.user!.id),
 			},
+			include: {
+				wallet: true,
+			},
 		});
 
 		if (!existingTransaction) {
@@ -124,8 +195,27 @@ export async function deleteTransaction(id: number) {
 			};
 		}
 
-		await db.transaction.delete({
-			where: { id },
+		const { walletId, amount, type } = existingTransaction;
+
+		// Iniciar una transacción para asegurar la consistencia de los datos
+		await db.$transaction(async (prisma) => {
+			// 1. Revertir el saldo de la billetera si existe
+			if (walletId) {
+				const incrementValue = type === 'Ingreso' ? -amount : amount;
+				await prisma.wallet.update({
+					where: { id: walletId },
+					data: {
+						initialBalance: {
+							increment: incrementValue,
+						},
+					},
+				});
+			}
+
+			// 2. Eliminar la transacción
+			await prisma.transaction.delete({
+				where: { id },
+			});
 		});
 
 		return { success: true };
