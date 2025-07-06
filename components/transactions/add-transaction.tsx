@@ -126,14 +126,14 @@ export function AddTransaction() {
 			<DialogTrigger asChild>
 				<Button className="ml-auto flex cursor-pointer">
 					<PlusCircle className="mr-2 h-4 w-4" />
-					Añadir Transacción
+					Nuevo
 				</Button>
 			</DialogTrigger>
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>Añadir Nueva Transacción</DialogTitle>
+					<DialogTitle>Nuevo movimiento</DialogTitle>
 					<DialogDescription>
-						Rellena los campos para crear una nueva transacción
+						Rellena los campos para crear un nuevo movimiento
 					</DialogDescription>
 				</DialogHeader>
 
