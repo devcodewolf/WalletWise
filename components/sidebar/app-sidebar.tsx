@@ -60,7 +60,19 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
 	return (
 		<Sidebar>
-			<SidebarHeader>{/* <TeamSwitcher teams={data.teams} /> */}</SidebarHeader>
+			<SidebarHeader>
+				{/* <TeamSwitcher teams={data.teams} /> */}
+				<div className="flex items-center ">
+					<img
+						src="/img/logo3.webp"
+						className="h-18 w-18 object-contain"
+						alt=""
+					/>
+					<p className="text-lg  leading-5 color-[#10b981]">
+						Wallet<span className="text-[#3972bf] font-semibold">Wise</span>
+					</p>
+				</div>
+			</SidebarHeader>
 			<SidebarContent>
 				<NavMain items={data.items} />
 				{/* <NavProjects projects={data.projects} /> */}
