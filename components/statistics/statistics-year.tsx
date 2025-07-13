@@ -1,39 +1,28 @@
 'use client';
 
-import { useState } from 'react';
-import { YearSelect } from './year-select';
+import { YearSelect } from '@/components/statistics/select-year';
 import { Transaction } from '@prisma/client';
+import { useStatistics } from '@/hooks/use-statistics';
 import { YearlyChart } from './chart-yearly';
+import { Calendar } from 'lucide-react';
 
 export default function StatisticsYear({
 	transactions,
 }: {
 	transactions: Transaction[];
 }) {
-	const [selectedYear, setSelectedYear] = useState<string>(
-		new Date().getFullYear().toString()
-	);
-
-	// Calcular los años disponibles a partir de las transacciones
-	const availableYears = Array.from(
-		new Set(
-			transactions.map((t: Transaction) => {
-				const date = t.date instanceof Date ? t.date : new Date(t.date);
-				return date.getFullYear();
-			})
-		)
-	)
-		.sort((a: number, b: number) => a - b)
-		.map(String);
-
-	// Filtrar transacciones del año seleccionado
-	const yearlyTransactions = transactions.filter(
-		(t) => t.date.getFullYear() === Number(selectedYear)
-	);
+	const { selectedYear, setSelectedYear, availableYears, yearlyTransactions } =
+		useStatistics({
+			transactions: transactions,
+		});
 
 	return (
-		<div>
-			<div className="flex items-center gap-2 mb-4">
+		<>
+			<div className="flex items-center justify-between gap-4 mb-4 border-b border-gray-700 pb-3">
+				<div className="flex items-center gap-2">
+					<Calendar className="size-5" />
+					<h3 className="text-lg font-semibold">Anual</h3>
+				</div>
 				<YearSelect
 					value={selectedYear}
 					onChange={setSelectedYear}
@@ -41,6 +30,6 @@ export default function StatisticsYear({
 				/>
 			</div>
 			<YearlyChart transactions={yearlyTransactions} />
-		</div>
+		</>
 	);
 }

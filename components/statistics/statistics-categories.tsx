@@ -1,48 +1,40 @@
 'use client';
 
-import { useState } from 'react';
-import { YearSelect } from './year-select';
+import { YearSelect } from '@/components/statistics/select-year';
 import { Transaction } from '@prisma/client';
 
-import { CategoryPieChart } from './pie-chart-category';
+import { CategoryPieChart } from './chart-pie-category';
 import { TransactionWithRelations } from '@/types/transactions.types';
+import { useStatistics } from '@/hooks/use-statistics';
+import { PieChart } from 'lucide-react';
 
 export default function StatisticsCategories({
 	transactions,
 }: {
 	transactions: TransactionWithRelations[];
 }) {
-	const [selectedYear, setSelectedYear] = useState<string>(
-		new Date().getFullYear().toString()
-	);
-
-	// Calcular los años disponibles a partir de las transacciones
-	const availableYears = Array.from(
-		new Set(
-			transactions.map((t: Transaction) => {
-				const date = t.date instanceof Date ? t.date : new Date(t.date);
-				return date.getFullYear();
-			})
-		)
-	)
-		.sort((a: number, b: number) => a - b)
-		.map(String);
-
-	// Filtrar transacciones del año seleccionado
-	const yearlyTransactions = transactions.filter(
-		(t) => t.date.getFullYear() === Number(selectedYear)
-	);
+	const { selectedYear, setSelectedYear, availableYears, yearlyTransactions } =
+		useStatistics({
+			transactions: transactions,
+		});
 
 	return (
-		<div>
-			<div className="flex items-center gap-2 mb-4">
-				<YearSelect
-					value={selectedYear}
-					onChange={setSelectedYear}
-					years={availableYears}
-				/>
+		<>
+			<div className="flex items-center justify-between gap-4  border-b border-gray-700 pb-3">
+				<div className="flex items-center gap-2">
+					<PieChart className="size-5" />
+					<h3 className="text-lg font-semibold">Categorías</h3>
+				</div>
+				<div className="flex items-center gap-2">
+					<YearSelect
+						key={availableYears.join(',')} // Añadimos una key para forzar la re-renderización si cambian los años
+						value={selectedYear}
+						onChange={setSelectedYear}
+						years={availableYears}
+					/>
+				</div>
 			</div>
 			<CategoryPieChart transactions={yearlyTransactions} />
-		</div>
+		</>
 	);
 }
