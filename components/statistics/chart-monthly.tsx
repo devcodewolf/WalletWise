@@ -59,7 +59,7 @@ export function MonthlyChart({ transactions }: MonthlyChartProps) {
 	return (
 		<ChartContainer
 			config={chartConfig}
-			className="min-h-[250px] h-[250px] w-full">
+			className="min-h-[225px] h-[225px] w-9/12 mx-auto">
 			<BarChart accessibilityLayer data={chartData} barCategoryGap="15%">
 				<CartesianGrid strokeDasharray="4 4" stroke="#374151" />
 				<XAxis

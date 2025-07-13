@@ -70,7 +70,7 @@ export function YearlyChart({ transactions }: YearlyChartProps) {
 	return (
 		<ChartContainer
 			config={chartConfig}
-			className="min-h-[250px] h-[250px] w-full">
+			className="min-h-[225px] h-[225px] w-full">
 			<ResponsiveContainer width="100%" height="100%">
 				<BarChart
 					data={monthlyData}
