@@ -1,7 +1,7 @@
 import { getTransactions } from '@/actions/transactions';
 import { TransactionsDashboard } from '@/components/dashboard/transactions-dashboard';
 import type { TransactionWithRelations } from '@/types/transactions.types';
-import { AddTransaction } from '@/components/transactions/add-transaction';
+import { YearlyChart } from '@/components/statistics/chart-yearly';
 
 export default async function AdminPanel() {
 	// Obtener transacciones
@@ -13,12 +13,21 @@ export default async function AdminPanel() {
 			? respTransaction.data
 			: [];
 
+	// Filtrar transacciones para el año actual en el servidor
+	const currentYear = new Date().getFullYear();
+	const yearlyTransactions = transactions.filter((t) => {
+		const date = t.date instanceof Date ? t.date : new Date(t.date);
+		return date.getFullYear() === currentYear;
+	});
+
 	return (
 		<div className="flex flex-1 flex-col gap-4 p-4 pt-0">
 			<div className="grid auto-rows-min gap-4 md:grid-cols-3">
-				<div className="aspect-video rounded-xl bg-muted/50" />
-				<div className="aspect-video rounded-xl bg-muted/50" />
-				<div className="aspect-video rounded-xl bg-muted/50" />
+				<div className=" rounded-xl bg-muted/50">
+					<YearlyChart transactions={yearlyTransactions} />
+				</div>
+				<div className=" rounded-xl bg-muted/50" />
+				<div className=" rounded-xl bg-muted/50" />
 			</div>
 
 			<div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 p-6 md:min-h-min">
