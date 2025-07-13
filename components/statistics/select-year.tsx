@@ -17,7 +17,7 @@ interface YearSelectProps {
 export function YearSelect({ value, onChange, years }: YearSelectProps) {
 	return (
 		<Select value={value} onValueChange={onChange}>
-			<SelectTrigger className="w-20 bg-gray-800 border-gray-700 text-white text-sm">
+			<SelectTrigger className="bg-gray-800 border-gray-700 text-white text-sm">
 				<SelectValue />
 			</SelectTrigger>
 			<SelectContent className="bg-gray-800 border-gray-700">
