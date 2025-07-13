@@ -42,22 +42,23 @@ export default async function StatisticsPage() {
 			{/* Gráficos en 36columnas */}
 			<div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-12 gap-4">
 				{/* grafico anual	 */}
-				<div className="rounded-xl border border-gray-800 bg-muted/50 px-6 pb-1 pt-4 2xl:col-span-6">
+				<div className="rounded-xl border border-gray-300 bg-muted/50 px-6 pb-1 pt-4 2xl:col-span-6 dark:border-gray-800">
 					<StatisticsYear transactions={transactions} />
 				</div>
-				<div className="rounded-xl border border-gray-800 bg-muted/50 px-6 pb-1 pt-4 2xl:col-span-3">
+				{/* Gráfico mensual */}
+				<div className="rounded-xl border border-gray-300 bg-muted/50 px-6 pb-1 pt-4 2xl:col-span-3 dark:border-gray-800">
 					<StatisticsMonth transactions={transactions} />
 				</div>
-				<div className="rounded-xl border border-gray-800 bg-muted/50 px-6 pt-4 flex flex-col 2xl:col-span-3">
+				<div className="rounded-xl border border-gray-300 bg-muted/50 px-6 pt-4 flex flex-col 2xl:col-span-3 dark:border-gray-800">
 					<StatisticsCategories transactions={transactions} />
 				</div>
 			</div>
 			{/* Resúmenes mensuales y trimestrales */}
-			<div className="rounded-xl border border-gray-800 bg-muted/50 px-6 py-4 2xl:col-span-12">
+			<div className="rounded-xl border border-gray-300 bg-muted/50 px-6 py-4 2xl:col-span-12 dark:border-gray-800">
 				<StatisticsSumary transactions={transactions} />
 			</div>
 			{/* Balance anual */}
-			<div className="rounded-xl border border-gray-800 bg-muted/50 px-6 py-4 2xl:col-span-12">
+			<div className="rounded-xl border border-gray-300 bg-muted/50 px-6 py-4 2xl:col-span-12 dark:border-gray-800">
 				<div className="mb-4">
 					<div className="flex items-center gap-2">
 						<CircleDollarSign className="size-5" />

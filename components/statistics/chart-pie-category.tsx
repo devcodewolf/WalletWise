@@ -9,12 +9,12 @@ interface CategoryPieChartProps {
 }
 
 const COLORS = [
-	'#6366f1',
-	'#8b5cf6',
-	'#4ade80',
+	'#8ec5ff',
+	'#2b7fff',
+	'#155dfc',
 	'#a5f3fc',
-	'#06b6d4',
-	'#0ea5e9',
+	'#1447e6',
+	'#193cb8',
 	'#8b5cf6',
 ];
 

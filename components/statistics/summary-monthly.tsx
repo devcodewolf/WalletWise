@@ -58,18 +58,18 @@ export function SummaryMonthly({ transactions }: SummaryMonthlyProps) {
 					monthlyData.map((data, _) => (
 						<div
 							key={data.month}
-							className="border-b border-gray-700 pb-4 pt-2 last:border-b-0">
-							<h4 className="font-medium text-white text-sm mb-1">
-								{data.month}
-							</h4>
+							className="border-b border-gray-300 pb-4 pt-2 last:border-b-0 dark:border-gray-700">
+							<h4 className="font-medium  text-sm mb-1">{data.month}</h4>
 							<div className="grid grid-cols-3 gap-3">
 								{/* Ingresos Card */}
-								<div className="bg-gray-800 rounded-lg p-3 flex items-center gap-3">
+								<div className="bg-gray-200 rounded-lg p-3 flex items-center gap-3 dark:bg-gray-800">
 									<div className="p-2 bg-green-500/20 rounded-lg">
 										<TrendingUp className="h-4 w-4 text-green-500" />
 									</div>
 									<div className="flex-1 min-w-0">
-										<p className="text-xs text-gray-400">Ingresos</p>
+										<p className="text-xs text-black dark:text-gray-400">
+											Ingresos
+										</p>
 										<p className="text-sm font-semibold text-green-500 truncate">
 											{data.income.toLocaleString()}€
 										</p>
@@ -77,12 +77,14 @@ export function SummaryMonthly({ transactions }: SummaryMonthlyProps) {
 								</div>
 
 								{/* Gastos Card */}
-								<div className="bg-gray-800 rounded-lg p-3 flex items-center gap-3">
+								<div className="bg-gray-200 rounded-lg p-3 flex items-center gap-3 dark:bg-gray-800">
 									<div className="p-2 bg-red-500/20 rounded-lg">
 										<TrendingDown className="h-4 w-4 text-red-500" />
 									</div>
 									<div className="flex-1 min-w-0">
-										<p className="text-xs text-gray-400">Gastos</p>
+										<p className="text-xs text-black dark:text-gray-400">
+											Gastos
+										</p>
 										<p className="text-sm font-semibold text-red-500 truncate">
 											{data.expenses.toLocaleString()}€
 										</p>
@@ -90,7 +92,7 @@ export function SummaryMonthly({ transactions }: SummaryMonthlyProps) {
 								</div>
 
 								{/* Balance Card */}
-								<div className="bg-gray-800 rounded-lg p-3 flex items-center gap-3">
+								<div className="bg-gray-200 rounded-lg p-3 flex items-center gap-3 dark:bg-gray-800">
 									<div
 										className={`p-2 rounded-lg ${
 											data.balance >= 0 ? 'bg-blue-500/20' : 'bg-orange-500/20'
@@ -102,7 +104,9 @@ export function SummaryMonthly({ transactions }: SummaryMonthlyProps) {
 										/>
 									</div>
 									<div className="flex-1 min-w-0">
-										<p className="text-xs text-gray-400">Balance</p>
+										<p className="text-xs text-black dark:text-gray-400">
+											Balance
+										</p>
 										<p
 											className={`text-sm font-semibold truncate ${
 												data.balance >= 0 ? 'text-blue-500' : 'text-orange-500'

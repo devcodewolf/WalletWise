@@ -7,6 +7,7 @@ import { AddCategory } from './add-category';
 import { useEffect, useState } from 'react';
 import { Category } from '@prisma/client';
 import { columns } from './categoryColumns';
+import { Inbox, SquareLibrary } from 'lucide-react';
 
 export const CategoryList = ({ data: initialData }: { data: Category[] }) => {
 	const [categories, setCategories] = useState<Category[]>(initialData);
@@ -20,7 +21,17 @@ export const CategoryList = ({ data: initialData }: { data: Category[] }) => {
 	return (
 		<div className="space-y-4">
 			{/* <AddCategory onAddCategory={handleAddCategory} /> */}
-			<AddCategory />
+			{/* Header */}
+			<header className="flex items-center justify-between mb-4">
+				<div>
+					<h2 className="text-3xl font-bold flex items-center gap-2">
+						<Inbox className="size-8" />
+						Categorías
+					</h2>
+					<p className="text-gray-400 mt-1">Gestión de categorías</p>
+				</div>
+				<AddCategory />
+			</header>
 			<DataTable columns={columns} data={categories} />
 		</div>
 	);

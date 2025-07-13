@@ -20,7 +20,7 @@ export default function StatisticsCategories({
 
 	return (
 		<>
-			<div className="flex items-center justify-between gap-4  border-b border-gray-700 pb-3">
+			<div className="flex items-center justify-between gap-4  border-b border-gray-300 pb-3 dark:border-gray-700">
 				<div className="flex items-center gap-2">
 					<PieChart className="size-5" />
 					<h3 className="text-lg font-semibold">Categorías</h3>

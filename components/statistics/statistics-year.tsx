@@ -18,7 +18,7 @@ export default function StatisticsYear({
 
 	return (
 		<>
-			<div className="flex items-center justify-between gap-4 mb-4 border-b border-gray-700 pb-3">
+			<div className="flex items-center justify-between gap-4 mb-4 border-b border-gray-300 pb-3 dark:border-gray-700">
 				<div className="flex items-center gap-2">
 					<Calendar className="size-5" />
 					<h3 className="text-lg font-semibold">Anual</h3>

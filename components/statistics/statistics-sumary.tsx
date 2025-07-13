@@ -28,7 +28,7 @@ export default function StatisticsSumary({
 				/>
 			</div>
 			<div className="grid grid-cols-1 lg:grid-cols-2">
-				<div className="border-r border-gray-700 pr-8">
+				<div className="border-r border-gray-300 pr-8 dark:border-gray-700">
 					<div className="flex items-center gap-2">
 						<CalendarRange className="size-5" />
 						<h3 className="text-xl font-semibold leading-none flex items-center gap-2">

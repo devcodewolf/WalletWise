@@ -44,15 +44,17 @@ export function AnnualBalance({ transactions }: AnnualBalanceProps) {
 						</div>
 					) : (
 						yearlyBalances.map((yearData, index) => (
-							<div key={yearData.year} className="p-3 bg-gray-800 rounded-lg">
-								<h4 className="font-medium text-white mb-3">
-									Año {yearData.year}
-								</h4>
+							<div
+								key={yearData.year}
+								className="p-3 bg-gray-200 rounded-lg dark:bg-gray-800">
+								<h4 className="font-medium mb-3">Año {yearData.year}</h4>
 								<div className="space-y-2">
 									<div className="flex items-center justify-between">
 										<div className="flex items-center gap-2">
 											<TrendingUp className="h-4 w-4 text-green-500" />
-											<span className="text-sm text-gray-400">Ingresos</span>
+											<span className="text-sm text-black dark:text-gray-400">
+												Ingresos
+											</span>
 										</div>
 										<span className="text-sm font-medium text-green-500">
 											{yearData.income.toLocaleString()}€
@@ -61,13 +63,15 @@ export function AnnualBalance({ transactions }: AnnualBalanceProps) {
 									<div className="flex items-center justify-between">
 										<div className="flex items-center gap-2">
 											<TrendingDown className="h-4 w-4 text-red-500" />
-											<span className="text-sm text-gray-400">Gastos</span>
+											<span className="text-sm text-black dark:text-gray-400">
+												Gastos
+											</span>
 										</div>
 										<span className="text-sm font-medium text-red-500">
 											{yearData.expenses.toLocaleString()}€
 										</span>
 									</div>
-									<div className="flex items-center justify-between border-t border-gray-700 pt-2">
+									<div className="flex items-center justify-between border-t border-gray-300 ptr-gray-700 pt-2">
 										<div className="flex items-center gap-2">
 											<Wallet
 												className={`h-4 w-4 ${
@@ -76,7 +80,9 @@ export function AnnualBalance({ transactions }: AnnualBalanceProps) {
 														: 'text-orange-500'
 												}`}
 											/>
-											<span className="text-sm text-gray-400">Balance</span>
+											<span className="text-sm text-black dark:text-gray-400">
+												Balance
+											</span>
 										</div>
 										<span
 											className={`text-sm font-medium ${
