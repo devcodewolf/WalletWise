@@ -92,7 +92,7 @@ export function DataTable<TData, TValue>({
 		<div className="w-full">
 			<div className="flex items-center py-4">
 				<Input
-					placeholder="Filter..."
+					placeholder="Buscar..."
 					value={(table.getState().globalFilter as string) ?? ''}
 					onChange={(event) => table.setGlobalFilter(event.target.value)}
 					className="max-w-sm"
@@ -100,7 +100,7 @@ export function DataTable<TData, TValue>({
 				<DropdownMenu>
 					<DropdownMenuTrigger asChild>
 						<Button variant="outline" className="ml-auto">
-							Columns <ChevronDown />
+							Columnas <ChevronDown />
 						</Button>
 					</DropdownMenuTrigger>
 					<DropdownMenuContent align="end">
@@ -123,9 +123,9 @@ export function DataTable<TData, TValue>({
 					</DropdownMenuContent>
 				</DropdownMenu>
 			</div>
-			<div className="rounded-md border">
+			<div className="rounded-md border overflow-hidden">
 				<Table>
-					<TableHeader>
+					<TableHeader className="bg-muted">
 						{table.getHeaderGroups().map((headerGroup) => (
 							<TableRow key={headerGroup.id}>
 								{headerGroup.headers.map((header) => {
@@ -179,7 +179,7 @@ export function DataTable<TData, TValue>({
 				</div> */}
 				<div className="flex items-center space-x-6 lg:space-x-8">
 					<div className="flex items-center space-x-2">
-						<p className="text-sm font-medium">Show</p>
+						<p className="text-sm font-medium">Mostrar</p>
 						<Select
 							value={`${table.getState().pagination.pageSize}`}
 							onValueChange={(value) => {
@@ -200,7 +200,7 @@ export function DataTable<TData, TValue>({
 						</Select>
 					</div>
 					<div className="flex w-[100px] items-center justify-center text-sm font-medium">
-						Page {table.getState().pagination.pageIndex + 1} of{' '}
+						Página {table.getState().pagination.pageIndex + 1} de{' '}
 						{table.getPageCount()}
 					</div>
 					<div className="flex items-center space-x-2">

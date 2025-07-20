@@ -22,15 +22,24 @@ export default async function AdminLayout({
 	}
 
 	return (
-		<SidebarProvider>
+		<SidebarProvider
+			style={
+				{
+					'--sidebar-width': 'calc(var(--spacing) * 50)',
+					'--header-height': 'calc(var(--spacing) * 12)',
+				} as React.CSSProperties
+			}>
 			{/* opcion para poder hacerlo en un server component */}
 			<AdminUserStore user={session.user} />
 			<AppSidebar />
-			<SidebarInset>
-				<header className="flex h-12 shrink-0 px-4 items-center justify-between gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
+			<SidebarInset className="px-6 pb-4">
+				<header className="flex h-12 shrink-0  items-center justify-between gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
 					<div className="flex items-center gap-2">
 						<SidebarTrigger className="-ml-1" />
-						<Separator orientation="vertical" className="mr-2 h-4" />
+						<Separator
+							orientation="vertical"
+							className="data-[orientation=vertical]:h-4"
+						/>
 					</div>
 					<ThemeToggle />
 				</header>

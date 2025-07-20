@@ -17,7 +17,7 @@ export async function getWallets() {
 				userId: Number(authResult.user!.id),
 			},
 			orderBy: {
-				name: 'asc',
+				name: 'desc',
 			},
 		});
 

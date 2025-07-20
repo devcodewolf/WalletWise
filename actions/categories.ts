@@ -17,7 +17,7 @@ export async function getCategories() {
 				userId: Number(authResult.user!.id),
 			},
 			orderBy: {
-				name: 'asc',
+				name: 'desc',
 			},
 		});
 

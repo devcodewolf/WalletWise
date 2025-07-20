@@ -29,8 +29,8 @@ import { DeleteCategory } from './delete-category';
 
 export const columns: ColumnDef<Category>[] = [
 	{
-		accessorKey: 'iconName',
-		header: 'Icon',
+		accessorKey: 'icono',
+		header: 'Icono',
 		cell: ({ row }) => {
 			const iconName = row.original.iconName;
 			// Map string icon names to Lucide components
@@ -54,37 +54,42 @@ export const columns: ColumnDef<Category>[] = [
 			};
 			const Icon = IconMap[iconName] || ShoppingBag;
 			const color = row.original.color;
-			return <Icon className="h-4 w-4" style={{ color }} />;
+			return (
+				<Icon
+					className="size-8 bg-secondary dark:bg-secondary rounded-full p-2"
+					style={{ color }}
+				/>
+			);
 		},
 	},
 	{
-		accessorKey: 'name',
+		accessorKey: 'nombre',
 		header: ({ column }) => {
 			return (
 				<Button
 					variant="ghost"
 					onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-					Name
+					Nombre
 					<ArrowUpDown className="ml-2 h-4 w-4" />
 				</Button>
 			);
 		},
 	},
 	{
-		accessorKey: 'type',
+		accessorKey: 'tipo',
 		header: ({ column }) => {
 			return (
 				<Button
 					variant="ghost"
 					onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-					Type
+					Tipo
 					<ArrowUpDown className="ml-2 h-4 w-4" />
 				</Button>
 			);
 		},
 	},
 	{
-		id: 'actions',
+		id: 'acciones',
 		cell: ({ row }) => {
 			return (
 				<div className="flex justify-end">

@@ -7,7 +7,9 @@ import { AddCategory } from './add-category';
 import { useEffect, useState } from 'react';
 import { Category } from '@prisma/client';
 import { columns } from './categoryColumns';
-import { Inbox, SquareLibrary } from 'lucide-react';
+import { Inbox } from 'lucide-react';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
 
 export const CategoryList = ({ data: initialData }: { data: Category[] }) => {
 	const [categories, setCategories] = useState<Category[]>(initialData);
@@ -18,21 +20,28 @@ export const CategoryList = ({ data: initialData }: { data: Category[] }) => {
 		setCategories(initialData);
 	}, [initialData]);
 
+	console.log(categories);
+
 	return (
-		<div className="space-y-4">
-			{/* <AddCategory onAddCategory={handleAddCategory} /> */}
-			{/* Header */}
-			<header className="flex items-center justify-between mb-4">
+		<Card className="p-6 gap-4">
+			<CardHeader className="flex-row items-center p-0">
 				<div>
-					<h2 className="text-3xl font-bold flex items-center gap-2">
-						<Inbox className="size-8" />
+					<h2 className="text-2xl font-bold flex items-center gap-2">
+						<Inbox className="size-6" />
+						<Separator
+							orientation="vertical"
+							className="data-[orientation=vertical]:h-6"
+						/>
 						Categorías
 					</h2>
 					<p className="text-gray-400 mt-1">Gestión de categorías</p>
 				</div>
 				<AddCategory />
-			</header>
-			<DataTable columns={columns} data={categories} />
-		</div>
+			</CardHeader>
+			<Separator />
+			<CardContent className="p-0">
+				<DataTable columns={columns} data={categories} />
+			</CardContent>
+		</Card>
 	);
 };

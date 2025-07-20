@@ -32,22 +32,22 @@ const data = {
 			icon: Home,
 		},
 		{
-			title: 'Categories',
+			title: 'Categorias',
 			url: '/admin-panel/categories',
 			icon: Inbox,
 		},
 		{
-			title: 'Wallets',
+			title: 'Billeteras',
 			url: '/admin-panel/wallets',
 			icon: Wallet,
 		},
 		{
-			title: 'Transactions',
+			title: 'Transacciones',
 			url: '/admin-panel/transactions',
 			icon: CircleDollarSign,
 		},
 		{
-			title: 'Statistics',
+			title: 'Estadísticas',
 			url: '/admin-panel/statistics',
 			icon: BarChart3,
 		},
@@ -59,7 +59,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 	const { user } = useUserStore();
 
 	return (
-		<Sidebar>
+		<Sidebar variant="inset">
 			<SidebarHeader>
 				{/* <TeamSwitcher teams={data.teams} /> */}
 				<div className="flex items-center ">

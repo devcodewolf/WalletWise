@@ -64,16 +64,13 @@ export function IconSelector({
 					<div
 						key={iconOption.name}
 						className={cn(
-							'flex h-10 w-10 cursor-pointer items-center justify-center rounded-md border',
+							'flex size-10 cursor-pointer items-center justify-center rounded-full border',
 							selectedIcon === iconOption.name
 								? 'border-primary bg-primary/10'
 								: 'border-muted hover:border-primary'
 						)}
 						onClick={() => onSelectIcon(iconOption.name)}>
-						<Icon
-							className="h-5 w-5"
-							style={selectedIcon === iconOption.name ? { color } : undefined}
-						/>
+						<Icon className="size-5" />
 					</div>
 				);
 			})}
