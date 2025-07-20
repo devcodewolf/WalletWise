@@ -64,14 +64,14 @@ export function AddWallet() {
 			<DialogTrigger asChild>
 				<Button className="ml-auto flex">
 					<PlusCircle className=" h-4 w-4" />
-					Nuevo Wallet
+					Nuevo wallet
 				</Button>
 			</DialogTrigger>
 			<DialogContent className="sm:max-w-[425px]">
 				<DialogHeader>
-					<DialogTitle>Add New Wallet</DialogTitle>
+					<DialogTitle>Añadir nuevo wallet</DialogTitle>
 					<DialogDescription>
-						Create a new wallet for tracking your expenses and income.
+						Añade un nuevo wallet para rastrear tus gastos e ingresos.
 					</DialogDescription>
 				</DialogHeader>
 				<Form {...form}>
@@ -83,7 +83,7 @@ export function AddWallet() {
 							name="name"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Name</FormLabel>
+									<FormLabel>Nombre</FormLabel>
 									<FormControl>
 										<Input placeholder="Wallet name" {...field} />
 									</FormControl>
@@ -96,7 +96,7 @@ export function AddWallet() {
 							name="initialBalance"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Initial Balance</FormLabel>
+									<FormLabel>Saldo inicial</FormLabel>
 									<FormControl>
 										<Input
 											type="number"
@@ -110,7 +110,7 @@ export function AddWallet() {
 							)}
 						/>
 						<DialogFooter>
-							<Button type="submit">Save Wallet</Button>
+							<Button type="submit">Guardar wallet</Button>
 						</DialogFooter>
 					</form>
 				</Form>

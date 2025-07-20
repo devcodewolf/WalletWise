@@ -125,8 +125,8 @@ export function AddTransaction() {
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
 				<Button className="ml-auto flex cursor-pointer">
-					<PlusCircle className="mr-2 h-4 w-4" />
-					Nuevo
+					<PlusCircle className="h-4 w-4" />
+					Nuevo dato
 				</Button>
 			</DialogTrigger>
 			<DialogContent>

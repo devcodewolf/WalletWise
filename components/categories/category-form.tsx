@@ -134,7 +134,7 @@ export function CategoryForm({
 							name="type"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Type</FormLabel>
+									<FormLabel>Tipo</FormLabel>
 									<FormControl>
 										<div className="flex gap-4">
 											<Button

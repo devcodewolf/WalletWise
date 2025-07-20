@@ -4,6 +4,7 @@ import { getCategories } from '@/actions/categories';
 import { getWallets } from '@/actions/wallets';
 import type { TransactionWithRelations } from '@/types/transactions.types';
 import { WalletList } from '@/components/wallets/wallet-list';
+import { CategoryList } from '@/components/categories/category-list';
 
 export default async function TransactionsPage() {
 	const respTransaction = await getTransactions();
@@ -24,19 +25,15 @@ export default async function TransactionsPage() {
 
 	return (
 		<>
-			<div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-				<div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min p-6">
-					<TransactionList
-						data={transactions}
-						categories={categories}
-						wallets={wallets}
-					/>
-				</div>
-			</div>
-			<div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-				<div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min p-6">
-					<WalletList data={wallets} />
-				</div>
+			<TransactionList
+				data={transactions}
+				categories={categories}
+				wallets={wallets}
+			/>
+
+			<div className="grid grid-cols-2 gap-4">
+				<CategoryList data={categories} />
+				<WalletList data={wallets} />
 			</div>
 		</>
 	);

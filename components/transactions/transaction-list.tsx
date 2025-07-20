@@ -9,6 +9,8 @@ import { DataTable } from '@/components/ui/data-table';
 import { AddTransaction } from '@/components/transactions/add-transaction';
 import { columns } from '@/components/transactions/transactionColumns';
 import { CircleDollarSign } from 'lucide-react';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
 
 type TransactionListProps = {
 	data: TransactionWithRelations[];
@@ -31,22 +33,28 @@ export const TransactionList = ({
 	}, [initialData]);
 
 	return (
-		<div className="space-y-4">
-			{/* Header */}
-			<header className="flex items-center justify-between mb-4">
+		<Card className="p-6 gap-4 mb-4">
+			<CardHeader className="flex-row items-center p-0">
 				<div>
-					<h2 className="text-3xl font-bold flex items-center gap-2">
-						<CircleDollarSign className="size-8" />
+					<h2 className="text-2xl font-bold flex items-center gap-2">
+						<CircleDollarSign className="size-6" />
+						<Separator
+							orientation="vertical"
+							className="data-[orientation=vertical]:h-6"
+						/>
 						Transacciones
 					</h2>
 					<p className="text-gray-400 mt-1">Gestión de transacciones</p>
 				</div>
 				<AddTransaction />
-			</header>
-			<DataTable
-				columns={columns({ wallets, categories })}
-				data={transactions}
-			/>
-		</div>
+			</CardHeader>
+			<Separator />
+			<CardContent className="p-0">
+				<DataTable
+					columns={columns({ wallets, categories })}
+					data={transactions}
+				/>
+			</CardContent>
+		</Card>
 	);
 };
