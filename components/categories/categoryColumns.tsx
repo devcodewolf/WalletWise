@@ -29,8 +29,13 @@ import { DeleteCategory } from './delete-category';
 
 export const columns: ColumnDef<Category>[] = [
 	{
-		accessorKey: 'icono',
-		header: 'Icono',
+		accessorKey: 'iconName',
+		meta: {
+			label: 'Icono',
+		},
+		header: ({ column }) => {
+			return <div className="px-3">Icono</div>;
+		},
 		cell: ({ row }) => {
 			const iconName = row.original.iconName;
 			// Map string icon names to Lucide components
@@ -63,7 +68,10 @@ export const columns: ColumnDef<Category>[] = [
 		},
 	},
 	{
-		accessorKey: 'nombre',
+		accessorKey: 'name',
+		meta: {
+			label: 'Nombre',
+		},
 		header: ({ column }) => {
 			return (
 				<Button
@@ -76,7 +84,10 @@ export const columns: ColumnDef<Category>[] = [
 		},
 	},
 	{
-		accessorKey: 'tipo',
+		accessorKey: 'type',
+		meta: {
+			label: 'Tipo',
+		},
 		header: ({ column }) => {
 			return (
 				<Button

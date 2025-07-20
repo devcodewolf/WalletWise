@@ -63,7 +63,7 @@ export function AddWallet() {
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
 				<Button className="ml-auto flex">
-					<PlusCircle className="mr-2 h-4 w-4" />
+					<PlusCircle className=" h-4 w-4" />
 					Nuevo Wallet
 				</Button>
 			</DialogTrigger>

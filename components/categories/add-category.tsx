@@ -18,7 +18,7 @@ export function AddCategory() {
 			onSubmit={handleSubmit}
 			triggerButton={
 				<Button className="ml-auto flex">
-					<PlusCircle className="mr-2 h-4 w-4" />
+					<PlusCircle className="h-4 w-4" />
 					Nueva categoría
 				</Button>
 			}

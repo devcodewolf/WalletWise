@@ -10,6 +10,9 @@ import { Wallet } from '@prisma/client';
 export const columns: ColumnDef<Wallet>[] = [
 	{
 		accessorKey: 'name',
+		meta: {
+			label: 'Nombre',
+		},
 		header: ({ column }) => {
 			return (
 				<Button
@@ -23,6 +26,9 @@ export const columns: ColumnDef<Wallet>[] = [
 	},
 	{
 		accessorKey: 'initialBalance',
+		meta: {
+			label: 'Saldo Inicial',
+		},
 		header: ({ column }) => {
 			return (
 				<Button
@@ -44,6 +50,9 @@ export const columns: ColumnDef<Wallet>[] = [
 	},
 	{
 		accessorKey: 'currentBalance',
+		meta: {
+			label: 'Saldo Actual',
+		},
 		header: ({ column }) => {
 			return (
 				<Button
@@ -64,7 +73,7 @@ export const columns: ColumnDef<Wallet>[] = [
 		},
 	},
 	{
-		id: 'actions',
+		id: 'acciones',
 		cell: ({ row }) => {
 			const wallet = row.original;
 			return (
