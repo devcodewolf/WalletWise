@@ -50,11 +50,13 @@ import {
 interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
 	data: TData[];
+	limitShow?: number;
 }
 
 export function DataTable<TData, TValue>({
 	columns,
 	data,
+	limitShow,
 }: DataTableProps<TData, TValue>) {
 	const [sorting, setSorting] = React.useState<SortingState>([]);
 	const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -77,7 +79,7 @@ export function DataTable<TData, TValue>({
 		getPaginationRowModel: getPaginationRowModel(),
 		initialState: {
 			pagination: {
-				pageSize: 10,
+				pageSize: limitShow ?? 10,
 			},
 		},
 		state: {
@@ -191,7 +193,9 @@ export function DataTable<TData, TValue>({
 								/>
 							</SelectTrigger>
 							<SelectContent side="top">
-								{[5, 10, 20, 30, 40, 50].map((pageSize) => (
+								{[5, 10, 20, 30, 40, 50].filter(
+									(pageSize) => !limitShow || pageSize <= (limitShow ?? 10)
+								).map((pageSize) => (
 									<SelectItem key={pageSize} value={`${pageSize}`}>
 										{pageSize}
 									</SelectItem>

@@ -10,7 +10,15 @@ import { Wallet } from '@prisma/client';
 import { Separator } from '@/components/ui/separator';
 import { Card, CardHeader, CardContent } from '@/components/ui/card';
 
-export const WalletList = ({ data: initialData }: { data: Wallet[] }) => {
+interface WalletListProps {
+	data: Wallet[];
+	limitShow?: number;
+}
+
+export const WalletList = ({
+	data: initialData,
+	limitShow,
+}: WalletListProps) => {
 	const [wallets, setWallets] = useState<Wallet[]>(initialData);
 
 	// Update wallets when initialData changes
@@ -37,7 +45,7 @@ export const WalletList = ({ data: initialData }: { data: Wallet[] }) => {
 			</CardHeader>
 			<Separator />
 			<CardContent className="p-0">
-				<DataTable columns={columns} data={wallets} />
+				<DataTable columns={columns} data={wallets} limitShow={limitShow} />
 			</CardContent>
 		</Card>
 	);

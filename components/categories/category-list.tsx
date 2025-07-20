@@ -11,7 +11,12 @@ import { Inbox } from 'lucide-react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 
-export const CategoryList = ({ data: initialData }: { data: Category[] }) => {
+interface CategoryListProps {
+  data: Category[];
+  limitShow?: number;
+}
+
+export const CategoryList = ({ data: initialData, limitShow }: CategoryListProps) => {
 	const [categories, setCategories] = useState<Category[]>(initialData);
 
 	// Update categories when initialData changes
@@ -40,7 +45,7 @@ export const CategoryList = ({ data: initialData }: { data: Category[] }) => {
 			</CardHeader>
 			<Separator />
 			<CardContent className="p-0">
-				<DataTable columns={columns} data={categories} />
+				<DataTable columns={columns} data={categories} limitShow={limitShow} />
 			</CardContent>
 		</Card>
 	);

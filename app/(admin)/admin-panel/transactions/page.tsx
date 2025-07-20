@@ -32,8 +32,8 @@ export default async function TransactionsPage() {
 			/>
 
 			<div className="grid grid-cols-2 gap-4">
-				<CategoryList data={categories} />
-				<WalletList data={wallets} />
+				<CategoryList data={categories} limitShow={5} />
+				<WalletList data={wallets} limitShow={5} />
 			</div>
 		</>
 	);
