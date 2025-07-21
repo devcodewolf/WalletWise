@@ -37,7 +37,7 @@ export function AnnualBalance({ transactions }: AnnualBalanceProps) {
 	return (
 		<>
 			<div>
-				<div className="max-h-80 overflow-y-auto space-y-3 pr-2">
+				<div className="max-h-80 overflow-y-auto space-y-2">
 					{yearlyBalances.length === 0 ? (
 						<div className="text-center text-gray-400 py-8">
 							No hay datos disponibles

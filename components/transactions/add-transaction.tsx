@@ -146,7 +146,7 @@ export function AddTransaction() {
 								control={form.control}
 								name="type"
 								render={({ field }) => (
-									<FormItem className="flex-1/3">
+									<FormItem className="flex-1/3 relative">
 										<FormLabel>Tipo</FormLabel>
 										<Select
 											onValueChange={field.onChange}
@@ -170,7 +170,7 @@ export function AddTransaction() {
 								control={form.control}
 								name="date"
 								render={({ field }) => (
-									<FormItem className="flex-1/3">
+									<FormItem className="flex-1/3 relative">
 										<FormLabel>Fecha</FormLabel>
 										<FormControl>
 											<Input
@@ -178,14 +178,21 @@ export function AddTransaction() {
 												value={
 													field.value instanceof Date
 														? field.value.toISOString().split('T')[0]
+														: typeof field.value === 'string' &&
+														  field.value !== ''
+														? field.value
 														: ''
 												}
 												onChange={(e) => {
-													field.onChange(new Date(e.target.value));
+													if (!e.target.value) {
+														field.onChange(undefined);
+													} else {
+														field.onChange(new Date(e.target.value));
+													}
 												}}
 											/>
 										</FormControl>
-										<FormMessage />
+										<FormMessage className="absolute -bottom-6 left-0" />
 									</FormItem>
 								)}
 							/>
@@ -194,7 +201,7 @@ export function AddTransaction() {
 								control={form.control}
 								name="amount"
 								render={({ field }) => (
-									<FormItem className="flex-1/3">
+									<FormItem className="flex-1/3 relative">
 										<FormLabel>Monto</FormLabel>
 										<FormControl>
 											<Input
@@ -204,7 +211,7 @@ export function AddTransaction() {
 												{...field}
 											/>
 										</FormControl>
-										<FormMessage />
+										<FormMessage className="absolute -bottom-6 left-0" />
 									</FormItem>
 								)}
 							/>

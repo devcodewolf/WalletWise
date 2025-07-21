@@ -19,6 +19,7 @@ export const columns = ({
 }: ColumnsProps): ColumnDef<TransactionWithRelations>[] => [
 	{
 		accessorKey: 'date',
+		meta: { label: 'Fecha' },
 		header: ({ column }) => {
 			return (
 				<Button
@@ -36,6 +37,7 @@ export const columns = ({
 	},
 	{
 		accessorKey: 'type',
+		meta: { label: 'Tipo' },
 		header: ({ column }) => {
 			return (
 				<Button
@@ -48,32 +50,48 @@ export const columns = ({
 		},
 		cell: ({ row }) => {
 			const type = row.getValue('type');
-			return <div>{type === 'Gasto' ? 'Gasto' : 'Ingreso'}</div>;
+			return (
+				<div className={type === 'Gasto' ? ' text-red-600' : ' text-green-600'}>
+					{type === 'Gasto' ? 'Gasto' : 'Ingreso'}
+				</div>
+			);
 		},
 	},
 	{
 		accessorKey: 'amount',
+		meta: { label: 'Cantidad' },
 		header: ({ column }) => {
 			return (
 				<Button
 					variant="ghost"
 					onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-					Monto
+					Cantidad
 					<ArrowUpDown className="ml-2 h-4 w-4" />
 				</Button>
 			);
 		},
 		cell: ({ row }) => {
 			const amount = parseFloat(row.getValue('amount'));
+			const type = row.original.type;
 			const formatted = new Intl.NumberFormat('es-ES', {
 				style: 'currency',
 				currency: 'EUR',
 			}).format(amount);
-			return <div>{formatted}</div>;
+			return (
+				<div
+					className={
+						type === 'Gasto'
+							? 'bg-red-100 text-red-600 rounded-full px-2 py-1 w-fit font-semibold text-xs'
+							: 'bg-green-100 text-green-600 rounded-full px-2 py-1 w-fit font-semibold text-xs'
+					}>
+					{formatted}
+				</div>
+			);
 		},
 	},
 	{
 		accessorKey: 'description',
+		meta: { label: 'Descripción' },
 		header: ({ column }) => {
 			return (
 				<Button
@@ -87,6 +105,7 @@ export const columns = ({
 	},
 	{
 		accessorKey: 'wallet.name',
+		meta: { label: 'Cartera' },
 		header: ({ column }) => {
 			return (
 				<Button
@@ -104,6 +123,7 @@ export const columns = ({
 	},
 	{
 		accessorKey: 'category.name',
+		meta: { label: 'Categoría' },
 		header: ({ column }) => {
 			return (
 				<Button
@@ -120,7 +140,7 @@ export const columns = ({
 		},
 	},
 	{
-		id: 'actions',
+		id: 'acciones',
 		cell: ({ row }) => {
 			const transaction = row.original;
 

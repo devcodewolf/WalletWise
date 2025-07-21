@@ -8,7 +8,7 @@ export const transactionsSchema = z.object({
 		message: 'La fecha es requerida',
 	}),
 	amount: z.coerce.number().positive({
-		message: 'El monto debe ser un número positivo',
+		message: 'El monto debe ser > 0',
 	}),
 	description: z.string().optional(),
 	walletId: z.coerce.number().optional(),

@@ -51,12 +51,14 @@ interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
 	data: TData[];
 	limitShow?: number;
+	toolbar?: React.ReactNode; // NUEVO
 }
 
 export function DataTable<TData, TValue>({
 	columns,
 	data,
 	limitShow,
+	toolbar,
 }: DataTableProps<TData, TValue>) {
 	const [sorting, setSorting] = React.useState<SortingState>([]);
 	const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -92,16 +94,17 @@ export function DataTable<TData, TValue>({
 
 	return (
 		<div className="w-full">
-			<div className="flex items-center py-4">
+			<div className="flex items-center justify-end py-4 gap-2">
+				<div className="flex-1">{toolbar}</div>
 				<Input
 					placeholder="Buscar..."
 					value={(table.getState().globalFilter as string) ?? ''}
 					onChange={(event) => table.setGlobalFilter(event.target.value)}
-					className="max-w-sm"
+					className="w-fit"
 				/>
 				<DropdownMenu>
 					<DropdownMenuTrigger asChild>
-						<Button variant="outline" className="ml-auto">
+						<Button variant="outline">
 							Columnas <ChevronDown />
 						</Button>
 					</DropdownMenuTrigger>
@@ -127,7 +130,7 @@ export function DataTable<TData, TValue>({
 			</div>
 			<div className="rounded-md border overflow-hidden">
 				<Table>
-					<TableHeader className="bg-muted">
+					<TableHeader className="bg-muted dark:bg-neutral-700">
 						{table.getHeaderGroups().map((headerGroup) => (
 							<TableRow key={headerGroup.id}>
 								{headerGroup.headers.map((header) => {
@@ -193,13 +196,15 @@ export function DataTable<TData, TValue>({
 								/>
 							</SelectTrigger>
 							<SelectContent side="top">
-								{[5, 10, 20, 30, 40, 50].filter(
-									(pageSize) => !limitShow || pageSize <= (limitShow ?? 10)
-								).map((pageSize) => (
-									<SelectItem key={pageSize} value={`${pageSize}`}>
-										{pageSize}
-									</SelectItem>
-								))}
+								{[5, 10, 20, 30, 40, 50]
+									.filter(
+										(pageSize) => !limitShow || pageSize <= (limitShow ?? 10)
+									)
+									.map((pageSize) => (
+										<SelectItem key={pageSize} value={`${pageSize}`}>
+											{pageSize}
+										</SelectItem>
+									))}
 							</SelectContent>
 						</Select>
 					</div>

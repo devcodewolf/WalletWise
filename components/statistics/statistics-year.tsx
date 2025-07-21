@@ -5,6 +5,7 @@ import { Transaction } from '@prisma/client';
 import { useStatistics } from '@/hooks/use-statistics';
 import { YearlyChart } from './chart-yearly';
 import { Calendar } from 'lucide-react';
+import { Separator } from '../ui/separator';
 
 export default function StatisticsYear({
 	transactions,
@@ -18,9 +19,13 @@ export default function StatisticsYear({
 
 	return (
 		<>
-			<div className="flex items-center justify-between gap-4 mb-4 border-b border-gray-300 pb-3 dark:border-gray-700">
+			<div className="flex items-center justify-between gap-4">
 				<div className="flex items-center gap-2">
 					<Calendar className="size-5" />
+					<Separator
+						orientation="vertical"
+						className="data-[orientation=vertical]:h-6"
+					/>
 					<h3 className="text-lg font-semibold">Anual</h3>
 				</div>
 				<YearSelect
@@ -29,6 +34,7 @@ export default function StatisticsYear({
 					years={availableYears}
 				/>
 			</div>
+			<Separator />
 			<YearlyChart transactions={yearlyTransactions} />
 		</>
 	);

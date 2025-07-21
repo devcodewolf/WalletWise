@@ -14,6 +14,8 @@ import StatisticsCategories from '@/components/statistics/statistics-categories'
 import { SummaryMonthly } from '@/components/statistics/summary-monthly';
 import StatisticsSumary from '@/components/statistics/statistics-sumary';
 import { AnnualBalance } from '@/components/statistics/annual-balance';
+import { Card } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
 
 export default async function StatisticsPage() {
 	const respTransaction = await getTransactions();
@@ -29,8 +31,12 @@ export default async function StatisticsPage() {
 			{/* Header */}
 			<div className="flex items-center justify-between mb-4">
 				<div>
-					<h2 className="text-3xl font-bold flex items-center gap-2">
-						<BarChart3 className="h-8 w-8" />
+					<h2 className="text-2xl font-bold flex items-center gap-2">
+						<BarChart3 className="size-6" />
+						<Separator
+							orientation="vertical"
+							className="data-[orientation=vertical]:h-6"
+						/>
 						Estadísticas
 					</h2>
 					<p className="text-gray-400 mt-1">
@@ -38,27 +44,28 @@ export default async function StatisticsPage() {
 					</p>
 				</div>
 			</div>
+			<Separator />
 
 			{/* Gráficos en 36columnas */}
-			<div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-12 gap-4">
+			<div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-12 gap-4 mt-6">
 				{/* grafico anual	 */}
-				<div className="rounded-xl border border-gray-300 bg-muted/50 px-6 pb-1 pt-4 2xl:col-span-6 dark:border-gray-800">
+				<Card className="p-4 gap-4">
 					<StatisticsYear transactions={transactions} />
-				</div>
+				</Card>
 				{/* Gráfico mensual */}
-				<div className="rounded-xl border border-gray-300 bg-muted/50 px-6 pb-1 pt-4 2xl:col-span-3 dark:border-gray-800">
+				<Card className="p-4 gap-4">
 					<StatisticsMonth transactions={transactions} />
-				</div>
-				<div className="rounded-xl border border-gray-300 bg-muted/50 px-6 pt-4 flex flex-col 2xl:col-span-3 dark:border-gray-800">
+				</Card>
+				<Card className="p-4 gap-4">
 					<StatisticsCategories transactions={transactions} />
-				</div>
+				</Card>
 			</div>
 			{/* Resúmenes mensuales y trimestrales */}
-			<div className="rounded-xl border border-gray-300 bg-muted/50 px-6 py-4 2xl:col-span-12 dark:border-gray-800">
+			<Card className="p-4 px-6 gap-4">
 				<StatisticsSumary transactions={transactions} />
-			</div>
+			</Card>
 			{/* Balance anual */}
-			<div className="rounded-xl border border-gray-300 bg-muted/50 px-6 py-4 2xl:col-span-12 dark:border-gray-800">
+			<Card className="p-4 gap-2">
 				<div className="mb-4">
 					<div className="flex items-center gap-2">
 						<CircleDollarSign className="size-5" />
@@ -71,7 +78,7 @@ export default async function StatisticsPage() {
 					</p>
 				</div>
 				<AnnualBalance transactions={transactions} />
-			</div>
+			</Card>
 		</div>
 	);
 }
