@@ -4,7 +4,8 @@ import { DataTable } from '@/components/ui/data-table';
 import { dashboardColumns } from './dashboard-columns';
 import { Transaction } from '@prisma/client';
 import { useEffect, useState } from 'react';
-import { AddTransaction } from '../transactions/add-transaction';
+import { CreditCard, PiggyBank } from 'lucide-react';
+import { Separator } from '../ui/separator';
 
 type TransactionsDashboardProps = {
 	data: Transaction[];
@@ -33,17 +34,30 @@ export function TransactionsDashboard({
 
 	return (
 		<>
-			<AddTransaction />
 			<div className="grid grid-cols-1 gap-6 md:grid-cols-2">
 				<div className="space-y-4">
-					<h3 className="text-lg font-semibold">Últimos Gastos</h3>
+					<div className="flex items-center gap-2">
+						<CreditCard className="size-5" />
+						<Separator
+							orientation="vertical"
+							className="data-[orientation=vertical]:h-6"
+						/>
+						<h3 className="text-lg font-semibold">Últimos Gastos</h3>
+					</div>
 					<div className="rounded-md border p-4">
 						<DataTable columns={dashboardColumns} data={expenses} />
 					</div>
 				</div>
 
 				<div className="space-y-4">
-					<h3 className="text-lg font-semibold">Últimos Ingresos</h3>
+					<div className="flex items-center gap-2">
+						<PiggyBank className="size-5" />
+						<Separator
+							orientation="vertical"
+							className="data-[orientation=vertical]:h-6"
+						/>
+						<h3 className="text-lg font-semibold">Últimos Ingresos</h3>
+					</div>
 					<div className="rounded-md border p-4">
 						<DataTable columns={dashboardColumns} data={incomes} />
 					</div>
