@@ -17,15 +17,12 @@ interface YearSelectProps {
 export function YearSelect({ value, onChange, years }: YearSelectProps) {
 	return (
 		<Select value={value} onValueChange={onChange}>
-			<SelectTrigger className="bg-gray-800 border-gray-700 text-white text-sm">
+			<SelectTrigger>
 				<SelectValue />
 			</SelectTrigger>
-			<SelectContent className="bg-gray-800 border-gray-700">
+			<SelectContent>
 				{years.map((year) => (
-					<SelectItem
-						key={year}
-						value={year}
-						className="text-white hover:bg-gray-700">
+					<SelectItem key={year} value={year}>
 						{year}
 					</SelectItem>
 				))}

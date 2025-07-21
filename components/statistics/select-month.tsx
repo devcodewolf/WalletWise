@@ -17,15 +17,12 @@ interface MonthSelectProps {
 export function MonthSelect({ value, onChange, months }: MonthSelectProps) {
 	return (
 		<Select value={value} onValueChange={onChange}>
-			<SelectTrigger className="flex-1 bg-gray-800 border-gray-700 text-white text-sm">
+			<SelectTrigger>
 				<SelectValue />
 			</SelectTrigger>
-			<SelectContent className="bg-gray-800 border-gray-700">
+			<SelectContent className="">
 				{months.map((month) => (
-					<SelectItem
-						key={month.value}
-						value={month.value}
-						className="text-white hover:bg-gray-700">
+					<SelectItem key={month.value} value={month.value} className="">
 						{month.label}
 					</SelectItem>
 				))}

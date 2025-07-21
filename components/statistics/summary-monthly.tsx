@@ -58,11 +58,11 @@ export function SummaryMonthly({ transactions }: SummaryMonthlyProps) {
 					monthlyData.map((data, _) => (
 						<div
 							key={data.month}
-							className="border-b border-gray-300 pb-4 pt-2 last:border-b-0 dark:border-gray-700">
+							className="border-b border-border pb-4 pt-2 last:border-b-0">
 							<h4 className="font-medium  text-sm mb-1">{data.month}</h4>
 							<div className="grid grid-cols-3 gap-3">
 								{/* Ingresos Card */}
-								<div className="bg-gray-200 rounded-lg p-3 flex items-center gap-3 dark:bg-gray-800">
+								<div className="bg-muted rounded-lg p-3 flex items-center gap-3 dark:bg-zinc-700">
 									<div className="p-2 bg-green-500/20 rounded-lg">
 										<TrendingUp className="h-4 w-4 text-green-500" />
 									</div>
@@ -77,7 +77,7 @@ export function SummaryMonthly({ transactions }: SummaryMonthlyProps) {
 								</div>
 
 								{/* Gastos Card */}
-								<div className="bg-gray-200 rounded-lg p-3 flex items-center gap-3 dark:bg-gray-800">
+								<div className="bg-muted rounded-lg p-3 flex items-center gap-3 dark:bg-zinc-700">
 									<div className="p-2 bg-red-500/20 rounded-lg">
 										<TrendingDown className="h-4 w-4 text-red-500" />
 									</div>
@@ -92,7 +92,7 @@ export function SummaryMonthly({ transactions }: SummaryMonthlyProps) {
 								</div>
 
 								{/* Balance Card */}
-								<div className="bg-gray-200 rounded-lg p-3 flex items-center gap-3 dark:bg-gray-800">
+								<div className="bg-muted rounded-lg p-3 flex items-center gap-3 dark:bg-zinc-700">
 									<div
 										className={`p-2 rounded-lg ${
 											data.balance >= 0 ? 'bg-blue-500/20' : 'bg-orange-500/20'

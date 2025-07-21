@@ -7,6 +7,7 @@ import { SummaryMonthly } from './summary-monthly';
 import { CalendarDays, CalendarRange } from 'lucide-react';
 import { QuarterlySummary } from './summary-quarterly';
 import { AnnualBalance } from './annual-balance';
+import { Separator } from '../ui/separator';
 
 export default function StatisticsSumary({
 	transactions,
@@ -20,34 +21,55 @@ export default function StatisticsSumary({
 
 	return (
 		<>
-			<div className="mb-4 ml-auto">
-				<YearSelect
-					value={selectedYear}
-					onChange={setSelectedYear}
-					years={availableYears}
-				/>
-			</div>
 			<div className="grid grid-cols-1 lg:grid-cols-2">
-				<div className="border-r border-gray-300 pr-8 dark:border-gray-700">
-					<div className="flex items-center gap-2">
-						<CalendarRange className="size-5" />
-						<h3 className="text-xl font-semibold leading-none flex items-center gap-2">
-							Resumen Mensual
-						</h3>
+				<div className="border-r pr-8 border-border">
+					<div className="flex items-center justify-between mb-4">
+						<div>
+							<div className="flex items-center gap-2">
+								<CalendarRange className="size-5" />
+								<Separator
+									orientation="vertical"
+									className="data-[orientation=vertical]:h-6"
+								/>
+								<h3 className="text-xl font-semibold leading-none flex items-center gap-2">
+									Resumen Mensual
+								</h3>
+							</div>
+							<p className="text-sm text-gray-400 mt-1">
+								Desglose por meses año {selectedYear}
+							</p>
+						</div>
+						<YearSelect
+							value={selectedYear}
+							onChange={setSelectedYear}
+							years={availableYears}
+						/>
 					</div>
-					<p className="text-sm text-gray-400 mt-1">
-						Desglose por meses año {selectedYear}
-					</p>
+					<Separator className="my-2" />
 					<SummaryMonthly transactions={yearlyTransactions} />
 				</div>
 				<div className="pl-8">
-					<div className="flex items-center gap-2">
-						<CalendarDays className="size-5" />
-						<h3 className="text-xl font-semibold leading-none flex items-center gap-2">
-							Resumen Trimestral
-						</h3>
+					<div className="flex items-center justify-between mb-4">
+						<div>
+							<div className="flex items-center gap-2">
+								<CalendarDays className="size-5" />
+								<Separator
+									orientation="vertical"
+									className="data-[orientation=vertical]:h-6"
+								/>
+								<h3 className="text-xl font-semibold leading-none flex items-center gap-2">
+									Resumen Trimestral
+								</h3>
+							</div>
+							<p className="text-sm text-gray-400 mt-1">Año {selectedYear}</p>
+						</div>
+						<YearSelect
+							value={selectedYear}
+							onChange={setSelectedYear}
+							years={availableYears}
+						/>
 					</div>
-					<p className="text-sm text-gray-400 mt-1">Año {selectedYear}</p>
+					<Separator className="my-2" />
 					<QuarterlySummary transactions={yearlyTransactions} />
 				</div>
 			</div>

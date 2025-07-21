@@ -46,7 +46,7 @@ export function AnnualBalance({ transactions }: AnnualBalanceProps) {
 						yearlyBalances.map((yearData, index) => (
 							<div
 								key={yearData.year}
-								className="p-3 bg-gray-200 rounded-lg dark:bg-gray-800">
+								className="p-3 bg-muted rounded-lg dark:bg-zinc-700">
 								<h4 className="font-medium mb-3">Año {yearData.year}</h4>
 								<div className="space-y-2">
 									<div className="flex items-center justify-between">

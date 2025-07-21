@@ -54,7 +54,7 @@ export function QuarterlySummary({ transactions }: QuarterlySummaryProps) {
 							</h4>
 							<div className="grid grid-cols-3 gap-3">
 								{/* Ingresos Card */}
-								<div className="bg-gray-200 rounded-lg p-3 flex items-center gap-3 dark:bg-gray-800">
+								<div className="bg-muted rounded-lg p-3 flex items-center gap-3 dark:bg-zinc-700">
 									<div className="p-2 bg-green-500/20 rounded-lg">
 										<TrendingUp className="h-4 w-4 text-green-500" />
 									</div>
@@ -69,7 +69,7 @@ export function QuarterlySummary({ transactions }: QuarterlySummaryProps) {
 								</div>
 
 								{/* Gastos Card */}
-								<div className="bg-gray-200 rounded-lg p-3 flex items-center gap-3 dark:bg-gray-800">
+								<div className="bg-muted rounded-lg p-3 flex items-center gap-3 dark:bg-zinc-700">
 									<div className="p-2 bg-red-500/20 rounded-lg">
 										<TrendingDown className="h-4 w-4 text-red-500" />
 									</div>
@@ -84,7 +84,7 @@ export function QuarterlySummary({ transactions }: QuarterlySummaryProps) {
 								</div>
 
 								{/* Balance Card */}
-								<div className="bg-gray-200 dark:bg-gray-800 rounded-lg p-3 flex items-center gap-3">
+								<div className="bg-muted dark:bg-zinc-700 rounded-lg p-3 flex items-center gap-3">
 									<div
 										className={`p-2 rounded-lg ${
 											quarter.balance >= 0

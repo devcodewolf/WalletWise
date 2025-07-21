@@ -27,7 +27,7 @@ export default async function StatisticsPage() {
 			: [];
 
 	return (
-		<div className="py-4 px-12 space-y-4">
+		<div className="py-4 px-1 space-y-4">
 			{/* Header */}
 			<div className="flex items-center justify-between mb-4">
 				<div>
@@ -47,25 +47,25 @@ export default async function StatisticsPage() {
 			<Separator />
 
 			{/* Gráficos en 36columnas */}
-			<div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-12 gap-4 mt-6">
+			<div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 mt-6">
 				{/* grafico anual	 */}
-				<Card className="p-4 gap-4">
+				<Card className="p-5 gap-4">
 					<StatisticsYear transactions={transactions} />
 				</Card>
 				{/* Gráfico mensual */}
-				<Card className="p-4 gap-4">
+				<Card className="p-5 gap-4">
 					<StatisticsMonth transactions={transactions} />
 				</Card>
-				<Card className="p-4 gap-4">
+				<Card className="p-5 gap-4 lg:col-span-2 xl:col-span-1">
 					<StatisticsCategories transactions={transactions} />
 				</Card>
 			</div>
 			{/* Resúmenes mensuales y trimestrales */}
-			<Card className="p-4 px-6 gap-4">
+			<Card className="p-5 px-6 gap-4">
 				<StatisticsSumary transactions={transactions} />
 			</Card>
 			{/* Balance anual */}
-			<Card className="p-4 gap-2">
+			<Card className="p-5 gap-2">
 				<div className="mb-4">
 					<div className="flex items-center gap-2">
 						<CircleDollarSign className="size-5" />
