@@ -67,7 +67,8 @@ export function LoginForm({
 				<CardHeader>
 					<CardTitle className="text-2xl">Login</CardTitle>
 					<CardDescription>
-						Enter your email below to login to your account
+						Ingrese su correo electrónico a continuación para iniciar sesión en
+						su cuenta
 					</CardDescription>
 				</CardHeader>
 				<CardContent>
@@ -80,7 +81,7 @@ export function LoginForm({
 								name="email"
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel>Username</FormLabel>
+										<FormLabel>Correo electrónico</FormLabel>
 										<FormControl>
 											<Input
 												type="email"
@@ -99,10 +100,10 @@ export function LoginForm({
 								name="password"
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel>Password</FormLabel>
+										<FormLabel>Contraseña</FormLabel>
 										<FormControl>
 											<Input
-												placeholder="Password"
+												placeholder="Contraseña"
 												{...field}
 												type="password"
 											/>
@@ -114,7 +115,7 @@ export function LoginForm({
 							/>
 
 							{error && <FormError message={error} />}
-							<Button type="submit">Login</Button>
+							<Button type="submit">Iniciar sesión</Button>
 							{/* <Button variant="outline" className="w-full">
 								Login with Google
 							</Button> */}

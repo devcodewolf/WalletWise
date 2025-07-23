@@ -126,7 +126,7 @@ export function AddTransaction() {
 			<DialogTrigger asChild>
 				<Button className="ml-auto flex cursor-pointer">
 					<PlusCircle className="h-4 w-4" />
-					Nuevo dato
+					Nuevo movimiento
 				</Button>
 			</DialogTrigger>
 			<DialogContent>
@@ -140,7 +140,7 @@ export function AddTransaction() {
 				<Form {...form}>
 					<form
 						onSubmit={form.handleSubmit(handleSubmit)}
-						className="space-y-4">
+						className="space-y-4 mt-4">
 						<div className="flex gap-5">
 							<FormField
 								control={form.control}
@@ -202,7 +202,7 @@ export function AddTransaction() {
 								name="amount"
 								render={({ field }) => (
 									<FormItem className="flex-1/3 relative">
-										<FormLabel>Monto</FormLabel>
+										<FormLabel>Cantidad</FormLabel>
 										<FormControl>
 											<Input
 												type="number"
@@ -234,7 +234,7 @@ export function AddTransaction() {
 							)}
 						/>
 
-						<div className="flex gap-5">
+						<div className="flex justify-between gap-5">
 							<FormField
 								control={form.control}
 								name="walletId"

@@ -1,6 +1,6 @@
 'use client';
 
-import { type LucideIcon } from 'lucide-react';
+import { CirclePlus, type LucideIcon } from 'lucide-react';
 
 import {
 	SidebarGroup,
@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/sidebar';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { AddTransaction } from '../transactions/add-transaction';
 
 type NavItemProps = {
 	title: string;
@@ -24,9 +25,10 @@ export function NavMain({ items }: { items: NavItemProps }) {
 	const pathname = usePathname();
 	return (
 		<SidebarGroup>
-			<SidebarGroupLabel>Opciones</SidebarGroupLabel>
 			<SidebarGroupContent>
 				<SidebarMenu>
+					<AddTransaction />
+					<SidebarGroupLabel>Opciones</SidebarGroupLabel>
 					{items.map((item) => {
 						const isActive = pathname === item.url;
 						return (

@@ -34,7 +34,7 @@ export function TransactionsDashboard({
 
 	return (
 		<>
-			<div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+			<div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
 				<div className="space-y-4">
 					<div className="flex items-center gap-2">
 						<CreditCard className="size-5" />
