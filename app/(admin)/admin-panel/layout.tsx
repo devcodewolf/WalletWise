@@ -1,5 +1,6 @@
 import { AppSidebar } from '@/components/sidebar/app-sidebar';
 import { ThemeToggle } from '@/components/theme-toggle';
+import { ColorThemeToggle } from '@/components/color-theme-toggle';
 import {
 	SidebarProvider,
 	SidebarInset,
@@ -41,7 +42,10 @@ export default async function AdminLayout({
 							className="data-[orientation=vertical]:h-4"
 						/>
 					</div>
-					<ThemeToggle />
+					<div className="flex items-center gap-2">
+						<ThemeToggle />
+						<ColorThemeToggle />
+					</div>
 				</header>
 				{children}
 			</SidebarInset>

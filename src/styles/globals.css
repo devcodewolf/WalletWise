@@ -188,12 +188,15 @@ body {
 	--shadow-2xl: var(--shadow-2xl);
 }
 
+/* importar themes css */
+@import './themes.css';
+
 @layer base {
 	* {
 		@apply border-border outline-ring/50;
 	}
 	body {
-		@apply bg-background text-foreground;
+		@apply bg-background text-foreground font-sans;
 	}
 
 	/* label[data-error-true] {
