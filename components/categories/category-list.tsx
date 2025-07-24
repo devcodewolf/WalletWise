@@ -12,20 +12,23 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 
 interface CategoryListProps {
-  data: Category[];
-  limitShow?: number;
+	data: Category[];
+	limitShow?: number;
 }
 
-export const CategoryList = ({ data: initialData, limitShow }: CategoryListProps) => {
+export const CategoryList = ({
+	data: initialData,
+	limitShow,
+}: CategoryListProps) => {
 	const [categories, setCategories] = useState<Category[]>(initialData);
 
 	// Update categories when initialData changes
 	useEffect(() => {
-		console.log('hola effect');
+		// console.log('hola effect');
 		setCategories(initialData);
 	}, [initialData]);
 
-	console.log(categories);
+	// console.log(categories);
 
 	return (
 		<Card className="p-6 gap-4">

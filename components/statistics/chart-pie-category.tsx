@@ -57,9 +57,7 @@ export function CategoryPieChart({ transactions }: CategoryPieChartProps) {
 	return (
 		<div className="flex items-center gap-4 flex-1 py-4">
 			<div className="w-6/12">
-				<h3 className="text-md font-semibold mb-2 text-white text-center">
-					Gastos
-				</h3>
+				<h3 className="text-md font-semibold mb-2  text-center">Gastos</h3>
 				{gastosData.length === 0 ? (
 					<div className="flex items-center justify-center h-[100px] text-gray-400 text-sm">
 						No hay gastos este año
@@ -105,9 +103,7 @@ export function CategoryPieChart({ transactions }: CategoryPieChartProps) {
 				)}
 			</div>
 			<div className="w-6/12">
-				<h3 className="text-md font-semibold mb-2 text-white text-center">
-					Ingresos
-				</h3>
+				<h3 className="text-md font-semibold mb-2 text-center">Ingresos</h3>
 				{ingresosData.length === 0 ? (
 					<div className="flex items-center justify-center h-[100px] text-gray-400 text-sm">
 						No hay ingresos este año

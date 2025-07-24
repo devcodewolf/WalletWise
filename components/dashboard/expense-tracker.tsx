@@ -35,8 +35,15 @@ export function ExpenseTracker({ data: transactions }: ExpenseTrackerProps) {
 							<CardTitle className="text-sm font-medium text-gray-400">
 								Total Ingresos
 							</CardTitle>
-							<div className="flex items-center text-green-500 text-sm">
-								<TrendingUp className="size-4 mr-1" />
+							<div
+								className={`flex items-center text-sm ${
+									incomeVariation >= 0 ? 'text-green-500' : 'text-red-500'
+								}`}>
+								{incomeVariation >= 0 ? (
+									<TrendingUp className="size-4 mr-1" />
+								) : (
+									<TrendingDown className="size-4 mr-1" />
+								)}
 								{incomeVariation >= 0 ? '+' : ''}
 								{incomeVariation.toFixed(1)}%
 							</div>
@@ -63,8 +70,15 @@ export function ExpenseTracker({ data: transactions }: ExpenseTrackerProps) {
 							<CardTitle className="text-sm font-medium text-gray-400">
 								Total Gastos
 							</CardTitle>
-							<div className="flex items-center text-red-500 text-sm">
-								<TrendingDown className="size-4 mr-1" />
+							<div
+								className={`flex items-center text-sm ${
+									expenseVariation >= 0 ? 'text-red-500' : 'text-green-500'
+								}`}>
+								{expenseVariation >= 0 ? (
+									<TrendingUp className="size-4 mr-1" />
+								) : (
+									<TrendingDown className="size-4 mr-1" />
+								)}
 								{expenseVariation >= 0 ? '+' : ''}
 								{expenseVariation.toFixed(1)}%
 							</div>
