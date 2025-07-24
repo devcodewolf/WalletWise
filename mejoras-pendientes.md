@@ -1,4 +1,4 @@
-- [] Agregar cajas con estadísticas en cada uno de las secciones categorias, wallets y transacciones y dashboard.
+- [x] Agregar cajas con estadísticas en cada uno de las secciones categorias, wallets y transacciones y dashboard.
 - [] Hacer pagina de cuenta de usuario
-- [] Agregar selección de tema con 3 temas en el header
-- [] Al final pasar todo la parte de backed para Neon en lugar de usar sqlite
+- [x] Agregar selección de tema con 3 temas en el header
+- [] Al final pasar todo la parte de backend para Neon en lugar de usar sqlite
