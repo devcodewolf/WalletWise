@@ -198,6 +198,9 @@ body {
 	body {
 		@apply bg-background text-foreground font-sans;
 	}
+	button {
+		@apply cursor-pointer;
+	}
 
 	/* label[data-error-true] {
 		@apply text-red-500;
