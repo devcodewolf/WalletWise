@@ -1,8 +1,8 @@
 'use client';
 
-import { BadgeCheck, ChevronsUpDown, LogOut } from 'lucide-react';
+import { ChevronsUpDown, LogOut } from 'lucide-react';
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -18,32 +18,14 @@ import {
 	SidebarMenuItem,
 	useSidebar,
 } from '@/components/ui/sidebar';
-import { useRouter } from 'next/navigation';
-import { logOut } from '@/actions/logout';
-import { toast } from 'sonner';
-import { useUserStore } from '@/store/user-store';
 import { User } from 'next-auth';
+import { useLogout } from '@/hooks/use-logout';
 
 export function NavUser(user: User) {
 	const { isMobile } = useSidebar();
-	const router = useRouter();
-	const { clearUser } = useUserStore();
+	const { handleLogout } = useLogout();
 
 	const initials = user.name?.substring(0, 2).toUpperCase() ?? '';
-
-	const handleLogout = async () => {
-		logOut().then((data) => {
-			if (data.success) {
-				// Clear user data from Zustand store
-				clearUser();
-				toast('Logged out successfully');
-				router.push('/');
-			}
-			if (data?.error) {
-				toast('Error logging out');
-			}
-		});
-	};
 
 	return (
 		<SidebarMenu>
@@ -55,7 +37,9 @@ export function NavUser(user: User) {
 							className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
 							<Avatar className="h-8 w-8 rounded-lg">
 								{/* <AvatarImage src={user.avatar} alt={user.name} /> */}
-								<AvatarFallback className="rounded-lg">CN</AvatarFallback>
+								<AvatarFallback className="rounded-lg">
+									{initials}
+								</AvatarFallback>
 							</Avatar>
 							<div className="grid flex-1 text-left text-sm leading-tight">
 								{/* <span className="truncate font-medium">{user.name}</span> */}
@@ -84,14 +68,14 @@ export function NavUser(user: User) {
 							</div>
 						</DropdownMenuLabel>
 						<DropdownMenuSeparator />
-						<DropdownMenuGroup>
+						{/* <DropdownMenuGroup>
 							<DropdownMenuItem>
 								<BadgeCheck />
 								Account
 							</DropdownMenuItem>
 						</DropdownMenuGroup>
 
-						<DropdownMenuSeparator />
+						<DropdownMenuSeparator /> */}
 						<DropdownMenuItem onClick={handleLogout}>
 							<LogOut />
 							Log out

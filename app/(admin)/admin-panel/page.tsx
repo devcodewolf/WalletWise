@@ -7,7 +7,7 @@ import { AddTransaction } from '@/components/transactions/add-transaction';
 import { Card, CardHeader } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { ExpenseTracker } from '@/components/dashboard/expense-tracker';
-import Calendar01 from '@/components/calendar-01';
+import Calendar01 from '@/components/dashboard/calendar-01';
 
 export default async function AdminPanel() {
 	// Obtener transacciones
