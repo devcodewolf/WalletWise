@@ -1,13 +1,12 @@
 'use client';
 
 import * as React from 'react';
+import { es } from 'date-fns/locale';
 
 import { Calendar } from '@/components/ui/calendar';
 
-export function Calendar01() {
-	const [date, setDate] = React.useState<Date | undefined>(
-		new Date(2025, 5, 12)
-	);
+export default function Calendar01() {
+	const [date, setDate] = React.useState<Date | undefined>(new Date());
 
 	return (
 		<Calendar
@@ -15,7 +14,13 @@ export function Calendar01() {
 			defaultMonth={date}
 			selected={date}
 			onSelect={setDate}
-			className="rounded-lg border shadow-sm"
+			className="w-full bg-transparent"
+			locale={es}
+			formatters={{
+				formatWeekdayName: (date) => {
+					return date.toLocaleDateString('es-ES', { weekday: 'narrow' });
+				},
+			}}
 		/>
 	);
 }
