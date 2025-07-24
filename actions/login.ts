@@ -28,12 +28,12 @@ export const login = async (values: z.infer<typeof signInSchema>) => {
 	} catch (error) {
 		if (error instanceof AuthError) {
 			if (error.type === 'CredentialsSignin')
-				return { error: 'Invalid credentials' };
+				return { error: 'Credenciales inválidas' };
 
-			return { error: 'Something went wrong' };
+			return { error: 'Algo salió mal' };
 		}
 		// Handle non-AuthError exceptions
 		console.error('Login error:', error);
-		return { error: 'An unexpected error occurred' };
+		return { error: 'Algo salió mal al iniciar sesión' };
 	}
 };

@@ -40,24 +40,31 @@ export function LoginForm({
 	const form = useForm<z.infer<typeof signInSchema>>({
 		resolver: zodResolver(signInSchema),
 		defaultValues: {
-			email: 'admin@admin.com',
+			email: 'test@test.com',
 			password: '123456',
 		},
 	});
 
-	const onSubmit = (values: z.infer<typeof signInSchema>) => {
+	const onSubmit = async (values: z.infer<typeof signInSchema>) => {
 		try {
-			login(values).then((data) => {
-				console.log(data);
-				setError(data?.error);
-				if (data?.success) {
-					toast('Logged in successfully');
-					router.push('/admin-panel');
-				}
-			});
+			const data = await login(values);
+			console.log('Respuesta del login desde server action:', data);
+
+			if (data?.error) {
+				setError(data.error);
+				toast.error(data.error);
+				return;
+			}
+
+			if (data?.success) {
+				toast.success('Sesión iniciada con éxito');
+				router.push('/admin-panel');
+			}
 		} catch (error) {
-			console.log(error);
-			toast('Error logging in');
+			console.error('Error en onSubmit:', error);
+			toast.error(
+				error instanceof Error ? error.message : 'Error al iniciar sesión'
+			);
 		}
 	};
 
