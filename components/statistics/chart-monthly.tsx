@@ -4,8 +4,6 @@ import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Cell } from 'recharts';
 import {
 	type ChartConfig,
 	ChartContainer,
-	ChartLegend,
-	ChartLegendContent,
 	ChartTooltip,
 	ChartTooltipContent,
 } from '@/components/ui/chart';

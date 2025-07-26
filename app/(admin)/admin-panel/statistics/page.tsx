@@ -1,17 +1,10 @@
 import { getTransactions } from '@/actions/transactions';
 
 import type { TransactionWithRelations } from '@/types/transactions.types';
-import {
-	BarChart3,
-	Calendar,
-	CircleDollarSign,
-	PieChart,
-	TrendingUp,
-} from 'lucide-react';
+import { BarChart3, CircleDollarSign } from 'lucide-react';
 import StatisticsMonth from '@/components/statistics/statistics-month';
 import StatisticsYear from '@/components/statistics/statistics-year';
 import StatisticsCategories from '@/components/statistics/statistics-categories';
-import { SummaryMonthly } from '@/components/statistics/summary-monthly';
 import StatisticsSumary from '@/components/statistics/statistics-sumary';
 import { AnnualBalance } from '@/components/statistics/annual-balance';
 import { Card } from '@/components/ui/card';

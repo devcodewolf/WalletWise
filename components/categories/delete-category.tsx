@@ -53,8 +53,8 @@ export function DeleteCategory({ category }: DeleteCategoryProps) {
 				<AlertDialogHeader>
 					<AlertDialogTitle>Borrar categoría</AlertDialogTitle>
 					<AlertDialogDescription>
-						¿Estás seguro de que quieres eliminar la categoría "{category.name}
-						"? Esta acción no se puede deshacer.
+						¿Estás seguro de que quieres eliminar la categoría {category.name}?
+						Esta acción no se puede deshacer.
 					</AlertDialogDescription>
 				</AlertDialogHeader>
 				<AlertDialogFooter>

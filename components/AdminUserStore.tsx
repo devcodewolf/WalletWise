@@ -2,8 +2,9 @@
 
 import { useEffect } from 'react';
 import { useUserStore } from '@/store/user-store';
+import { User } from 'next-auth';
 
-export function AdminUserStore({ user }: { user: any }) {
+export function AdminUserStore({ user }: { user: User }) {
 	const { setUser } = useUserStore();
 
 	useEffect(() => {

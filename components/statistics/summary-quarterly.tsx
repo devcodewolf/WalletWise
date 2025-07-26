@@ -47,7 +47,7 @@ export function QuarterlySummary({ transactions }: QuarterlySummaryProps) {
 						No hay datos para este año
 					</div>
 				) : (
-					quarterlyData.map((quarter, _) => (
+					quarterlyData.map((quarter) => (
 						<div key={quarter.name} className="pt-2">
 							<h4 className="font-medium  text-sm mb-1">
 								{quarter.name} - {quarter.label}

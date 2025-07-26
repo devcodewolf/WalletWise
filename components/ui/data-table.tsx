@@ -31,12 +31,10 @@ import {
 	SelectValue,
 } from '@/components/ui/select';
 import {
-	ArrowUpDown,
 	ChevronDown,
 	ChevronLeft,
 	ChevronRight,
 	ChevronsRight,
-	MoreHorizontal,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';

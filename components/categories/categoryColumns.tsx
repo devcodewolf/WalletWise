@@ -33,7 +33,7 @@ export const columns: ColumnDef<Category>[] = [
 		meta: {
 			label: 'Icono',
 		},
-		header: ({ column }) => {
+		header: () => {
 			return <div className="px-3">Icono</div>;
 		},
 		cell: ({ row }) => {

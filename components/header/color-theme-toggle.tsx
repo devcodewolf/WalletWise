@@ -10,6 +10,7 @@ import {
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useColorTheme } from '@/hooks/use-color-theme';
+import { ColorTheme } from '@/types/color.types';
 
 type ThemeOption = {
 	key: string;
@@ -66,7 +67,7 @@ export function ColorThemeToggle() {
 				{themes.map((theme) => (
 					<DropdownMenuItem
 						key={theme.key}
-						onClick={() => setColorTheme(theme.key as any)}
+						onClick={() => setColorTheme(theme.key as ColorTheme)}
 						className="flex items-center justify-between">
 						<div className="flex items-center gap-2">
 							<div className="flex gap-0.5">

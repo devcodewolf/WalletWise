@@ -35,8 +35,8 @@ type IconOption = {
 export function IconSelector({
 	selectedIcon,
 	onSelectIcon,
-	color = '#fff',
-}: IconSelectorProps) {
+}: // color = '#fff',
+IconSelectorProps) {
 	const icons: IconOption[] = [
 		{ name: 'ShoppingBag', icon: ShoppingBag },
 		{ name: 'Coffee', icon: Coffee },

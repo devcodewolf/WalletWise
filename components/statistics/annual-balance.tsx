@@ -1,7 +1,7 @@
 'use client';
 
 import { Transaction } from '@prisma/client';
-import { DollarSign, TrendingDown, TrendingUp, Wallet } from 'lucide-react';
+import { TrendingDown, TrendingUp, Wallet } from 'lucide-react';
 
 interface AnnualBalanceProps {
 	transactions: Transaction[];
@@ -43,7 +43,7 @@ export function AnnualBalance({ transactions }: AnnualBalanceProps) {
 							No hay datos disponibles
 						</div>
 					) : (
-						yearlyBalances.map((yearData, index) => (
+						yearlyBalances.map((yearData) => (
 							<div
 								key={yearData.year}
 								className="p-3 bg-muted rounded-lg dark:bg-zinc-700">

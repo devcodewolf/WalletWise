@@ -1,14 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import {
-	BarChart3,
-	CircleDollarSign,
-	Home,
-	Inbox,
-	PiggyBank,
-	Wallet,
-} from 'lucide-react';
+import { BarChart3, CircleDollarSign, Home, Inbox, Wallet } from 'lucide-react';
 
 import { NavMain } from '@/components/sidebar/nav-main';
 
@@ -19,7 +12,6 @@ import {
 	SidebarContent,
 	SidebarFooter,
 	SidebarHeader,
-	SidebarRail,
 } from '@/components/ui/sidebar';
 import { useUserStore } from '@/store/user-store';
 

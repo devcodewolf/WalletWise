@@ -1,6 +1,6 @@
 'use client';
 
-import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
+import { PieChart, Pie, Cell } from 'recharts';
 import { ChartContainer, ChartTooltip } from '@/components/ui/chart';
 import { TransactionWithRelations } from '@/types/transactions.types';
 

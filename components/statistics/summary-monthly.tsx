@@ -55,7 +55,7 @@ export function SummaryMonthly({ transactions }: SummaryMonthlyProps) {
 						No hay datos para este año
 					</div>
 				) : (
-					monthlyData.map((data, _) => (
+					monthlyData.map((data) => (
 						<div
 							key={data.month}
 							className="border-b border-border pb-4 pt-2 last:border-b-0">

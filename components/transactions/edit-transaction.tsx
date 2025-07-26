@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { Edit } from 'lucide-react';
-import { Category, Transaction, Wallet } from '@prisma/client';
+import { Category, Wallet } from '@prisma/client';
 import { updateTransaction } from '@/actions/transactions';
 import { useState, useEffect } from 'react';
 import {
@@ -14,7 +14,6 @@ import {
 } from '@/components/ui/dialog';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
 import {
 	Form,
 	FormControl,

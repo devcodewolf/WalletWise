@@ -6,7 +6,6 @@ import { useStatistics } from '@/hooks/use-statistics';
 import { SummaryMonthly } from './summary-monthly';
 import { CalendarDays, CalendarRange } from 'lucide-react';
 import { QuarterlySummary } from './summary-quarterly';
-import { AnnualBalance } from './annual-balance';
 import { Separator } from '../ui/separator';
 
 export default function StatisticsSumary({

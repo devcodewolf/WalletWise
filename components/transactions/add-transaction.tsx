@@ -49,7 +49,7 @@ export function AddTransaction() {
 	const [open, setOpen] = useState(false);
 	const [wallets, setWallets] = useState<Wallet[]>([]);
 	const [categories, setCategories] = useState<Category[]>([]);
-	const [isLoading, setIsLoading] = useState(false);
+	// const [isLoading, setIsLoading] = useState(false);
 
 	const router = useRouter();
 
@@ -86,7 +86,7 @@ export function AddTransaction() {
 	}, [form]);
 
 	async function loadData() {
-		setIsLoading(true);
+		// setIsLoading(true);
 		try {
 			// Load wallets
 			const walletsResponse = await getWallets();
@@ -103,7 +103,7 @@ export function AddTransaction() {
 			console.error('Error loading data:', error);
 			toast.error('Error al cargar los datos');
 		} finally {
-			setIsLoading(false);
+			// setIsLoading(false);
 		}
 	}
 
