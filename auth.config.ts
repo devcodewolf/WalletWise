@@ -20,8 +20,15 @@ export default {
 						password,
 						user.password
 					);
+
 					if (passwordsMatch) {
-						return user;
+						// Mapear el usuario de Prisma al formato que espera NextAuth
+						return {
+							id: String(user.id), // Asegurar que el ID sea un string
+							name: user.name,
+							email: user.email,
+							isAdmin: user.isAdmin,
+						};
 					}
 				}
 				return null;
