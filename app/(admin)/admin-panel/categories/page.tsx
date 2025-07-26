@@ -3,6 +3,9 @@ import { CategoryList } from '@/components/categories/category-list';
 import { getCategories } from '@/actions/categories';
 import { Category } from '@prisma/client';
 
+// Forzar el renderizado dinámico de la página
+export const dynamic = 'force-dynamic';
+
 export default async function CategoriesPage() {
 	const response = await getCategories();
 	// console.log('getCategories', response);

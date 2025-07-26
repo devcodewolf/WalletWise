@@ -9,6 +9,9 @@ import { Separator } from '@/components/ui/separator';
 import { ExpenseTracker } from '@/components/dashboard/expense-tracker';
 import Calendar01 from '@/components/dashboard/calendar-01';
 
+// Forzar el renderizado dinámico de la página
+export const dynamic = 'force-dynamic';
+
 export default async function AdminPanel() {
 	// Obtener transacciones
 	const respTransaction = await getTransactions();

@@ -10,6 +10,9 @@ import { AnnualBalance } from '@/components/statistics/annual-balance';
 import { Card } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 
+// Forzar el renderizado dinámico de la página
+export const dynamic = 'force-dynamic';
+
 export default async function StatisticsPage() {
 	const respTransaction = await getTransactions();
 

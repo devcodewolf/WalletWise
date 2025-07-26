@@ -6,6 +6,9 @@ import type { TransactionWithRelations } from '@/types/transactions.types';
 import { WalletList } from '@/components/wallets/wallet-list';
 import { CategoryList } from '@/components/categories/category-list';
 
+// Forzar el renderizado dinámico de la página
+export const dynamic = 'force-dynamic';
+
 export default async function TransactionsPage() {
 	const respTransaction = await getTransactions();
 	const respCategories = await getCategories();
