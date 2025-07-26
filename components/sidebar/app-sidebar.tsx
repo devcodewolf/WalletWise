@@ -58,6 +58,8 @@ export function AppSidebar() {
 				<div className="flex items-center ">
 					<Image
 						src="/img/logo3.webp"
+						width={100}
+						height={100}
 						className="h-18 w-18 object-contain"
 						alt=""
 					/>
