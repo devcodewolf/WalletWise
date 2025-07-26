@@ -1,7 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useEffect, useMemo, useState } from 'react';
 import { Category, Wallet } from '@prisma/client';
 
 import type { TransactionWithRelations } from '@/types/transactions.types';
@@ -9,18 +8,17 @@ import type { TransactionWithRelations } from '@/types/transactions.types';
 import { DataTable } from '@/components/ui/data-table';
 import { AddTransaction } from '@/components/transactions/add-transaction';
 import { columns } from '@/components/transactions/transactionColumns';
-import { CircleDollarSign } from 'lucide-react';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Card, CardHeader } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import { TabsContent } from '@radix-ui/react-tabs';
+import { TransactionTabs } from './transaction-tabs';
+import { TransactionSelectYear } from './transaction-select-year';
+import { CircleDollarSign } from 'lucide-react';
 
 type TransactionListProps = {
 	data: TransactionWithRelations[];
 	categories: Category[];
 	wallets: Wallet[];
 };
-
-import { TransactionTabs } from "./transaction-tabs";
 
 export const TransactionList = ({
 	data: initialData,
@@ -32,17 +30,41 @@ export const TransactionList = ({
 	const [filterType, setFilterType] = useState<'Todos' | 'Gasto' | 'Ingreso'>(
 		'Todos'
 	);
+	const [selectedYear, setSelectedYear] = useState<string>('Todos');
+
+	// Obtener años únicos de las transacciones
+	const availableYears = useMemo(() => {
+		const years = new Set<string>();
+		initialData.forEach((transaction) => {
+			if (transaction.date) {
+				const year = new Date(transaction.date).getFullYear().toString();
+				years.add(year);
+			}
+		});
+		return ['Todos', ...Array.from(years).sort((a, b) => b.localeCompare(a))];
+	}, [initialData]);
 
 	// Update transactions when initialData changes
 	useEffect(() => {
-		console.log('UseEffect transaction list');
 		setTransactions(initialData);
 	}, [initialData]);
 
-	const filteredTransactions =
-		filterType === 'Todos'
-			? transactions
-			: transactions.filter((t) => t.type === filterType);
+	// Filtrar transacciones por tipo y año
+	const filteredTransactions = useMemo(() => {
+		return transactions.filter((transaction) => {
+			const matchesType =
+				filterType === 'Todos' || transaction.type === filterType;
+
+			if (selectedYear === 'Todos') return matchesType;
+
+			if (!transaction.date) return false;
+
+			const transactionYear = new Date(transaction.date)
+				.getFullYear()
+				.toString();
+			return matchesType && transactionYear === selectedYear;
+		});
+	}, [transactions, filterType, selectedYear]);
 
 	return (
 		<Card className="p-6 gap-4 mb-4">
@@ -66,7 +88,14 @@ export const TransactionList = ({
 				columns={columns({ wallets, categories })}
 				data={filteredTransactions}
 				toolbar={
-					<TransactionTabs value={filterType} onValueChange={setFilterType} />
+					<div className="flex items-center gap-4">
+						<TransactionTabs value={filterType} onValueChange={setFilterType} />
+						<TransactionSelectYear
+							value={selectedYear}
+							onValueChange={setSelectedYear}
+							years={availableYears}
+						/>
+					</div>
 				}
 			/>
 		</Card>

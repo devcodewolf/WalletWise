@@ -30,11 +30,11 @@ export default async function AdminPanel() {
 		// dashboard
 		<div className="flex flex-1 flex-col gap-4 ">
 			<ExpenseTracker data={transactions} />
-			<div className="grid auto-rows-min gap-4 md:grid-cols-3">
-				<Card className="py-0">
+			<div className="grid gap-4 md:grid-cols-4">
+				<Card className="p-4 flex items-center justify-center">
 					<Calendar01 />
 				</Card>
-				<Card className="p-6 gap-4 md:col-span-2">
+				<Card className="p-6 gap-4 md:col-span-3">
 					<CardHeader className="flex-row items-center p-0">
 						<div>
 							<h2 className="text-2xl font-bold flex items-center gap-2">
