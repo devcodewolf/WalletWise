@@ -13,7 +13,9 @@ export default async function Login() {
 	return (
 		<div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
 			<Image
-				src="img/bg-login.jpg"
+				src="/img/bg-login.jpg"
+				width={1920}
+				height={1080}
 				className="w-full h-full object-cover absolute top-0 left-0 -z-1"
 				loading="lazy"
 				alt=""
