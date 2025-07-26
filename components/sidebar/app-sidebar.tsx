@@ -14,6 +14,7 @@ import {
 	SidebarHeader,
 } from '@/components/ui/sidebar';
 import { useUserStore } from '@/store/user-store';
+import Image from 'next/image';
 
 // This is sample data.
 const data = {
@@ -47,7 +48,7 @@ const data = {
 	],
 };
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar() {
 	const { user } = useUserStore();
 
 	return (
@@ -55,7 +56,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 			<SidebarHeader>
 				{/* <TeamSwitcher teams={data.teams} /> */}
 				<div className="flex items-center ">
-					<img
+					<Image
 						src="/img/logo3.webp"
 						className="h-18 w-18 object-contain"
 						alt=""
