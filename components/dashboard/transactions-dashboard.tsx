@@ -18,19 +18,19 @@ export function TransactionsDashboard({
 
 	// Update transactions when initialData changes
 	useEffect(() => {
-		console.log('UseEffect transaction list', initialData);
+		// console.log('UseEffect transaction list', initialData);
 		setTransactions(initialData);
 	}, [initialData]);
 
 	// Filtrar gastos y tomar los 5 más recientes
 	const expenses = transactions
 		.filter((transaction) => transaction.type === 'Gasto')
-		.slice(0, 5);
+		.slice(0, 20);
 
 	// Filtrar ingresos y tomar los 5 más recientes
 	const incomes = transactions
 		.filter((transaction) => transaction.type === 'Ingreso')
-		.slice(0, 5);
+		.slice(0, 20);
 
 	return (
 		<>
@@ -45,7 +45,11 @@ export function TransactionsDashboard({
 						<h3 className="text-lg font-semibold">Últimos Gastos</h3>
 					</div>
 					<div className="rounded-md border p-4">
-						<DataTable columns={dashboardColumns} data={expenses} />
+						<DataTable
+							columns={dashboardColumns}
+							data={expenses}
+							limitShow={5}
+						/>
 					</div>
 				</div>
 
@@ -59,7 +63,11 @@ export function TransactionsDashboard({
 						<h3 className="text-lg font-semibold">Últimos Ingresos</h3>
 					</div>
 					<div className="rounded-md border p-4">
-						<DataTable columns={dashboardColumns} data={incomes} />
+						<DataTable
+							columns={dashboardColumns}
+							data={incomes}
+							limitShow={5}
+						/>
 					</div>
 				</div>
 			</div>

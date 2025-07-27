@@ -8,6 +8,9 @@ import type { Transaction } from '@prisma/client';
 export const dashboardColumns: ColumnDef<Transaction>[] = [
 	{
 		accessorKey: 'date',
+		meta: {
+			label: 'Fecha',
+		},
 		header: ({ column }) => {
 			return (
 				<Button
@@ -25,10 +28,16 @@ export const dashboardColumns: ColumnDef<Transaction>[] = [
 	},
 	{
 		accessorKey: 'type',
+		meta: {
+			label: 'Tipo',
+		},
 		header: 'Tipo',
 	},
 	{
 		accessorKey: 'amount',
+		meta: {
+			label: 'Cantidad',
+		},
 		header: ({ column }) => {
 			return (
 				<div className="text-right">
@@ -37,7 +46,7 @@ export const dashboardColumns: ColumnDef<Transaction>[] = [
 						onClick={() =>
 							column.toggleSorting(column.getIsSorted() === 'asc')
 						}>
-						Monto
+						Cantidad
 						<ArrowUpDown className="ml-2 h-4 w-4" />
 					</Button>
 				</div>
@@ -55,6 +64,9 @@ export const dashboardColumns: ColumnDef<Transaction>[] = [
 	},
 	{
 		accessorKey: 'description',
+		meta: {
+			label: 'Descripción',
+		},
 		header: 'Descripción',
 	},
 ];

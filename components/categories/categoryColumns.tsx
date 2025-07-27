@@ -61,7 +61,7 @@ export const columns: ColumnDef<Category>[] = [
 			const color = row.original.color;
 			return (
 				<Icon
-					className="size-8 bg-secondary dark:bg-secondary rounded-full p-2"
+					className="size-8 bg-neutral-300 dark:bg-neutral-700 rounded-full p-2"
 					style={{ color }}
 				/>
 			);
