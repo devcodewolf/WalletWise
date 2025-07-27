@@ -37,8 +37,8 @@ export default async function AdminPanel() {
 				<Card className="p-4 flex items-center justify-center">
 					<Calendar01 />
 				</Card>
-				<Card className="p-6 gap-4 md:col-span-3">
-					<CardHeader className="flex-row items-center p-0">
+				<Card className="p-6 gap-4 justify-between md:col-span-3">
+					<CardHeader className="flex-col gap-4 p-0">
 						<div>
 							<h2 className="text-2xl font-bold flex items-center gap-2">
 								<ChartSpline className="size-6" />
@@ -52,8 +52,8 @@ export default async function AdminPanel() {
 								Estadísticas año actual {currentYear}
 							</p>
 						</div>
+						<Separator />
 					</CardHeader>
-					<Separator />
 					<YearlyChart transactions={yearlyTransactions} />
 				</Card>
 			</div>

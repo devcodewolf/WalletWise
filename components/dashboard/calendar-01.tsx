@@ -14,7 +14,7 @@ export default function Calendar01() {
 			defaultMonth={date}
 			selected={date}
 			onSelect={setDate}
-			className="w-9/12 bg-transparent"
+			className="w-full bg-transparent"
 			locale={es}
 			formatters={{
 				formatWeekdayName: (date) => {
