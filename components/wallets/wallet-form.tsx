@@ -1,12 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { WalletsFormSchema, walletsSchema } from '@/lib/schemas/wallets';
 import { useFormSubmit } from '@/hooks/use-form-submit';
+import { WalletsFormSchema, walletsSchema } from '@/lib/schemas/wallets';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 
-import { Button } from '@/components/ui/button';
 import { SubmitButton } from '@/components/submit-button';
 import {
 	Dialog,

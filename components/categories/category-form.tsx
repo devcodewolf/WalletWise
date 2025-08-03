@@ -1,11 +1,11 @@
 'use client';
 
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { CategoryFormValues, categorySchema } from '@/lib/schemas/category';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
 
-import { Button } from '@/components/ui/button';
 import { SubmitButton } from '@/components/submit-button';
+import { Button } from '@/components/ui/button';
 import {
 	Dialog,
 	DialogContent,
@@ -25,12 +25,10 @@ import {
 	FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Category } from '@prisma/client';
-import { IconSelector } from './icon-selector';
-import { useState } from 'react';
-import { useEffect } from 'react';
 import { useFormSubmit } from '@/hooks/use-form-submit';
-import { Loader2Icon } from 'lucide-react';
+import { Category } from '@prisma/client';
+import { useEffect, useState } from 'react';
+import { IconSelector } from './icon-selector';
 
 interface CategoryFormProps {
 	mode: 'create' | 'edit';

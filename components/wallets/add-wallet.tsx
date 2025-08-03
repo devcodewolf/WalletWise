@@ -1,9 +1,9 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
-import { Plus } from 'lucide-react';
-import { WalletsFormSchema } from '@/lib/schemas/wallets';
 import { createWallet } from '@/actions/wallets';
+import { Button } from '@/components/ui/button';
+import { WalletsFormSchema } from '@/lib/schemas/wallets';
+import { PlusCircle } from 'lucide-react';
 import { WalletForm } from './wallet-form';
 
 export function AddWallet() {
@@ -17,9 +17,9 @@ export function AddWallet() {
 			mode="create"
 			onSubmit={onSubmit}
 			triggerButton={
-				<Button size="sm">
-					<Plus className="mr-2 h-4 w-4" />
-					Añadir Cartera
+				<Button>
+					<PlusCircle className="size-4" />
+					<p className="leading-0">Nueva cartera</p>
 				</Button>
 			}
 			dialogTitle="Añadir Cartera"
