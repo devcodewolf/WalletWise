@@ -7,11 +7,13 @@ import { getWallets } from '@/actions/wallets';
 import { getCategories } from '@/actions/categories';
 
 import { useForm } from 'react-hook-form';
-import { PlusCircle } from 'lucide-react';
+import { PlusCircle, Loader2 } from 'lucide-react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useFormSubmit } from '@/hooks/use-form-submit';
 // components ui sahdcn
 import { Button } from '@/components/ui/button';
+import { SubmitButton } from '@/components/submit-button';
 import {
 	Dialog,
 	DialogContent,
@@ -49,7 +51,9 @@ export function AddTransaction() {
 	const [open, setOpen] = useState(false);
 	const [wallets, setWallets] = useState<Wallet[]>([]);
 	const [categories, setCategories] = useState<Category[]>([]);
-	// const [isLoading, setIsLoading] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
+	const { isSubmitting, handleSubmit: submitWithState } =
+		useFormSubmit<TransactionsFormSchema>();
 
 	const router = useRouter();
 
@@ -86,7 +90,7 @@ export function AddTransaction() {
 	}, [form]);
 
 	async function loadData() {
-		// setIsLoading(true);
+		setIsLoading(true);
 		try {
 			// Load wallets
 			const walletsResponse = await getWallets();
@@ -103,22 +107,20 @@ export function AddTransaction() {
 			console.error('Error loading data:', error);
 			toast.error('Error al cargar los datos');
 		} finally {
-			// setIsLoading(false);
+			setIsLoading(false);
 		}
 	}
 
 	async function handleSubmit(values: TransactionsFormSchema) {
-		const response = await createTransaction(values);
-		if (!response.success) {
-			return toast.error((response as { error?: string }).error);
-		}
+		const success = await submitWithState(values, createTransaction, {
+			successMessage: 'Transacción creada correctamente',
+			errorMessage: 'Error al crear la transacción',
+		});
 
-		toast.success('Transacción creada correctamente');
-		form.reset();
-		setOpen(false);
-		setTimeout(() => {
-			router.refresh();
-		}, 300);
+		if (success) {
+			form.reset();
+			setOpen(false);
+		}
 	}
 
 	return (
@@ -294,9 +296,9 @@ export function AddTransaction() {
 							/>
 						</div>
 
-						<Button type="submit" className="w-full">
-							Crear
-						</Button>
+						<SubmitButton isSubmitting={isSubmitting} className="w-full">
+							Crear movimiento
+						</SubmitButton>
 					</form>
 				</Form>
 			</DialogContent>

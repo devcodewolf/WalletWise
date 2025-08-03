@@ -2,11 +2,13 @@
 import { useState } from 'react';
 
 import { useForm } from 'react-hook-form';
-import { PlusCircle } from 'lucide-react';
+import { PlusCircle, Loader2 } from 'lucide-react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useFormSubmit } from '@/hooks/use-form-submit';
 
 import { Button } from '@/components/ui/button';
+import { SubmitButton } from '@/components/submit-button';
 import {
 	Dialog,
 	DialogContent,
@@ -34,6 +36,8 @@ import { useRouter } from 'next/navigation';
 export function AddWallet() {
 	const [open, setOpen] = useState(false);
 	const router = useRouter();
+	const { isSubmitting, handleSubmit: submitWithState } =
+		useFormSubmit<WalletsFormSchema>();
 
 	const form = useForm<WalletsFormSchema>({
 		resolver: zodResolver(walletsSchema),
@@ -44,19 +48,15 @@ export function AddWallet() {
 	});
 
 	async function handleSubmit(values: WalletsFormSchema) {
-		const response = await createWallet(values);
-		console.log(response);
-		if (!response.success) {
-			toast.error((response as { error?: string }).error);
-			return;
-		}
+		const success = await submitWithState(values, createWallet, {
+			successMessage: 'Cartera creada con éxito',
+			errorMessage: 'Error al crear la cartera',
+		});
 
-		toast.success('Cartera creada con éxito');
-		form.reset();
-		setOpen(false);
-		setTimeout(() => {
-			router.refresh();
-		}, 300);
+		if (success) {
+			form.reset();
+			setOpen(false);
+		}
 	}
 
 	return (
@@ -110,7 +110,9 @@ export function AddWallet() {
 							)}
 						/>
 						<DialogFooter>
-							<Button type="submit">Guardar wallet</Button>
+							<SubmitButton isSubmitting={isSubmitting}>
+								Crear wallet
+							</SubmitButton>
 						</DialogFooter>
 					</form>
 				</Form>
