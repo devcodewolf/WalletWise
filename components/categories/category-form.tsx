@@ -1,9 +1,10 @@
 'use client';
 
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { CategoryFormValues, categorySchema } from '@/lib/schemas/category';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
 
+import { SubmitButton } from '@/components/submit-button';
 import { Button } from '@/components/ui/button';
 import {
 	Dialog,
@@ -24,12 +25,10 @@ import {
 	FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { useFormSubmit } from '@/hooks/use-form-submit';
 import { Category } from '@prisma/client';
+import { useEffect, useState } from 'react';
 import { IconSelector } from './icon-selector';
-import { useState } from 'react';
-import { toast } from 'sonner';
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
 
 interface CategoryFormProps {
 	mode: 'create' | 'edit';
@@ -51,7 +50,8 @@ export function CategoryForm({
 	submitButtonText,
 }: CategoryFormProps) {
 	const [open, setOpen] = useState(false);
-	const router = useRouter();
+	const { isSubmitting, handleSubmit: submitWithState } =
+		useFormSubmit<CategoryFormValues>();
 
 	const form = useForm<CategoryFormValues>({
 		resolver: zodResolver(categorySchema),
@@ -75,32 +75,20 @@ export function CategoryForm({
 	}, [category, form]);
 
 	async function handleSubmit(values: CategoryFormValues) {
-		try {
-			const response = await onSubmit(values);
+		const success = await submitWithState(values, onSubmit, {
+			successMessage: `Categoría ${
+				mode === 'create' ? 'creada' : 'editada'
+			} correctamente`,
+			errorMessage: `Ha ocurrido un error al ${
+				mode === 'create' ? 'crear' : 'editar'
+			} la categoría`,
+			resetForm: true,
+			closeDialog: true,
+		});
 
-			if (!response.success) {
-				toast(
-					`Ha ocurrido un error al ${
-						mode === 'create' ? 'crear' : 'editar'
-					} la categoría`
-				);
-				return;
-			}
-
-			toast(
-				`Categoría ${mode === 'create' ? 'creada' : 'editada'} correctamente`
-			);
+		if (success) {
 			form.reset();
 			setOpen(false);
-			setTimeout(() => {
-				router.refresh();
-			}, 300);
-		} catch (error) {
-			console.error(
-				`Error al ${mode === 'create' ? 'crear' : 'editar'} categoría:`,
-				error
-			);
-			toast('Ha ocurrido un error inesperado');
 		}
 	}
 
@@ -195,7 +183,9 @@ export function CategoryForm({
 							)}
 						/>
 						<DialogFooter>
-							<Button type="submit">{submitButtonText}</Button>
+							<SubmitButton isSubmitting={isSubmitting}>
+								{submitButtonText}
+							</SubmitButton>
 						</DialogFooter>
 					</form>
 				</Form>
