@@ -9,36 +9,99 @@ interface CategoryPieChartProps {
 }
 
 const COLORS = [
-	'#8ec5ff',
-	'#2b7fff',
-	'#155dfc',
-	'#a5f3fc',
-	'#1447e6',
-	'#193cb8',
-	'#8b5cf6',
+	'#ffb86a',
+	'#9ae600',
+	'#00d492',
+	'#00d5be',
+	'#00d3f3',
+	'#51a2ff',
+	'#7c86ff',
+	'#ed6bff',
+	'#c27aff',
+	'#fb64b6',
 ];
 
 // Función utilitaria para agrupar y calcular totales por categoría
-type PieDatum = { name: string; value: number; percentage: string };
+type PieDatum = {
+	name: string;
+	value: number;
+	percentage: string;
+	color: string;
+};
+
+// Utilidades de color
+function normalizeColor(color?: string): string | undefined {
+	if (!color) return undefined;
+	const c = color.trim().toLowerCase();
+	// convertir nombres comunes a hex por simplicidad
+	if (c === 'white') return '#ffffff';
+	if (c === 'black') return '#000000';
+	return c;
+}
+
+function isWhiteOrBlack(color?: string): boolean {
+	const c = normalizeColor(color);
+	return c === '#ffffff' || c === '#fff' || c === '#000000' || c === '#000';
+}
+
+// Función simple para generar un color basado en el nombre de la categoría
+function getDeterministicColor(categoryName: string): string {
+	// Genera un hash simple del nombre de la categoría
+	let hash = 0;
+	for (let i = 0; i < categoryName.length; i++) {
+		hash = (hash << 5) - hash + categoryName.charCodeAt(i);
+		hash = hash & hash; // Convierte a entero de 32 bits
+	}
+	// Usa el valor absoluto para evitar índices negativos
+	return COLORS[Math.abs(hash) % COLORS.length];
+}
 
 function getCategoryPieData(
 	transactions: TransactionWithRelations[],
 	tipo: 'Gasto' | 'Ingreso'
 ): PieDatum[] {
-	const categoryData = transactions
+	const aggregated = transactions
 		.filter((transaction) => transaction.type === tipo)
 		.reduce((acc, transaction) => {
 			const categoryName = transaction.category?.name || 'Sin Categoría';
-			acc[categoryName] = (acc[categoryName] || 0) + transaction.amount;
-			return acc;
-		}, {} as Record<string, number>);
+			const rawColor = transaction.category?.color as unknown as
+				| string
+				| undefined;
+			const color = normalizeColor(rawColor);
 
-	const total = Object.values(categoryData).reduce((a, b) => a + b, 0);
-	return Object.entries(categoryData).map(([category, amount]) => ({
-		name: category,
-		value: amount,
-		percentage: total ? ((amount / total) * 100).toFixed(1) : '0',
-	}));
+			if (!acc[categoryName]) {
+				acc[categoryName] = { value: 0, color };
+			}
+			acc[categoryName].value += transaction.amount;
+			// Si posteriormente llega un color válido y antes no lo había, lo guardamos
+			if (!acc[categoryName].color && color) acc[categoryName].color = color;
+			return acc;
+		}, {} as Record<string, { value: number; color?: string }>);
+
+	const total = Object.values(aggregated).reduce((a, b) => a + b.value, 0);
+
+	// Ordenamos las categorías alfabéticamente para consistencia
+	const sortedCategories = Object.keys(aggregated).sort((a, b) =>
+		a.localeCompare(b)
+	);
+
+	return sortedCategories.map((category) => {
+		let color = aggregated[category].color;
+
+		// Si no hay color o es blanco/negro, generamos uno determinista
+		if (!color || isWhiteOrBlack(color)) {
+			color = getDeterministicColor(category);
+		}
+
+		return {
+			name: category,
+			value: aggregated[category].value,
+			percentage: total
+				? ((aggregated[category].value / total) * 100).toFixed(1)
+				: '0',
+			color: color,
+		};
+	});
 }
 
 export function CategoryPieChart({ transactions }: CategoryPieChartProps) {
@@ -46,10 +109,10 @@ export function CategoryPieChart({ transactions }: CategoryPieChartProps) {
 	const ingresosData = getCategoryPieData(transactions, 'Ingreso');
 
 	const getChartConfig = (pieData: PieDatum[]) =>
-		pieData.reduce((config, item, index) => {
+		pieData.reduce((config, item) => {
 			config[item.name.toLowerCase().replace(/\s+/g, '')] = {
 				label: item.name,
-				color: COLORS[index % COLORS.length],
+				color: item.color,
 			};
 			return config;
 		}, {} as Record<string, { label: string; color: string }>);
@@ -76,10 +139,7 @@ export function CategoryPieChart({ transactions }: CategoryPieChartProps) {
 								dataKey="value"
 								label={false}>
 								{gastosData.map((entry, index) => (
-									<Cell
-										key={`gasto-cell-${index}`}
-										fill={COLORS[index % COLORS.length]}
-									/>
+									<Cell key={`gasto-cell-${index}`} fill={entry.color} />
 								))}
 							</Pie>
 							<ChartTooltip
@@ -122,10 +182,7 @@ export function CategoryPieChart({ transactions }: CategoryPieChartProps) {
 								dataKey="value"
 								label={false}>
 								{ingresosData.map((entry, index) => (
-									<Cell
-										key={`ingreso-cell-${index}`}
-										fill={COLORS[index % COLORS.length]}
-									/>
+									<Cell key={`ingreso-cell-${index}`} fill={entry.color} />
 								))}
 							</Pie>
 							<ChartTooltip
