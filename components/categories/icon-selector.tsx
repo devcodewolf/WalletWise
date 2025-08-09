@@ -3,10 +3,10 @@
 import * as React from 'react';
 import {
 	ShoppingBag,
-	Coffee,
+	Landmark,
 	Home,
 	Car,
-	Briefcase,
+	Zap,
 	Utensils,
 	Plane,
 	Gift,
@@ -39,10 +39,10 @@ export function IconSelector({
 IconSelectorProps) {
 	const icons: IconOption[] = [
 		{ name: 'ShoppingBag', icon: ShoppingBag },
-		{ name: 'Coffee', icon: Coffee },
+		{ name: 'Bank', icon: Landmark },
 		{ name: 'Home', icon: Home },
 		{ name: 'Car', icon: Car },
-		{ name: 'Briefcase', icon: Briefcase },
+		{ name: 'Energy', icon: Zap },
 		{ name: 'Utensils', icon: Utensils },
 		{ name: 'Plane', icon: Plane },
 		{ name: 'Gift', icon: Gift },
