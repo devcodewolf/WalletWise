@@ -30,53 +30,55 @@ export default async function AdminPanel() {
 	});
 
 	return (
-		// dashboard
-		<div className="flex flex-1 flex-col gap-4 ">
-			<ExpenseTracker data={transactions} />
-			<div className="grid gap-4 md:grid-cols-4">
-				<Card className="p-4 flex items-center justify-center">
-					<Calendar01 />
-				</Card>
-				<Card className="p-6 gap-4 justify-between md:col-span-3">
-					<CardHeader className="flex-col gap-4 p-0">
+		<>
+			{/* // dashboard */}
+			<div className="flex flex-1 flex-col gap-4 ">
+				<ExpenseTracker data={transactions} />
+				<div className="grid gap-4 md:grid-cols-4">
+					<Card className="p-4 flex items-center justify-center">
+						<Calendar01 />
+					</Card>
+					<Card className="p-6 gap-4 justify-between md:col-span-3">
+						<CardHeader className="flex-col gap-4 p-0">
+							<div>
+								<h2 className="text-2xl font-bold flex items-center gap-2">
+									<ChartSpline className="size-6" />
+									<Separator
+										orientation="vertical"
+										className="data-[orientation=vertical]:h-6"
+									/>
+									Estadística anual
+								</h2>
+								<p className="text-gray-400 mt-1">
+									Estadísticas año actual {currentYear}
+								</p>
+							</div>
+							<Separator />
+						</CardHeader>
+						<YearlyChart transactions={yearlyTransactions} />
+					</Card>
+				</div>
+
+				<Card className="p-6 gap-4">
+					<CardHeader className="flex-row items-center p-0">
 						<div>
 							<h2 className="text-2xl font-bold flex items-center gap-2">
-								<ChartSpline className="size-6" />
+								<HandCoins className="size-6" />
 								<Separator
 									orientation="vertical"
 									className="data-[orientation=vertical]:h-6"
 								/>
-								Estadística anual
+								Resúmen
 							</h2>
-							<p className="text-gray-400 mt-1">
-								Estadísticas año actual {currentYear}
-							</p>
+							<p className="text-gray-400 mt-1">Resúmen de tus finanzas</p>
 						</div>
-						<Separator />
+						<AddTransaction />
 					</CardHeader>
-					<YearlyChart transactions={yearlyTransactions} />
+					<Separator />
+
+					<TransactionsDashboard data={transactions} />
 				</Card>
 			</div>
-
-			<Card className="p-6 gap-4">
-				<CardHeader className="flex-row items-center p-0">
-					<div>
-						<h2 className="text-2xl font-bold flex items-center gap-2">
-							<HandCoins className="size-6" />
-							<Separator
-								orientation="vertical"
-								className="data-[orientation=vertical]:h-6"
-							/>
-							Resúmen
-						</h2>
-						<p className="text-gray-400 mt-1">Resúmen de tus finanzas</p>
-					</div>
-					<AddTransaction />
-				</CardHeader>
-				<Separator />
-
-				<TransactionsDashboard data={transactions} />
-			</Card>
-		</div>
+		</>
 	);
 }
