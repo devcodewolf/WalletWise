@@ -16,7 +16,7 @@ interface MonthlyChartProps {
 }
 
 export function MonthlyChart({ transactions }: MonthlyChartProps) {
-	console.log(transactions);
+	// console.log(transactions);
 
 	// Calcular totales de gastos e ingresos
 	const totalGastos = transactions

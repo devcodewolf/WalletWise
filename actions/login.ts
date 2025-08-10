@@ -1,6 +1,6 @@
 'use server';
 
-import { signIn, auth } from '@/auth';
+import { signIn } from '@/auth';
 import { signInSchema } from '@/lib/schemas/singIn';
 
 import { AuthError } from 'next-auth';
