@@ -154,8 +154,8 @@ export async function updateTransaction(
 				},
 			});
 
-			// 3. Aplicar el nuevo saldo a la nueva billetera si se especificó
-			if (newWalletId && newWalletId !== oldWalletId) {
+			// 3. Aplicar el nuevo saldo a la billetera destino (sea la misma u otra)
+			if (newWalletId) {
 				const newIncrementValue =
 					newType === 'Ingreso' ? newAmount : -newAmount;
 				// console.log(

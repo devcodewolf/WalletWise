@@ -80,9 +80,23 @@ export async function updateWallet(
 			return { success: false, error: 'Cartera no encontrada o no autorizada' };
 		}
 
+		// Validar que el resultado final cumpla el esquema (saldo > 0)
+		const toValidate = {
+			name: data.name ?? existingWallet.name,
+			initialBalance: data.initialBalance ?? existingWallet.initialBalance,
+		};
+
+		const parsed = walletsSchema.safeParse(toValidate);
+		if (!parsed.success) {
+			return {
+				success: false,
+				error: 'Hay campos vacíos o no válidos',
+			};
+		}
+
 		const wallet = await db.wallet.update({
 			where: { id },
-			data,
+			data: parsed.data,
 		});
 
 		return { success: true, data: wallet };
