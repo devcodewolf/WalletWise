@@ -29,6 +29,7 @@ import { FormError } from './FormError';
 import { login } from '@/actions/login';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import { Loader2 } from 'lucide-react';
 
 export function LoginForm({
 	className,
@@ -36,6 +37,7 @@ export function LoginForm({
 }: React.ComponentProps<'div'>) {
 	const router = useRouter();
 	const [error, setError] = useState<string | undefined>('');
+	const [isSubmitting, setIsSubmitting] = useState(false);
 
 	const form = useForm<z.infer<typeof signInSchema>>({
 		resolver: zodResolver(signInSchema),
@@ -47,12 +49,16 @@ export function LoginForm({
 
 	const onSubmit = async (values: z.infer<typeof signInSchema>) => {
 		try {
+			setIsSubmitting(true);
+			setError(undefined);
+
 			const data = await login(values);
 			console.log('Respuesta del login desde server action:', data);
 
 			if (data?.error) {
 				setError(data.error);
 				toast.error(data.error);
+				setIsSubmitting(false);
 				return;
 			}
 
@@ -65,6 +71,11 @@ export function LoginForm({
 			toast.error(
 				error instanceof Error ? error.message : 'Error al iniciar sesión'
 			);
+		} finally {
+			if (!router) {
+				// Solo establecer a false si aún estamos en la página
+				setIsSubmitting(false);
+			}
 		}
 	};
 
@@ -122,7 +133,16 @@ export function LoginForm({
 							/>
 
 							{error && <FormError message={error} />}
-							<Button type="submit">Iniciar sesión</Button>
+							<Button type="submit" disabled={isSubmitting}>
+								{isSubmitting ? (
+									<>
+										<Loader2 className="mr-2 h-4 w-4 animate-spin" />
+										Iniciando...
+									</>
+								) : (
+									'Iniciar sesión'
+								)}
+							</Button>
 							{/* <Button variant="outline" className="w-full">
 								Login with Google
 							</Button> */}
