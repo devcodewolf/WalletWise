@@ -54,20 +54,28 @@ export function WalletForm({
 		resolver: zodResolver(walletsSchema),
 		defaultValues: {
 			name: wallet?.name || '',
-			initialBalance: wallet?.initialBalance || 0,
-			currentBalance: wallet?.currentBalance ?? undefined,
+			// En modo creación, forzamos 0 para evitar valores por defecto no deseados (p.ej. 5000)
+			initialBalance: mode === 'create' ? 0 : wallet?.initialBalance || 0,
+			currentBalance:
+				mode === 'edit' ? wallet?.currentBalance ?? undefined : undefined,
 		},
 	});
 
 	useEffect(() => {
-		if (wallet) {
+		if (mode === 'edit' && wallet) {
 			form.reset({
 				name: wallet.name,
 				initialBalance: wallet.initialBalance,
 				currentBalance: wallet.currentBalance,
 			});
+		} else if (mode === 'create') {
+			form.reset({
+				name: '',
+				initialBalance: 0,
+				currentBalance: undefined,
+			});
 		}
-	}, [wallet, form]);
+	}, [mode, wallet, form]);
 
 	async function handleSubmit(values: WalletsFormSchema) {
 		const success = await submitWithState(values, onSubmit, {
@@ -130,24 +138,26 @@ export function WalletForm({
 								</FormItem>
 							)}
 						/>
-						<FormField
-							control={form.control}
-							name="currentBalance"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Saldo Actual</FormLabel>
-									<FormControl>
-										<Input
-											type="number"
-											placeholder="0.00"
-											step="0.01"
-											{...field}
-										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
+						{mode === 'edit' && (
+							<FormField
+								control={form.control}
+								name="currentBalance"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel>Saldo Actual</FormLabel>
+										<FormControl>
+											<Input
+												type="number"
+												placeholder="0.00"
+												step="0.01"
+												{...field}
+											/>
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+						)}
 						<DialogFooter>
 							<SubmitButton isSubmitting={isSubmitting}>
 								{submitButtonText}
