@@ -55,6 +55,7 @@ export function WalletForm({
 		defaultValues: {
 			name: wallet?.name || '',
 			initialBalance: wallet?.initialBalance || 0,
+			currentBalance: wallet?.currentBalance ?? undefined,
 		},
 	});
 
@@ -63,6 +64,7 @@ export function WalletForm({
 			form.reset({
 				name: wallet.name,
 				initialBalance: wallet.initialBalance,
+				currentBalance: wallet.currentBalance,
 			});
 		}
 	}, [wallet, form]);
@@ -116,6 +118,24 @@ export function WalletForm({
 							render={({ field }) => (
 								<FormItem>
 									<FormLabel>Saldo Inicial</FormLabel>
+									<FormControl>
+										<Input
+											type="number"
+											placeholder="0.00"
+											step="0.01"
+											{...field}
+										/>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name="currentBalance"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Saldo Actual</FormLabel>
 									<FormControl>
 										<Input
 											type="number"
