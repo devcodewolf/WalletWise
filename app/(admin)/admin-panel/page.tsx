@@ -34,11 +34,11 @@ export default async function AdminPanel() {
 			{/* // dashboard */}
 			<div className="flex flex-1 flex-col gap-4 ">
 				<ExpenseTracker data={transactions} />
-				<div className="grid gap-4 md:grid-cols-4">
-					<Card className="p-4 flex items-center justify-center">
+				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+					<Card className="p-4 flex items-center justify-center w-1/2 md:w-full md:col-span-1 lg:col-span-2 xl:col-span-1">
 						<Calendar01 />
 					</Card>
-					<Card className="p-6 gap-4 justify-between md:col-span-3">
+					<Card className="p-6 gap-4 justify-between col-span-1 lg:col-span-2 xl:col-span-3">
 						<CardHeader className="flex-col gap-4 p-0">
 							<div>
 								<h2 className="text-2xl font-bold flex items-center gap-2">
