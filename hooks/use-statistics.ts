@@ -1,21 +1,7 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Transaction } from '@prisma/client';
 import { TransactionWithRelations } from '@/types/transactions.types';
-
-const MONTHS = [
-	{ value: '1', label: 'Enero' },
-	{ value: '2', label: 'Febrero' },
-	{ value: '3', label: 'Marzo' },
-	{ value: '4', label: 'Abril' },
-	{ value: '5', label: 'Mayo' },
-	{ value: '6', label: 'Junio' },
-	{ value: '7', label: 'Julio' },
-	{ value: '8', label: 'Agosto' },
-	{ value: '9', label: 'Septiembre' },
-	{ value: '10', label: 'Octubre' },
-	{ value: '11', label: 'Noviembre' },
-	{ value: '12', label: 'Diciembre' },
-];
+import { monthNames } from '@/lib/utils';
 
 interface UseStatisticsProps<T extends Transaction | TransactionWithRelations> {
 	transactions: T[];
@@ -54,6 +40,36 @@ export function useStatistics<
 		});
 	}, [transactions, selectedYear]);
 
+	// Memoize availableMonths para evitar recalculos innecesarios
+	const availableMonths = useMemo(() => {
+		const monthsInYear = new Set<number>();
+		yearlyTransactions.forEach((transaction) => {
+			const date =
+				transaction.date instanceof Date
+					? transaction.date
+					: new Date(transaction.date);
+			monthsInYear.add(date.getMonth());
+		});
+
+		const sortedMonths = Array.from(monthsInYear).sort((a, b) => a - b);
+
+		return sortedMonths.map((monthIndex) => ({
+			value: (monthIndex + 1).toString(),
+			label: monthNames[monthIndex],
+		}));
+	}, [yearlyTransactions]);
+
+	useEffect(() => {
+		// Si el mes seleccionado ya no está disponible en el nuevo año,
+		// selecciona el primer mes disponible para evitar un estado inconsistente.
+		if (
+			availableMonths.length > 0 &&
+			!availableMonths.find((m) => m.value === selectedMonth)
+		) {
+			setSelectedMonth(availableMonths[0].value);
+		}
+	}, [availableMonths, selectedMonth]);
+
 	const monthlyTransactions = useMemo(() => {
 		return transactions.filter((t) => {
 			const date = t.date instanceof Date ? t.date : new Date(t.date);
@@ -71,7 +87,7 @@ export function useStatistics<
 		yearlyTransactions,
 		selectedMonth,
 		setSelectedMonth,
-		months: MONTHS,
+		months: availableMonths,
 		monthlyTransactions,
 	};
 }

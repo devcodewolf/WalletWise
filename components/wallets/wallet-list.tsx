@@ -29,8 +29,8 @@ export const WalletList = ({
 
 	return (
 		<Card className="p-6 gap-4">
-			<CardHeader className="flex-row justify-between p-0">
-				<div>
+			<CardHeader className="block md:flex md:flex-row items-center p-0">
+				<div className="mb-3 md:mb-0">
 					<h2 className="text-2xl font-bold flex items-center gap-2">
 						<WalletIcon className="size-6" />
 						<Separator

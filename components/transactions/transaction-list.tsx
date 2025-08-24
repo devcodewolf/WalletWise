@@ -12,7 +12,10 @@ import { Card, CardHeader } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { TransactionTabs } from './transaction-tabs';
 import { TransactionSelectYear } from './transaction-select-year';
+
 import { CircleDollarSign } from 'lucide-react';
+import { TransactionSelectMonth } from './transaction-select-month';
+import { monthNames } from '@/lib/utils';
 
 type TransactionListProps = {
 	data: TransactionWithRelations[];
@@ -30,7 +33,8 @@ export const TransactionList = ({
 	const [filterType, setFilterType] = useState<'Todos' | 'Gasto' | 'Ingreso'>(
 		'Todos'
 	);
-	const [selectedYear, setSelectedYear] = useState<string>('Todos');
+	const [selectedYear, setSelectedYear] = useState<string>('Años');
+	const [selectedMonth, setSelectedMonth] = useState<string>('Meses');
 
 	// Obtener años únicos de las transacciones
 	const availableYears = useMemo(() => {
@@ -41,35 +45,74 @@ export const TransactionList = ({
 				years.add(year);
 			}
 		});
-		return ['Todos', ...Array.from(years).sort((a, b) => b.localeCompare(a))];
+		return ['Años', ...Array.from(years).sort((a, b) => b.localeCompare(a))];
 	}, [initialData]);
+
+	// Obtener meses únicos para el año seleccionado
+	const availableMonths = useMemo(() => {
+		if (selectedYear === 'Años') {
+			return [{ value: 'Meses', label: 'Meses' }];
+		}
+
+		const months = new Set<number>();
+		initialData.forEach((transaction) => {
+			if (transaction.date) {
+				const date = new Date(transaction.date);
+				if (date.getFullYear().toString() === selectedYear) {
+					months.add(date.getMonth());
+				}
+			}
+		});
+
+		const sortedMonths = Array.from(months).sort((a, b) => a - b);
+
+		const monthOptions = sortedMonths.map((monthIndex) => ({
+			value: (monthIndex + 1).toString(),
+			label: monthNames[monthIndex],
+		}));
+
+		return [{ value: 'Meses', label: 'Meses' }, ...monthOptions];
+	}, [selectedYear, initialData]);
 
 	// Update transactions when initialData changes
 	useEffect(() => {
 		setTransactions(initialData);
 	}, [initialData]);
 
-	// Filtrar transacciones por tipo y año
+	// Resetear el mes al cambiar de año
+	useEffect(() => {
+		setSelectedMonth('Meses');
+	}, [selectedYear]);
+
+	// Filtrar transacciones por tipo, año y mes
 	const filteredTransactions = useMemo(() => {
-		return transactions.filter((transaction) => {
-			const matchesType =
-				filterType === 'Todos' || transaction.type === filterType;
+		let filtered = [...transactions];
 
-			if (selectedYear === 'Todos') return matchesType;
+		if (filterType !== 'Todos') {
+			filtered = filtered.filter((t) => t.type === filterType);
+		}
 
-			if (!transaction.date) return false;
+		if (selectedYear !== 'Años') {
+			filtered = filtered.filter(
+				(t) =>
+					t.date && new Date(t.date).getFullYear().toString() === selectedYear
+			);
+			if (selectedMonth !== 'Meses') {
+				filtered = filtered.filter(
+					(t) =>
+						t.date &&
+						(new Date(t.date).getMonth() + 1).toString() === selectedMonth
+				);
+			}
+		}
 
-			const transactionYear = new Date(transaction.date)
-				.getFullYear()
-				.toString();
-			return matchesType && transactionYear === selectedYear;
-		});
-	}, [transactions, filterType, selectedYear]);
+		return filtered;
+	}, [transactions, filterType, selectedYear, selectedMonth]);
 
 	return (
 		<Card className="p-6 gap-4 mb-4">
-			<CardHeader className="flex-row items-center p-0">
-				<div>
+			<CardHeader className="block md:flex md:flex-row items-center p-0">
+				<div className="mb-3 md:mb-0">
 					<h2 className="text-2xl font-bold flex items-center gap-2">
 						<CircleDollarSign className="size-6" />
 						<Separator
@@ -88,12 +131,17 @@ export const TransactionList = ({
 				columns={columns({ wallets, categories })}
 				data={filteredTransactions}
 				toolbar={
-					<div className="flex items-center gap-4">
+					<div className="flex items-center flex-wrap gap-4">
 						<TransactionTabs value={filterType} onValueChange={setFilterType} />
 						<TransactionSelectYear
 							value={selectedYear}
 							onValueChange={setSelectedYear}
 							years={availableYears}
+						/>
+						<TransactionSelectMonth
+							value={selectedMonth}
+							onValueChange={setSelectedMonth}
+							months={availableMonths}
 						/>
 					</div>
 				}

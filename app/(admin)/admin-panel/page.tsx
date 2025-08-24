@@ -35,7 +35,7 @@ export default async function AdminPanel() {
 			<div className="flex flex-1 flex-col gap-4 ">
 				<ExpenseTracker data={transactions} />
 				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-					<Card className="p-4 flex items-center justify-center w-1/2 md:w-full md:col-span-1 lg:col-span-2 xl:col-span-1">
+					<Card className="p-4 flex items-center justify-center w-full sm:w-1/2 md:w-full md:col-span-1 lg:col-span-2 xl:col-span-1">
 						<Calendar01 />
 					</Card>
 					<Card className="p-6 gap-4 justify-between col-span-1 lg:col-span-2 xl:col-span-3">
@@ -60,8 +60,8 @@ export default async function AdminPanel() {
 				</div>
 
 				<Card className="p-6 gap-4">
-					<CardHeader className="flex-row items-center p-0">
-						<div>
+					<CardHeader className="block md:flex md:flex-row items-center p-0">
+						<div className="mb-3 md:mb-0">
 							<h2 className="text-2xl font-bold flex items-center gap-2">
 								<HandCoins className="size-6" />
 								<Separator
