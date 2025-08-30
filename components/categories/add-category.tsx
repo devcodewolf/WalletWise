@@ -5,11 +5,28 @@ import { Button } from '@/components/ui/button';
 import { createCategory } from '@/actions/categories';
 import { CategoryForm } from './category-form';
 import { CategoryFormValues } from '@/lib/schemas/category';
+import { Category } from '@prisma/client';
+import { useRouter } from 'next/navigation';
 
-export function AddCategory() {
+interface AddCategoryProps {
+	onSuccess?: (newCategory: Category) => void;
+}
+
+export function AddCategory({ onSuccess }: AddCategoryProps) {
+	const router = useRouter();
+
 	const handleSubmit = async (values: CategoryFormValues) => {
 		const result = await createCategory(values);
-		return { success: !!result.success }; //to respect the return type of the onSubmit function
+		const success = !!result.success;
+
+		if (success && 'data' in result) {
+			// Propagar al padre si lo necesita
+			onSuccess?.(result.data);
+			// Forzar re-render del Server Component y remontar la lista
+			router.refresh();
+		}
+
+		return { success };
 	};
 
 	return (

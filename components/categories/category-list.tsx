@@ -1,55 +1,20 @@
-'use client';
-
 import { DataTable } from '@/components/ui/data-table';
-
-import { AddCategory } from './add-category';
-
-import { useEffect, useState } from 'react';
-import { Category } from '@prisma/client';
 import { columns } from './categoryColumns';
-import { Inbox } from 'lucide-react';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
+import { getCategories } from '@/actions/categories';
 
 interface CategoryListProps {
-	data: Category[];
 	limitShow?: number;
 }
 
-export const CategoryList = ({
-	data: initialData,
-	limitShow,
-}: CategoryListProps) => {
-	const [categories, setCategories] = useState<Category[]>(initialData);
+export const CategoryList = async ({ limitShow }: CategoryListProps) => {
+	const respCategories = await getCategories();
 
-	// Update categories when initialData changes
-	useEffect(() => {
-		// console.log('hola effect');
-		setCategories(initialData);
-	}, [initialData]);
-
-	// console.log(categories);
+	const categories =
+		respCategories.success && 'data' in respCategories
+			? respCategories.data
+			: [];
 
 	return (
-		<Card className="p-6 gap-4">
-			<CardHeader className="block md:flex md:flex-row items-center p-0">
-				<div className="mb-3 md:mb-0">
-					<h2 className="text-2xl font-bold flex items-center gap-2">
-						<Inbox className="size-6" />
-						<Separator
-							orientation="vertical"
-							className="data-[orientation=vertical]:h-6"
-						/>
-						Categorías
-					</h2>
-					<p className="text-gray-400 mt-1">Gestión de categorías</p>
-				</div>
-				<AddCategory />
-			</CardHeader>
-			<Separator />
-			<CardContent className="p-0">
-				<DataTable columns={columns} data={categories} limitShow={limitShow} />
-			</CardContent>
-		</Card>
+		<DataTable columns={columns} data={categories} limitShow={limitShow} />
 	);
 };
