@@ -8,6 +8,10 @@ import { Card, CardHeader } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { ExpenseTracker } from '@/components/dashboard/expense-tracker';
 import Calendar01 from '@/components/dashboard/calendar-01';
+import { ExpenseTrackerSkeleton } from '@/components/dashboard/expense-tracker-skeleton';
+import { Suspense } from 'react';
+import { ChartYearlySkeleton } from '@/components/statistics/chart-yearly-skeleton';
+import { TransactionsDashboardSkeleton } from '@/components/dashboard/transactions-dashboard-skeleton';
 
 // Forzar el renderizado dinámico de la página
 export const dynamic = 'force-dynamic';
@@ -33,7 +37,10 @@ export default async function AdminPanel() {
 		<>
 			{/* // dashboard */}
 			<div className="flex flex-1 flex-col gap-4 ">
-				<ExpenseTracker data={transactions} />
+				{/* <ExpenseTrackerSkeleton /> */}
+				<Suspense fallback={<ExpenseTrackerSkeleton />}>
+					<ExpenseTracker data={transactions} />
+				</Suspense>
 				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
 					<Card className="p-4 flex items-center justify-center w-full sm:w-1/2 md:w-full md:col-span-1 lg:col-span-2 xl:col-span-1">
 						<Calendar01 />
@@ -55,7 +62,10 @@ export default async function AdminPanel() {
 							</div>
 							<Separator />
 						</CardHeader>
-						<YearlyChart transactions={yearlyTransactions} />
+						{/* <ChartYearlySkeleton /> */}
+						<Suspense fallback={<ChartYearlySkeleton />}>
+							<YearlyChart transactions={yearlyTransactions} />
+						</Suspense>
 					</Card>
 				</div>
 
@@ -75,8 +85,10 @@ export default async function AdminPanel() {
 						<AddTransaction />
 					</CardHeader>
 					<Separator />
-
-					<TransactionsDashboard data={transactions} />
+					{/* <TransactionsDashboardSkeleton /> */}
+					<Suspense fallback={<TransactionsDashboardSkeleton />}>
+						<TransactionsDashboard data={transactions} />
+					</Suspense>
 				</Card>
 			</div>
 		</>
