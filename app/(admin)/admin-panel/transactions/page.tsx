@@ -2,16 +2,16 @@ import { Suspense } from 'react';
 import { TransactionList } from '@/components/transactions/transaction-list';
 import { TransactionListSkeleton } from '@/components/transactions/transaction-list-skeleton';
 import { AddTransaction } from '@/components/transactions/add-transaction';
-import { Card, CardHeader } from '@/components/ui/card';
-
-import { CircleDollarSign, Inbox, WalletIcon } from 'lucide-react';
 import { CategoryList } from '@/components/categories/category-list';
-import { AddCategory } from '@/components/categories/add-category';
-
-import { Separator } from '@/components/ui/separator';
-import { TableListSkeleton } from '@/components/table-list-skeleton';
+import HeaderCategory from '@/components/categories/header-category';
 import { WalletList } from '@/components/wallets/wallet-list';
-import { AddWallet } from '@/components/wallets/add-wallet';
+import HeaderWallet from '@/components/wallets/header-wallet';
+import { TableListSkeleton } from '@/components/table-list-skeleton';
+
+import { Card, CardHeader } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
+
+import { CircleDollarSign } from 'lucide-react';
 
 // Forzar el renderizado dinámico de la página
 // export const dynamic = 'force-dynamic';
@@ -46,20 +46,7 @@ export default function TransactionsPage() {
 
 			<div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
 				<Card className="p-6 gap-4">
-					<CardHeader className="block md:flex md:flex-row items-center p-0">
-						<div className="mb-3 md:mb-0">
-							<h2 className="text-2xl font-bold flex items-center gap-2">
-								<Inbox className="size-6" />
-								<Separator
-									orientation="vertical"
-									className="data-[orientation=vertical]:h-6"
-								/>
-								Categorías
-							</h2>
-							<p className="text-gray-400 mt-1">Gestión de categorías</p>
-						</div>
-						<AddCategory />
-					</CardHeader>
+					<HeaderCategory />
 					<Separator />
 					{/* category */}
 					<Suspense fallback={<TableListSkeleton />}>
@@ -67,20 +54,7 @@ export default function TransactionsPage() {
 					</Suspense>
 				</Card>
 				<Card className="p-6 gap-4">
-					<CardHeader className="block md:flex md:flex-row items-center p-0">
-						<div className="mb-3 md:mb-0">
-							<h2 className="text-2xl font-bold flex items-center gap-2">
-								<WalletIcon className="size-6" />
-								<Separator
-									orientation="vertical"
-									className="data-[orientation=vertical]:h-6"
-								/>
-								Billeteras
-							</h2>
-							<p className="text-gray-400 mt-1">Gestión de wallets</p>
-						</div>
-						<AddWallet />
-					</CardHeader>
+					<HeaderWallet />
 					<Separator />
 					{/* category */}
 					<Suspense fallback={<TableListSkeleton />}>

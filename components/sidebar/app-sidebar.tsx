@@ -35,7 +35,7 @@ const data = {
 			icon: Wallet,
 		},
 		{
-			title: 'Transacciones',
+			title: 'Movimientos',
 			url: '/admin-panel/transactions',
 			icon: CircleDollarSign,
 		},
