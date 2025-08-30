@@ -17,7 +17,7 @@ export function AddWallet() {
 			mode="create"
 			onSubmit={onSubmit}
 			triggerButton={
-				<Button>
+				<Button className="ml-auto flex">
 					<PlusCircle className="size-4" />
 					<p className="leading-0">Nueva cartera</p>
 				</Button>

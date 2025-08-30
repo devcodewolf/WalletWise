@@ -1,6 +1,7 @@
 'use client';
 
 import { Transaction } from '@prisma/client';
+import { monthNames } from '@/lib/utils';
 import { TrendingDown, TrendingUp, Wallet } from 'lucide-react';
 
 interface SummaryMonthlyProps {
@@ -8,21 +9,6 @@ interface SummaryMonthlyProps {
 }
 
 export function SummaryMonthly({ transactions }: SummaryMonthlyProps) {
-	const monthNames = [
-		'Enero',
-		'Febrero',
-		'Marzo',
-		'Abril',
-		'Mayo',
-		'Junio',
-		'Julio',
-		'Agosto',
-		'Septiembre',
-		'Octubre',
-		'Noviembre',
-		'Diciembre',
-	];
-
 	// Calcular datos por mes
 	const monthlyData = Array.from({ length: 12 }, (_, i) => {
 		const month = i + 1;

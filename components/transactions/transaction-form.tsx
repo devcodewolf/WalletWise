@@ -259,7 +259,7 @@ export function TransactionForm({
 							)}
 						/>
 
-						<div className="flex justify-between gap-5">
+						<div className="flex flex-wrap justify-between gap-5">
 							<FormField
 								control={form.control}
 								name="walletId"
