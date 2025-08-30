@@ -10,6 +10,11 @@ import { AnnualBalance } from '@/components/statistics/annual-balance';
 import { Card } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 
+import { Suspense } from 'react';
+import { StatisticsYearSkeleton } from '@/components/statistics/statistics-year-skeleton';
+import { StatisticsMonthSkeleton } from '@/components/statistics/statistics-month-skeleton';
+import { StatisticsCategoriesSkeleton } from '@/components/statistics/statistics-categories-skeleton';
+
 // Forzar el renderizado dinámico de la página
 export const dynamic = 'force-dynamic';
 
@@ -46,14 +51,20 @@ export default async function StatisticsPage() {
 			<div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 mt-6">
 				{/* grafico anual	 */}
 				<Card className="p-5 gap-4">
-					<StatisticsYear transactions={transactions} />
+					<Suspense fallback={<StatisticsYearSkeleton />}>
+						<StatisticsYear transactions={transactions} />
+					</Suspense>
 				</Card>
 				{/* Gráfico mensual */}
 				<Card className="p-5 gap-4">
-					<StatisticsMonth transactions={transactions} />
+					<Suspense fallback={<StatisticsMonthSkeleton />}>
+						<StatisticsMonth transactions={transactions} />
+					</Suspense>
 				</Card>
 				<Card className="p-5 gap-4 lg:col-span-2 xl:col-span-1">
-					<StatisticsCategories transactions={transactions} />
+					<Suspense fallback={<StatisticsCategoriesSkeleton />}>
+						<StatisticsCategories transactions={transactions} />
+					</Suspense>
 				</Card>
 			</div>
 			{/* Resúmenes mensuales y trimestrales */}
