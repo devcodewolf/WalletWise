@@ -8,7 +8,7 @@ import { WalletList } from '@/components/wallets/wallet-list';
 import HeaderWallet from '@/components/wallets/header-wallet';
 import { TableListSkeleton } from '@/components/table-list-skeleton';
 
-import { Card, CardHeader } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 
 import { CircleDollarSign } from 'lucide-react';
