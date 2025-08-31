@@ -1,10 +1,11 @@
 'use client';
 
 import { Skeleton } from '@/components/ui/skeleton';
+import { Card } from '@/components/ui/card';
 
 export const TransactionsDashboardSkeleton = () => {
 	return (
-		<div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+		<Card className="grid grid-cols-1 gap-6 lg:grid-cols-2 p-6">
 			<div className="space-y-4">
 				<div className="flex items-center gap-2">
 					<Skeleton className="h-5 w-5" />
@@ -34,6 +35,6 @@ export const TransactionsDashboardSkeleton = () => {
 					<Skeleton className="h-12 w-full" />
 				</div>
 			</div>
-		</div>
+		</Card>
 	);
 };

@@ -2,21 +2,18 @@ import { getTransactions } from '@/actions/transactions';
 import { TransactionsDashboard } from '@/components/dashboard/transactions-dashboard';
 import type { TransactionWithRelations } from '@/types/transactions.types';
 import { YearlyChart } from '@/components/statistics/chart-yearly';
-import { ChartSpline, HandCoins } from 'lucide-react';
+import { ChartSpline, HandCoins, HomeIcon } from 'lucide-react';
 import { AddTransaction } from '@/components/transactions/add-transaction';
 import { Card, CardHeader } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { ExpenseTracker } from '@/components/dashboard/expense-tracker';
 import Calendar01 from '@/components/dashboard/calendar-01';
-import { ExpenseTrackerSkeleton } from '@/components/dashboard/expense-tracker-skeleton';
 import { Suspense } from 'react';
-import { ChartYearlySkeleton } from '@/components/statistics/chart-yearly-skeleton';
-import { TransactionsDashboardSkeleton } from '@/components/dashboard/transactions-dashboard-skeleton';
+import DashboardPageSkeleton from '@/components/dashboard/dashboard-page-skeleton';
 
 // Forzar el renderizado dinámico de la página
-export const dynamic = 'force-dynamic';
-
-export default async function AdminPanel() {
+// export const dynamic = 'force-dynamic';
+async function AdminPanelData() {
 	// Obtener transacciones
 	const respTransaction = await getTransactions();
 
@@ -36,11 +33,9 @@ export default async function AdminPanel() {
 	return (
 		<>
 			{/* // dashboard */}
-			<div className="flex flex-1 flex-col gap-4 ">
+			<div className="flex flex-1 flex-col gap-4">
 				{/* <ExpenseTrackerSkeleton /> */}
-				<Suspense fallback={<ExpenseTrackerSkeleton />}>
-					<ExpenseTracker data={transactions} />
-				</Suspense>
+				<ExpenseTracker data={transactions} />
 				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
 					<Card className="p-4 flex items-center justify-center w-full sm:w-1/2 md:w-full md:col-span-1 lg:col-span-2 xl:col-span-1">
 						<Calendar01 />
@@ -63,9 +58,7 @@ export default async function AdminPanel() {
 							<Separator />
 						</CardHeader>
 						{/* <ChartYearlySkeleton /> */}
-						<Suspense fallback={<ChartYearlySkeleton />}>
-							<YearlyChart transactions={yearlyTransactions} />
-						</Suspense>
+						<YearlyChart transactions={yearlyTransactions} />
 					</Card>
 				</div>
 
@@ -86,11 +79,34 @@ export default async function AdminPanel() {
 					</CardHeader>
 					<Separator />
 					{/* <TransactionsDashboardSkeleton /> */}
-					<Suspense fallback={<TransactionsDashboardSkeleton />}>
-						<TransactionsDashboard data={transactions} />
-					</Suspense>
+					<TransactionsDashboard data={transactions} />
 				</Card>
 			</div>
 		</>
+	);
+}
+
+export default function AdminPanel() {
+	return (
+		<div className="py-4 px-1 space-y-4">
+			{/* Header */}
+			<div className="flex items-center justify-between mb-4">
+				<div>
+					<h2 className="text-2xl font-bold flex items-center gap-2">
+						<HomeIcon className="size-6" />
+						<Separator
+							orientation="vertical"
+							className="data-[orientation=vertical]:h-6"
+						/>
+						Dashboard
+					</h2>
+				</div>
+			</div>
+			<Separator />
+			{/* <DashboardPageSkeleton /> */}
+			<Suspense fallback={<DashboardPageSkeleton />}>
+				<AdminPanelData />
+			</Suspense>
+		</div>
 	);
 }
