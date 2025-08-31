@@ -20,8 +20,8 @@ export default function TransactionsPage() {
 	console.log('page TransactionsPage');
 	return (
 		<>
-			<Card className="p-6 gap-4 mb-4">
-				<CardHeader className="block md:flex md:flex-row items-center p-0">
+			<div className="pt-4  mb-4">
+				<div className="block md:flex md:flex-row items-center p-0">
 					<div className="mb-3 md:mb-0">
 						<h2 className="text-2xl font-bold flex items-center gap-2">
 							<CircleDollarSign className="size-6" />
@@ -36,13 +36,15 @@ export default function TransactionsPage() {
 						</p>
 					</div>
 					<AddTransaction />
-				</CardHeader>
-				<Separator />
+				</div>
+				<Separator className="mt-4 mb-6" />
 
-				<Suspense fallback={<TransactionListSkeleton />}>
-					<TransactionList />
-				</Suspense>
-			</Card>
+				<Card className="p-6 ">
+					<Suspense fallback={<TransactionListSkeleton />}>
+						<TransactionList />
+					</Suspense>
+				</Card>
+			</div>
 
 			<div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
 				<Card className="p-6 gap-4">
