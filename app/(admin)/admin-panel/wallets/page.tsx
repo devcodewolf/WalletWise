@@ -11,13 +11,17 @@ import { Suspense } from 'react';
 
 export default function WalletsPage() {
 	return (
-		<Card className="p-6 gap-4">
-			<HeaderWallet />
-			<Separator />
-			{/* category */}
-			<Suspense fallback={<TableListSkeleton />}>
-				<WalletList />
-			</Suspense>
-		</Card>
+		<>
+			<div className="pt-4">
+				<HeaderWallet />
+			</div>
+			<Separator className="mt-4 mb-6" />
+			<Card className="p-6 gap-4">
+				{/* category */}
+				<Suspense fallback={<TableListSkeleton />}>
+					<WalletList />
+				</Suspense>
+			</Card>
+		</>
 	);
 }

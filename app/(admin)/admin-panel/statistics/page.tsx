@@ -11,14 +11,13 @@ import { Card } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 
 import { Suspense } from 'react';
-import { StatisticsYearSkeleton } from '@/components/statistics/statistics-year-skeleton';
-import { StatisticsMonthSkeleton } from '@/components/statistics/statistics-month-skeleton';
-import { StatisticsCategoriesSkeleton } from '@/components/statistics/statistics-categories-skeleton';
+
+import { StatisticsPageSkeleton } from '@/components/statistics/statistics-page-skeleton';
 
 // Forzar el renderizado dinámico de la página
-export const dynamic = 'force-dynamic';
+// export const dynamic = 'force-dynamic';
 
-export default async function StatisticsPage() {
+async function StatisticsData() {
 	const respTransaction = await getTransactions();
 
 	// soluciona problema de typos porque la respuesta puede ser de varios tipos union
@@ -28,43 +27,19 @@ export default async function StatisticsPage() {
 			: [];
 
 	return (
-		<div className="py-4 px-1 space-y-4">
-			{/* Header */}
-			<div className="flex items-center justify-between mb-4">
-				<div>
-					<h2 className="text-2xl font-bold flex items-center gap-2">
-						<BarChart3 className="size-6" />
-						<Separator
-							orientation="vertical"
-							className="data-[orientation=vertical]:h-6"
-						/>
-						Estadísticas
-					</h2>
-					<p className="text-gray-400 mt-1">
-						Análisis detallado de tus finanzas
-					</p>
-				</div>
-			</div>
-			<Separator />
-
+		<>
 			{/* Gráficos en 36columnas */}
 			<div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 mt-6">
 				{/* grafico anual	 */}
 				<Card className="p-5 gap-4">
-					<Suspense fallback={<StatisticsYearSkeleton />}>
-						<StatisticsYear transactions={transactions} />
-					</Suspense>
+					<StatisticsYear transactions={transactions} />
 				</Card>
 				{/* Gráfico mensual */}
 				<Card className="p-5 gap-4">
-					<Suspense fallback={<StatisticsMonthSkeleton />}>
-						<StatisticsMonth transactions={transactions} />
-					</Suspense>
+					<StatisticsMonth transactions={transactions} />
 				</Card>
 				<Card className="p-5 gap-4 lg:col-span-2 xl:col-span-1">
-					<Suspense fallback={<StatisticsCategoriesSkeleton />}>
-						<StatisticsCategories transactions={transactions} />
-					</Suspense>
+					<StatisticsCategories transactions={transactions} />
 				</Card>
 			</div>
 			{/* Resúmenes mensuales y trimestrales */}
@@ -86,6 +61,34 @@ export default async function StatisticsPage() {
 				</div>
 				<AnnualBalance transactions={transactions} />
 			</Card>
+		</>
+	);
+}
+
+export default function StatisticsPage() {
+	return (
+		<div className="py-4 px-1 space-y-4">
+			{/* Header */}
+			<div className="flex items-center justify-between mb-4">
+				<div>
+					<h2 className="text-2xl font-bold flex items-center gap-2">
+						<BarChart3 className="size-6" />
+						<Separator
+							orientation="vertical"
+							className="data-[orientation=vertical]:h-6"
+						/>
+						Estadísticas
+					</h2>
+					<p className="text-gray-400 mt-1">
+						Análisis detallado de tus finanzas
+					</p>
+				</div>
+			</div>
+			<Separator />
+			{/* <StatisticsPageSkeleton /> */}
+			<Suspense fallback={<StatisticsPageSkeleton />}>
+				<StatisticsData />
+			</Suspense>
 		</div>
 	);
 }

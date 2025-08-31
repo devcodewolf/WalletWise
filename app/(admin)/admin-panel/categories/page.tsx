@@ -11,13 +11,17 @@ import { TableListSkeleton } from '@/components/table-list-skeleton';
 
 export default function CategoriesPage() {
 	return (
-		<Card className="p-6 gap-4">
-			<HeaderCategory />
-			<Separator />
-			{/* category */}
-			<Suspense fallback={<TableListSkeleton />}>
-				<CategoryList />
-			</Suspense>
-		</Card>
+		<>
+			<div className="pt-4">
+				<HeaderCategory />
+			</div>
+			<Separator className="mt-4 mb-6" />
+			<Card className="p-6 gap-4">
+				{/* category */}
+				<Suspense fallback={<TableListSkeleton />}>
+					<CategoryList />
+				</Suspense>
+			</Card>
+		</>
 	);
 }

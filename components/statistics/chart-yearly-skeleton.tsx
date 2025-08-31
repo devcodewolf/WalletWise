@@ -13,16 +13,13 @@ export const ChartYearlySkeleton = () => {
 				<Skeleton className="h-[50%]" />
 				<Skeleton className="h-[90%]" />
 				<Skeleton className="h-[65%]" />
-				<Skeleton className="h-[35%] hidden xl:block" />
-				<Skeleton className="h-[75%] hidden xl:block" />
-				<Skeleton className="h-[55%] hidden xl:block" />
-				<Skeleton className="h-[85%] hidden xl:block" />
-				<Skeleton className="h-[45%] hidden xl:block" />
-				<Skeleton className="h-[60%] hidden xl:block" />
-				<Skeleton className="h-[80%] hidden xl:block" />
-				<Skeleton className="h-[40%] hidden xl:block" />
-				<Skeleton className="h-[85%] hidden xl:block" />
-				<Skeleton className="h-[45%] hidden xl:block" />
+
+				<Skeleton className="h-[45%] hidden lg:block" />
+				<Skeleton className="h-[60%] hidden lg:block" />
+				<Skeleton className="h-[80%] hidden lg:block" />
+				<Skeleton className="h-[40%] hidden lg:block" />
+				<Skeleton className="h-[85%] hidden lg:block" />
+				<Skeleton className="h-[45%] hidden lg:block" />
 			</div>
 		</div>
 	);

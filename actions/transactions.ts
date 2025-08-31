@@ -14,7 +14,8 @@ export async function getTransactions() {
 		if (!authResult.success) {
 			return authResult;
 		}
-
+		// Simulate a 5-second delay
+		// await new Promise((resolve) => setTimeout(resolve, 5000));
 		const transactions = await db.transaction.findMany({
 			where: {
 				userId: Number(authResult.user!.id),
