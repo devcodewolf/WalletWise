@@ -11,12 +11,12 @@ export default async function Login() {
 	}
 
 	return (
-		<div className="container mx-auto h-dvh w-full p-6 lg:p-10">
+		<div className="container flex items-center mx-auto min-h-dvh w-full h-full p-6 lg:p-10">
 			<Image
 				src="/img/bg-login.jpg"
 				width={1920}
 				height={1080}
-				className="w-full h-full object-cover absolute top-0 left-0 -z-1"
+				className="w-full min-h-dvh object-cover absolute top-0 left-0 -z-1"
 				loading="lazy"
 				alt=""
 			/>
