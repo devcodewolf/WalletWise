@@ -11,7 +11,7 @@ export default async function Login() {
 	}
 
 	return (
-		<div className="container mx-auto h-dvh w-full p-6">
+		<div className="container mx-auto h-dvh w-full p-6 lg:p-10">
 			<Image
 				src="/img/bg-login.jpg"
 				width={1920}
