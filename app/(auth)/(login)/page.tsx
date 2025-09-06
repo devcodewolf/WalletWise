@@ -22,7 +22,7 @@ export default async function Login() {
 			/>
 
 			<div className="bg-card/50 w-full rounded-3xl grid md:grid-cols-2 h-full">
-				<div className="flex items-center px-20 py-10 lg:px-40">
+				<div className="flex items-center px-20 md:px-10 lg:px-20 py-10 xl:px-40">
 					<div>
 						<div className="text-center mb-15">
 							<Image
@@ -44,7 +44,7 @@ export default async function Login() {
 							<h1 className="text-3xl font-bold">Bienvenido</h1>
 							<p>Ingresa email y contraseña para acceder a tu cuenta.</p>
 						</div>
-						<LoginForm className="md:px-8 lg:px-12" />
+						<LoginForm className="" />
 					</div>
 				</div>
 
