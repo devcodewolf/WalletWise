@@ -8,13 +8,7 @@ import { z } from 'zod';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
-} from '@/components/ui/card';
+
 import {
 	Form,
 	FormControl,
@@ -29,7 +23,7 @@ import { FormError } from './FormError';
 import { login } from '@/actions/login';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Eye, EyeOff } from 'lucide-react';
 
 export function LoginForm({
 	className,
@@ -38,6 +32,7 @@ export function LoginForm({
 	const router = useRouter();
 	const [error, setError] = useState<string | undefined>('');
 	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [showPassword, setShowPassword] = useState(false);
 
 	const form = useForm<z.infer<typeof signInSchema>>({
 		resolver: zodResolver(signInSchema),
@@ -80,76 +75,88 @@ export function LoginForm({
 	};
 
 	return (
-		<div className={cn('flex flex-col gap-6', className)} {...props}>
-			<Card>
-				<CardHeader>
-					<CardTitle className="text-2xl">Login</CardTitle>
-					<CardDescription>
-						Ingrese su correo electrónico a continuación para iniciar sesión en
-						su cuenta
-					</CardDescription>
-				</CardHeader>
-				<CardContent>
-					<Form {...form}>
-						<form
-							onSubmit={form.handleSubmit(onSubmit)}
-							className="flex flex-col gap-4 my-5">
-							<FormField
-								control={form.control}
-								name="email"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Correo electrónico</FormLabel>
-										<FormControl>
-											<Input
-												type="email"
-												{...field}
-												placeholder="m@example.com"
-												required
-											/>
-										</FormControl>
+		<div className={cn(className)} {...props}>
+			<Form {...form}>
+				<form
+					onSubmit={form.handleSubmit(onSubmit)}
+					className="flex flex-col gap-4 my-5">
+					<FormField
+						control={form.control}
+						name="email"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Correo electrónico</FormLabel>
+								<FormControl>
+									<Input
+										type="email"
+										{...field}
+										placeholder="m@example.com"
+										required
+									/>
+								</FormControl>
 
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-							<FormField
-								control={form.control}
-								name="password"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Contraseña</FormLabel>
-										<FormControl>
-											<Input
-												placeholder="Contraseña"
-												{...field}
-												type="password"
-											/>
-										</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+					<FormField
+						control={form.control}
+						name="password"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Contraseña</FormLabel>
+								<FormControl>
+									<div className="relative">
+										<Input
+											placeholder="Contraseña"
+											{...field}
+											type={showPassword ? 'text' : 'password'}
+											className="pr-10"
+										/>
+										<button
+											type="button"
+											className="absolute inset-y-0 right-0 flex items-center px-3 text-muted-foreground hover:text-foreground"
+											onClick={() => setShowPassword((v) => !v)}
+											aria-label={
+												showPassword
+													? 'Ocultar contraseña'
+													: 'Mostrar contraseña'
+											}
+											title={
+												showPassword
+													? 'Ocultar contraseña'
+													: 'Mostrar contraseña'
+											}>
+											{showPassword ? (
+												<EyeOff className="h-4 w-4" aria-hidden="true" />
+											) : (
+												<Eye className="h-4 w-4" aria-hidden="true" />
+											)}
+										</button>
+									</div>
+								</FormControl>
 
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
 
-							{error && <FormError message={error} />}
-							<Button type="submit" disabled={isSubmitting}>
-								{isSubmitting ? (
-									<>
-										<Loader2 className="mr-2 h-4 w-4 animate-spin" />
-										Iniciando...
-									</>
-								) : (
-									'Iniciar sesión'
-								)}
-							</Button>
-							{/* <Button variant="outline" className="w-full">
+					{error && <FormError message={error} />}
+					<Button type="submit" disabled={isSubmitting}>
+						{isSubmitting ? (
+							<>
+								<Loader2 className="mr-2 h-4 w-4 animate-spin" />
+								Iniciando...
+							</>
+						) : (
+							'Iniciar sesión'
+						)}
+					</Button>
+					{/* <Button variant="outline" className="w-full">
 								Login with Google
 							</Button> */}
-						</form>
-					</Form>
-				</CardContent>
-			</Card>
+				</form>
+			</Form>
 		</div>
 	);
 }
