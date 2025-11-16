@@ -10,13 +10,30 @@ interface UseStatisticsProps<T extends Transaction | TransactionWithRelations> {
 export function useStatistics<
 	T extends Transaction | TransactionWithRelations
 >({ transactions }: UseStatisticsProps<T>) {
+	// Calcular el último año y mes disponible con datos
+	const { lastYear, lastMonth } = useMemo(() => {
+		if (transactions.length === 0) {
+			return {
+				lastYear: new Date().getFullYear().toString(),
+				lastMonth: (new Date().getMonth() + 1).toString(),
+			};
+		}
+
+		// Encontrar la fecha más reciente
+		const latestDate = transactions.reduce((latest, t) => {
+			const date = t.date instanceof Date ? t.date : new Date(t.date);
+			return date > latest ? date : latest;
+		}, new Date(0));
+
+		return {
+			lastYear: latestDate.getFullYear().toString(),
+			lastMonth: (latestDate.getMonth() + 1).toString(),
+		};
+	}, [transactions]);
+
 	// Estados para manejar la selección del año y mes
-	const [selectedYear, setSelectedYear] = useState<string>(
-		new Date().getFullYear().toString()
-	);
-	const [selectedMonth, setSelectedMonth] = useState<string>(
-		(new Date().getMonth() + 1).toString()
-	);
+	const [selectedYear, setSelectedYear] = useState<string>(lastYear);
+	const [selectedMonth, setSelectedMonth] = useState<string>(lastMonth);
 
 	// Memoize availableYears para evitar recalculos innecesarios
 	const availableYears = useMemo(() => {
