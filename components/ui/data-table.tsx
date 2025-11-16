@@ -50,6 +50,7 @@ interface DataTableProps<TData, TValue> {
 	data: TData[];
 	limitShow?: number;
 	toolbar?: React.ReactNode; // NUEVO
+	initialColumnVisibility?: VisibilityState;
 }
 
 export function DataTable<TData, TValue>({
@@ -57,13 +58,14 @@ export function DataTable<TData, TValue>({
 	data,
 	limitShow,
 	toolbar,
+	initialColumnVisibility = {},
 }: DataTableProps<TData, TValue>) {
 	const [sorting, setSorting] = React.useState<SortingState>([]);
 	const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
 		[]
 	);
 	const [columnVisibility, setColumnVisibility] =
-		React.useState<VisibilityState>({});
+		React.useState<VisibilityState>(initialColumnVisibility);
 	const [rowSelection, setRowSelection] = React.useState({});
 
 	const table = useReactTable({

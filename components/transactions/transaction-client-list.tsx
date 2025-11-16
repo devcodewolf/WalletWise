@@ -99,6 +99,7 @@ export const TransactionClientList = ({
 		<DataTable
 			columns={columns({ wallets, categories })}
 			data={filteredTransactions}
+			initialColumnVisibility={{ type: false }}
 			toolbar={
 				<div className="flex items-center flex-wrap gap-4">
 					<TransactionTabs value={filterType} onValueChange={setFilterType} />

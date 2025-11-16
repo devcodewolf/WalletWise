@@ -38,6 +38,7 @@ export const columns = ({
 	{
 		accessorKey: 'type',
 		meta: { label: 'Tipo' },
+		enableHiding: true,
 		header: ({ column }) => {
 			return (
 				<Button
