@@ -21,11 +21,31 @@ export const TransactionClientList = ({
 	categories,
 	wallets,
 }: TransactionClientListProps) => {
+	// Obtener el último año y mes con datos
+	const latestDateInfo = useMemo(() => {
+		if (initialTransactions.length === 0) {
+			return { year: 'Años', month: 'Meses' };
+		}
+
+		const latestDate = initialTransactions.reduce((latest, t) => {
+			if (!t.date) return latest;
+			const tDate = new Date(t.date);
+			return tDate > latest ? tDate : latest;
+		}, new Date(initialTransactions[0].date));
+
+		return {
+			year: latestDate.getFullYear().toString(),
+			month: (latestDate.getMonth() + 1).toString(),
+		};
+	}, [initialTransactions]);
+
 	const [filterType, setFilterType] = useState<'Todos' | 'Gasto' | 'Ingreso'>(
 		'Todos'
 	);
-	const [selectedYear, setSelectedYear] = useState<string>('Años');
-	const [selectedMonth, setSelectedMonth] = useState<string>('Meses');
+	const [selectedYear, setSelectedYear] = useState<string>(latestDateInfo.year);
+	const [selectedMonth, setSelectedMonth] = useState<string>(
+		latestDateInfo.month
+	);
 
 	// Obtener años únicos de las transacciones
 	const availableYears = useMemo(() => {
@@ -67,8 +87,28 @@ export const TransactionClientList = ({
 
 	// Resetear el mes al cambiar de año
 	useEffect(() => {
-		setSelectedMonth('Meses');
-	}, [selectedYear]);
+		// Al cambiar de año, seleccionar el último mes disponible en ese año
+		if (selectedYear !== 'Años') {
+			const monthsInYear = new Set<number>();
+			initialTransactions.forEach((transaction) => {
+				if (transaction.date) {
+					const date = new Date(transaction.date);
+					if (date.getFullYear().toString() === selectedYear) {
+						monthsInYear.add(date.getMonth());
+					}
+				}
+			});
+
+			if (monthsInYear.size > 0) {
+				const latestMonth = Math.max(...Array.from(monthsInYear));
+				setSelectedMonth((latestMonth + 1).toString());
+			} else {
+				setSelectedMonth('Meses');
+			}
+		} else {
+			setSelectedMonth('Meses');
+		}
+	}, [selectedYear, initialTransactions]);
 
 	// Filtrar transacciones por tipo, año y mes
 	const filteredTransactions = useMemo(() => {
@@ -99,6 +139,7 @@ export const TransactionClientList = ({
 		<DataTable
 			columns={columns({ wallets, categories })}
 			data={filteredTransactions}
+			initialColumnVisibility={{ type: false }}
 			toolbar={
 				<div className="flex items-center flex-wrap gap-4">
 					<TransactionTabs value={filterType} onValueChange={setFilterType} />
