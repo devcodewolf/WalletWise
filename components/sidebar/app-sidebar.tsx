@@ -64,7 +64,7 @@ export function AppSidebar() {
 	const { user } = useUserStore()
 
 	return (
-		<Sidebar variant='inset'>
+		<Sidebar variant='inset' collapsible='icon'>
 			<SidebarHeader>
 				{/* <TeamSwitcher teams={data.teams} /> */}
 				<div className='flex items-center '>
@@ -75,7 +75,7 @@ export function AppSidebar() {
 						className='h-18 w-18 object-contain'
 						alt=''
 					/>
-					<p className='text-lg  leading-5 color-[#10b981]'>
+					<p className='text-lg leading-5 color-[#10b981] group-data-[collapsible=icon]:hidden'>
 						Wallet<span className='text-[#3972bf] font-semibold'>Wise</span>
 					</p>
 				</div>

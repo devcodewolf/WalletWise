@@ -133,7 +133,9 @@ export const columns: ColumnDef<RecurringTransactionWithRelations>[] = [
 			return (
 				<Badge
 					variant='secondary'
-					className={isActive ? 'bg-green-600' : 'bg-red-600'}>
+					className={
+						isActive ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'
+					}>
 					{isActive ? 'Activa' : 'Inactiva'}
 				</Badge>
 			)
