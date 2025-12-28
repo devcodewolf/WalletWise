@@ -2,17 +2,17 @@
 
 import { Button } from '@/components/ui/button'
 import { Trash2 } from 'lucide-react'
-import { deleteTransaction } from '@/actions/transactions'
+import { deleteRecurringTransaction } from '@/actions/recurring'
 import { DeleteConfirmDialog } from '@/components/delete-confirm-dialog'
-import type { TransactionWithRelations } from '@/types/transactions.types'
+import { RecurringTransactionWithRelations } from '@/types/transactions.types'
 
-type DeleteTransactionProps = {
-	transaction: TransactionWithRelations
+interface DeleteRecurringProps {
+	recurring: RecurringTransactionWithRelations
 }
 
-export function DeleteTransaction({ transaction }: DeleteTransactionProps) {
+export function DeleteRecurring({ recurring }: DeleteRecurringProps) {
 	const handleDelete = async () => {
-		const result = await deleteTransaction(transaction.id)
+		const result = await deleteRecurringTransaction(recurring.id)
 		return {
 			success: result.success,
 			error: result.success
@@ -32,15 +32,15 @@ export function DeleteTransaction({ transaction }: DeleteTransactionProps) {
 			description={
 				<>
 					Esta acción no se puede deshacer. Se eliminará permanentemente la
-					transacción{' '}
+					regla recurrente{' '}
 					<strong>
-						{transaction.description || `de ${transaction.amount}€`}
+						&quot;{recurring.description || 'Sin descripción'}&quot;
 					</strong>{' '}
-					y todos sus datos asociados.
+					y no se generarán más alertas para este movimiento.
 				</>
 			}
 			onDelete={handleDelete}
-			successMessage='Transacción eliminada correctamente'
+			successMessage='Regla eliminada correctamente'
 		/>
 	)
 }

@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from 'zod'
 
 export const transactionsSchema = z.object({
 	type: z.enum(['Gasto', 'Ingreso'], {
@@ -13,6 +13,9 @@ export const transactionsSchema = z.object({
 	description: z.string().optional(),
 	walletId: z.coerce.number().optional(),
 	categoryId: z.coerce.number().optional(),
-});
+	isRecurring: z.boolean().default(false),
+	frequency: z.enum(['MONTHLY', 'YEARLY']).optional(),
+	dayOfMonth: z.coerce.number().min(1).max(31).optional(),
+})
 
-export type TransactionsFormSchema = z.infer<typeof transactionsSchema>;
+export type TransactionsFormSchema = z.infer<typeof transactionsSchema>
