@@ -1,24 +1,24 @@
-'use client';
+'use client'
 
-import { Button } from '@/components/ui/button';
-import { Check, Palette } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button'
+import { Check, Palette } from 'lucide-react'
+import { cn } from '@/lib/utils'
 import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { useColorTheme } from '@/hooks/use-color-theme';
-import { ColorTheme } from '@/types/color.types';
+} from '@/components/ui/dropdown-menu'
+import { useColorTheme } from '@/hooks/use-color-theme'
+import { ColorTheme } from '@/types/color.types'
 
 type ThemeOption = {
-	key: string;
-	label: string;
-	primaryColor: string;
-	primaryForeground: string;
-	accentColor: string;
-};
+	key: string
+	label: string
+	primaryColor: string
+	primaryForeground: string
+	accentColor: string
+}
 
 const themes: ThemeOption[] = [
 	{
@@ -49,55 +49,69 @@ const themes: ThemeOption[] = [
 		primaryForeground: 'bg-[#e9e6dc] dark:bg-[#1a1915]',
 		accentColor: 'bg-[#dad9d4] dark:bg-[#faf9f5]',
 	},
-];
+	{
+		key: 'minimal',
+		label: 'Minimal',
+		primaryColor: 'bg-[#3b82f6] dark:bg-[#818cf8]',
+		primaryForeground: 'bg-[#ffffff] dark:bg-[#ffffff]',
+		accentColor: 'bg-[#e0f2fe] dark:bg-[#1e3a8a]',
+	},
+	{
+		key: 'clean-slate',
+		label: 'Clean Slate',
+		primaryColor: 'bg-[#6366f1] dark:bg-[#818cf8]',
+		primaryForeground: 'bg-[#ffffff] dark:bg-[#0f172a]',
+		accentColor: 'bg-[#e0e7ff] dark:bg-[#374151]',
+	},
+]
 
 export function ColorThemeToggle() {
-	const { colorTheme, setColorTheme } = useColorTheme();
+	const { colorTheme, setColorTheme } = useColorTheme()
 
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
-				<Button variant="ghost" size="sm" className="h-8 gap-2 px-2">
-					<div className="flex items-center gap-2">
-						<Palette className="h-4 w-4" />
+				<Button variant='ghost' size='sm' className='h-8 gap-2 px-2'>
+					<div className='flex items-center gap-2'>
+						<Palette className='h-4 w-4' />
 					</div>
 				</Button>
 			</DropdownMenuTrigger>
-			<DropdownMenuContent align="end" className="w-48">
+			<DropdownMenuContent align='end' className='w-48'>
 				{themes.map((theme) => (
 					<DropdownMenuItem
 						key={theme.key}
 						onClick={() => setColorTheme(theme.key as ColorTheme)}
-						className="flex items-center justify-between">
-						<div className="flex items-center gap-2">
-							<div className="flex gap-0.5">
+						className='flex items-center justify-between'>
+						<div className='flex items-center gap-2'>
+							<div className='flex gap-0.5'>
 								<div
 									className={cn(
 										'size-3 rounded-full border',
-										theme.primaryColor
+										theme.primaryColor,
 									)}
 								/>
 								<div
 									className={cn(
 										'size-3 rounded-full border',
-										theme.primaryForeground
+										theme.primaryForeground,
 									)}
 								/>
 								<div
 									className={cn(
 										'size-3 rounded-full border',
-										theme.accentColor
+										theme.accentColor,
 									)}
 								/>
 							</div>
-							<span className="text-sm">{theme.label}</span>
+							<span className='text-sm'>{theme.label}</span>
 						</div>
 						{colorTheme === theme.key && (
-							<Check className="h-4 w-4 text-primary" />
+							<Check className='h-4 w-4 text-primary' />
 						)}
 					</DropdownMenuItem>
 				))}
 			</DropdownMenuContent>
 		</DropdownMenu>
-	);
+	)
 }
