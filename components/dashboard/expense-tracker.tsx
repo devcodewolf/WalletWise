@@ -7,9 +7,15 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 
 type ExpenseTrackerProps = {
 	data: Transaction[];
+	referenceMonth: number; // 0-11
+	referenceYear: number;
 };
 
-export function ExpenseTracker({ data: transactions }: ExpenseTrackerProps) {
+export function ExpenseTracker({
+	data: transactions,
+	referenceMonth,
+	referenceYear,
+}: ExpenseTrackerProps) {
 	const {
 		currentMonthIncome,
 		currentMonthExpense,
@@ -19,7 +25,7 @@ export function ExpenseTracker({ data: transactions }: ExpenseTrackerProps) {
 		expenseVariation,
 		balance,
 		balancePercentage,
-	} = useExpenseTracker(transactions);
+	} = useExpenseTracker(transactions, referenceMonth, referenceYear);
 
 	return (
 		<>

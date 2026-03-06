@@ -40,19 +40,20 @@ export function MonthlyBalanceChartClient({
 
 			{/* Contenedor del gráfico con etiquetas flotantes */}
 			<div className='relative w-[200px] h-[200px]'>
-				{/* Etiqueta ingresos — arriba izquierda */}
+				{/* Etiqueta gastos — arriba izquierda */}
 				<div className='absolute top-2 -left-1 flex flex-col items-start z-10'>
 					<div className='flex items-center gap-1.5'>
-						<span className='w-2.5 h-2.5 rounded-full bg-[#3b6ee8] shrink-0' />
 						<span className='text-[11px] text-muted-foreground font-medium'>
-							Ingresos
+							Gastos
 						</span>
+						<span className='w-2.5 h-2.5 rounded-full bg-[#f5a623] shrink-0' />
 					</div>
-					<span className='text-sm font-bold text-white ml-4'>
-						{income.toLocaleString('es-ES', {
+					<span className='text-sm font-bold text-white mr-4'>
+						{expense.toLocaleString('es-ES', {
 							minimumFractionDigits: 2,
 							maximumFractionDigits: 2,
-						})}€
+						})}
+						€
 					</span>
 				</div>
 
@@ -77,38 +78,42 @@ export function MonthlyBalanceChartClient({
 					</PieChart>
 				</ChartContainer>
 
-				{/* Centro del donut: Total */}
+				{/* Centro del donut: Balance */}
 				<div className='absolute inset-0 flex flex-col items-center justify-center pointer-events-none'>
 					<span className='text-xs text-muted-foreground font-medium'>
-						Total
+						Balance
 					</span>
-					<span className='text-lg font-bold text-white leading-tight'>
-						{total.toLocaleString('es-ES', {
+					<span
+						className={`text-sm font-bold ${balance >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+						{balance >= 0 ? '+' : ''}
+						{balance.toLocaleString('es-ES', {
 							minimumFractionDigits: 2,
 							maximumFractionDigits: 2,
-						})}€
+						})}
+						€
 					</span>
 				</div>
 
-				{/* Etiqueta gastos — abajo derecha */}
+				{/* Etiqueta ingresos — abajo derecha */}
 				<div className='absolute bottom-2 -right-1 flex flex-col items-end z-10'>
 					<div className='flex items-center gap-1.5'>
 						<span className='text-[11px] text-muted-foreground font-medium'>
-							Gastos
+							Ingresos
 						</span>
-						<span className='w-2.5 h-2.5 rounded-full bg-[#f5a623] shrink-0' />
+						<span className='w-2.5 h-2.5 rounded-full bg-[#3b6ee8] shrink-0' />
 					</div>
-					<span className='text-sm font-bold text-white mr-4'>
-						{expense.toLocaleString('es-ES', {
+					<span className='text-sm font-bold text-white ml-4'>
+						{income.toLocaleString('es-ES', {
 							minimumFractionDigits: 2,
 							maximumFractionDigits: 2,
-						})}€
+						})}
+						€
 					</span>
 				</div>
 			</div>
 
 			{/* Balance neto debajo */}
-			<div className='mt-3 flex items-center gap-1.5'>
+			{/* <div className='mt-3 flex items-center gap-1.5'>
 				<span className='text-xs text-muted-foreground'>Balance:</span>
 				<span
 					className={`text-sm font-bold ${balance >= 0 ? 'text-green-400' : 'text-red-400'}`}>
@@ -116,9 +121,10 @@ export function MonthlyBalanceChartClient({
 					{balance.toLocaleString('es-ES', {
 						minimumFractionDigits: 2,
 						maximumFractionDigits: 2,
-					})}€
+					})}
+					€
 				</span>
-			</div>
+			</div> */}
 		</div>
 	)
 }

@@ -437,3 +437,39 @@ export async function confirmRecurringTransactions(
 		return { success: false, error: 'Error al confirmar las transacciones' }
 	}
 }
+
+// Obtiene los pares año/mes únicos donde el usuario tiene transacciones
+// Ordenados de más reciente a más antiguo
+export async function getAvailableMonths(): Promise<
+	{ year: number; month: number }[]
+> {
+	try {
+		const authResult = await requireAuth()
+		if (!authResult.success) return []
+
+		const transactions = await db.transaction.findMany({
+			where: { userId: Number(authResult.user!.id) },
+			select: { date: true },
+			orderBy: { date: 'desc' },
+		})
+
+		const seen = new Set<string>()
+		const result: { year: number; month: number }[] = []
+
+		for (const t of transactions) {
+			const d = new Date(t.date)
+			const year = d.getFullYear()
+			const month = d.getMonth() + 1 // 1-12
+			const key = `${year}-${month}`
+			if (!seen.has(key)) {
+				seen.add(key)
+				result.push({ year, month })
+			}
+		}
+
+		return result // ya viene ordenado desc por la query
+	} catch (error) {
+		console.error('Error fetching available months:', error)
+		return []
+	}
+}

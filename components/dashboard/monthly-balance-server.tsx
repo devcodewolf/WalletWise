@@ -1,20 +1,18 @@
 import { getTransactions } from '@/actions/transactions'
 import type { Transaction } from '@prisma/client'
 import { MonthlyBalanceChartClient } from './monthly-balance-chart'
+import { monthLabel } from '@/lib/constants'
 
-const MONTH_NAMES = [
-	'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-	'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre',
-]
-
-function getMonthlyTotals(transactions: Transaction[]) {
-	const now = new Date()
-	const currentMonth = now.getMonth()
-	const currentYear = now.getFullYear()
+function getMonthlyTotals(
+	transactions: Transaction[],
+	month: number, // 1-12
+	year: number
+) {
+	const targetMonth = month - 1 // convertir a 0-11
 
 	const monthTxs = transactions.filter((t) => {
 		const d = new Date(t.date)
-		return d.getMonth() === currentMonth && d.getFullYear() === currentYear
+		return d.getMonth() === targetMonth && d.getFullYear() === year
 	})
 
 	const income = monthTxs
@@ -31,24 +29,37 @@ function getMonthlyTotals(transactions: Transaction[]) {
 		income,
 		expense,
 		balance: income - expense,
-		month: `${MONTH_NAMES[currentMonth]} ${currentYear}`,
+		month: monthLabel(month, year),
 	}
 }
 
-export async function MonthlyBalanceServer() {
+interface MonthlyBalanceServerProps {
+	year: number
+	month: number // 1-12
+}
+
+export async function MonthlyBalanceServer({
+	year,
+	month,
+}: MonthlyBalanceServerProps) {
 	const resp = await getTransactions()
 
 	const transactions: Transaction[] =
 		resp.success && 'data' in resp ? resp.data : []
 
-	const { income, expense, balance, month } = getMonthlyTotals(transactions)
+	const {
+		income,
+		expense,
+		balance,
+		month: monthLabelStr,
+	} = getMonthlyTotals(transactions, month, year)
 
 	return (
 		<MonthlyBalanceChartClient
 			income={income}
 			expense={expense}
 			balance={balance}
-			month={month}
+			month={monthLabelStr}
 		/>
 	)
 }
