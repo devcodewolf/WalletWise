@@ -1,12 +1,12 @@
 'use client'
 
 import {
-	Bar,
-	BarChart,
+	Line,
+	LineChart,
 	XAxis,
 	YAxis,
 	ResponsiveContainer,
-	Cell,
+	Dot,
 } from 'recharts'
 import {
 	ChartContainer,
@@ -17,7 +17,7 @@ import { Transaction } from '@prisma/client'
 import { useMemo } from 'react'
 import { YearlySummary } from '@/components/statistics/yearly-summary'
 
-interface YearlyChartProps {
+interface YearlyLineChartProps {
 	transactions: Transaction[]
 }
 
@@ -27,8 +27,8 @@ const MONTH_NAMES = [
 ]
 
 const chartConfig = {
-	gastos: { label: 'Gastos', color: '#93c5fd' },
 	ingresos: { label: 'Ingresos', color: '#3b82f6' },
+	gastos: { label: 'Gastos', color: '#ef4444' },
 }
 
 
@@ -37,7 +37,7 @@ function formatAxisTick(value: number) {
 	return `€${value}`
 }
 
-export function YearlyChart({ transactions }: YearlyChartProps) {
+export function YearlyLineChart({ transactions }: YearlyLineChartProps) {
 	const monthlyData = useMemo(() =>
 		Array.from({ length: 12 }, (_, i) => {
 			const month = i + 1
@@ -62,14 +62,12 @@ export function YearlyChart({ transactions }: YearlyChartProps) {
 
 	return (
 		<div className='flex flex-col flex-1 min-h-0 gap-3'>
-			{/* Gráfico de barras */}
+			{/* Gráfico de líneas */}
 			<ChartContainer config={chartConfig} className='flex-1 min-h-0 w-full'>
 				<ResponsiveContainer width='100%' height='100%'>
-					<BarChart
+					<LineChart
 						data={monthlyData}
-						barCategoryGap='20%'
-						barGap={3}
-						margin={{ top: 10, right: 0, left: -10, bottom: 0 }}>
+						margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
 						<XAxis
 							dataKey='month'
 							stroke='#6B7280'
@@ -94,19 +92,25 @@ export function YearlyChart({ transactions }: YearlyChartProps) {
 								color: '#F9FAFB',
 							}}
 						/>
-						{/* Barras ingresos — azul oscuro */}
-						<Bar dataKey='ingresos' radius={[4, 4, 0, 0]}>
-							{monthlyData.map((_, i) => (
-								<Cell key={i} fill='#3b82f6' />
-							))}
-						</Bar>
-						{/* Barras gastos — azul claro */}
-						<Bar dataKey='gastos' radius={[4, 4, 0, 0]}>
-							{monthlyData.map((_, i) => (
-								<Cell key={i} fill='#93c5fd' />
-							))}
-						</Bar>
-					</BarChart>
+						{/* Línea ingresos — azul */}
+						<Line
+							type='monotone'
+							dataKey='ingresos'
+							stroke='#3b82f6'
+							strokeWidth={2.5}
+							dot={<Dot r={3} fill='#3b82f6' stroke='#1e3a5f' strokeWidth={1.5} />}
+							activeDot={{ r: 5, fill: '#3b82f6', stroke: '#93c5fd', strokeWidth: 2 }}
+						/>
+						{/* Línea gastos — rojo */}
+						<Line
+							type='monotone'
+							dataKey='gastos'
+							stroke='#ef4444'
+							strokeWidth={2.5}
+							dot={<Dot r={3} fill='#ef4444' stroke='#7f1d1d' strokeWidth={1.5} />}
+							activeDot={{ r: 5, fill: '#ef4444', stroke: '#fca5a5', strokeWidth: 2 }}
+						/>
+					</LineChart>
 				</ResponsiveContainer>
 			</ChartContainer>
 

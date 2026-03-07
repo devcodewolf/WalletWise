@@ -1,7 +1,7 @@
 import { getTransactions, getAvailableMonths } from '@/actions/transactions'
 import type { TransactionWithRelations } from '@/types/transactions.types'
-import { YearlyChart } from '@/components/statistics/chart-yearly'
-import { Card, CardHeader } from '@/components/ui/card'
+import { YearlyChartSwitcher } from '@/components/statistics/yearly-chart-switcher'
+import { Card } from '@/components/ui/card'
 import { ExpenseTracker } from '@/components/dashboard/expense-tracker'
 import { CurrentDay } from '@/components/dashboard/current-day'
 import { Suspense } from 'react'
@@ -43,19 +43,12 @@ async function AdminPanelData({
 				referenceMonth={month - 1} // convertir a 0-11
 				referenceYear={year}
 			/>
-			<div className='grid grid-cols-1 grid-rows-2 md:grid-cols-2 lg:grid-cols-4 gap-4 max-h-[calc(100vh-20rem)]'>
-				<Card className='p-6 gap-4 justify-between row-span-2 col-span-1 lg:col-span-2 xl:col-span-3 min-h-0 overflow-hidden'>
-					<CardHeader className='flex-col gap-4 p-0'>
-						<div>
-							<p className='text-gray-400 text-xl mt-1'>
-								Estadísticas anual {year}
-							</p>
-						</div>
-					</CardHeader>
-					<YearlyChart transactions={yearlyTransactions} />
+			<div className='grid grid-cols-1 grid-rows-2 md:grid-cols-2 lg:grid-cols-4 gap-4 max-h-[calc(100vh-30rem)]'>
+				<Card className='p-7 gap-4 justify-between row-span-2 col-span-1 lg:col-span-2 xl:col-span-3 min-h-0 overflow-hidden'>
+					<YearlyChartSwitcher transactions={yearlyTransactions} year={year} />
 				</Card>
 				<div className='flex flex-col md:col-span-1 lg:col-span-2 xl:col-span-1'>
-					<Card className='p-6'>
+					<Card className='px-6 py-8'>
 						<CurrentDay />
 					</Card>
 				</div>
