@@ -34,7 +34,7 @@ export function MonthlyBalanceChartClient({
 	const COLORS = isEmpty ? ['#1f2937'] : ['#3b6ee8', '#f5a623']
 
 	return (
-		<div className='flex flex-col items-center pt-8 pb-2 select-none'>
+		<div className='flex flex-col items-center justify-center flex-1 select-none'>
 			{/* Mes */}
 			<p className='text-xs text-muted-foreground mb-3'>{month}</p>
 

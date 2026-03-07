@@ -16,7 +16,7 @@ export function CurrentDay() {
 	const year = now.getFullYear()
 
 	return (
-		<div className='flex flex-col justify-center h-full  gap-1'>
+		<div className='flex flex-col justify-center h-full gap-1'>
 			{/* Badge HOY */}
 			<span className='text-xs font-semibold tracking-widest text-primary/80 uppercase'>
 				Hoy

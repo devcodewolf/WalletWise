@@ -35,7 +35,7 @@ export default async function AdminLayout({
 					<SessionProvider>
 						<SessionExpiredModal></SessionExpiredModal>
 					</SessionProvider>
-					<div className='px-10 py-8'>{children}</div>
+					<div className='layout-main px-5 py-2'>{children}</div>
 				</SidebarInset>
 			</SidebarProvider>
 		</>
