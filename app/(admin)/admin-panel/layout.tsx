@@ -30,7 +30,7 @@ export default async function AdminLayout({
 				{/* opcion para poder hacerlo en un server component */}
 				<AdminUserStore user={session?.user} />
 				<AppSidebar />
-				<SidebarInset className='px-6 pb-4 overflow-x-hidden'>
+				<SidebarInset className='px-6 overflow-x-hidden'>
 					<Header />
 					<SessionProvider>
 						<SessionExpiredModal></SessionExpiredModal>

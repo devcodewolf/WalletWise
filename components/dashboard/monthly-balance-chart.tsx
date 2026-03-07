@@ -34,14 +34,14 @@ export function MonthlyBalanceChartClient({
 	const COLORS = isEmpty ? ['#1f2937'] : ['#3b6ee8', '#f5a623']
 
 	return (
-		<div className='flex flex-col items-center pt-4 pb-2 select-none'>
+		<div className='flex flex-col items-center pt-8 pb-2 select-none'>
 			{/* Mes */}
 			<p className='text-xs text-muted-foreground mb-3'>{month}</p>
 
 			{/* Contenedor del gráfico con etiquetas flotantes */}
-			<div className='relative w-[200px] h-[200px]'>
+			<div className='relative w-full max-w-[300px] h-[240px]'>
 				{/* Etiqueta gastos — arriba izquierda */}
-				<div className='absolute top-2 -left-1 flex flex-col items-start z-10'>
+				<div className='absolute top-2 left-0 flex flex-col items-start z-10'>
 					<div className='flex items-center gap-1.5'>
 						<span className='text-[11px] text-muted-foreground font-medium'>
 							Gastos
@@ -64,8 +64,8 @@ export function MonthlyBalanceChartClient({
 							data={chartData}
 							cx='50%'
 							cy='50%'
-							innerRadius={62}
-							outerRadius={88}
+							innerRadius={88}
+							outerRadius={120}
 							paddingAngle={isEmpty ? 0 : 4}
 							dataKey='value'
 							startAngle={90}
@@ -95,12 +95,12 @@ export function MonthlyBalanceChartClient({
 				</div>
 
 				{/* Etiqueta ingresos — abajo derecha */}
-				<div className='absolute bottom-2 -right-1 flex flex-col items-end z-10'>
+				<div className='absolute bottom-2 -right-2 flex flex-col items-end z-10'>
 					<div className='flex items-center gap-1.5'>
+						<span className='w-2.5 h-2.5 rounded-full bg-[#3b6ee8] shrink-0' />
 						<span className='text-[11px] text-muted-foreground font-medium'>
 							Ingresos
 						</span>
-						<span className='w-2.5 h-2.5 rounded-full bg-[#3b6ee8] shrink-0' />
 					</div>
 					<span className='text-sm font-bold text-white ml-4'>
 						{income.toLocaleString('es-ES', {

@@ -84,6 +84,15 @@ export default async function AdminPanel({ searchParams }: PageProps) {
 
 	return (
 		<>
+			<div>
+				{/* Navegación entre meses con datos */}
+				<Suspense>
+					<MonthNavigator availableMonths={availableMonths} />
+				</Suspense>
+				<p className='text-[11px] text-gray-400 mb-2 mr-2 mt-3 text-right'>
+					(*) Datos comparativos 3 meses anteriores
+				</p>
+			</div>
 			<div className='flex gap-5'>
 				<div className='w-3/12'>
 					<WelcomeDashboard />
@@ -94,11 +103,6 @@ export default async function AdminPanel({ searchParams }: PageProps) {
 					</Suspense>
 				</div>
 				<div className='w-9/12 space-y-4'>
-					{/* Navegación entre meses con datos */}
-					<Suspense>
-						<MonthNavigator availableMonths={availableMonths} />
-					</Suspense>
-
 					<Suspense fallback={<DashboardPageSkeleton />}>
 						<AdminPanelData year={year} month={month} />
 					</Suspense>
