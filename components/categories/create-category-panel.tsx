@@ -91,9 +91,7 @@ export function CreateCategoryPanel() {
 									<div className='flex gap-2'>
 										<Button
 											type='button'
-											variant={
-												field.value === 'Gasto' ? 'default' : 'secondary'
-											}
+											variant={field.value === 'Gasto' ? 'default' : 'outline'}
 											className='flex-1'
 											onClick={() => field.onChange('Gasto')}>
 											Gasto
@@ -101,7 +99,7 @@ export function CreateCategoryPanel() {
 										<Button
 											type='button'
 											variant={
-												field.value === 'Ingreso' ? 'default' : 'secondary'
+												field.value === 'Ingreso' ? 'default' : 'outline'
 											}
 											className='flex-1'
 											onClick={() => field.onChange('Ingreso')}>
