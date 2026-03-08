@@ -10,6 +10,7 @@ import { WelcomeDashboard } from '@/components/dashboard/welcome-dashboard'
 import { MonthlyBalanceServer } from '@/components/dashboard/monthly-balance-server'
 import { MonthlyBalanceSkeleton } from '@/components/dashboard/monthly-balance-skeleton'
 import { MonthNavigator } from '@/components/dashboard/month-navigator'
+import { MonthNavigatorSkeleton } from '@/components/dashboard/month-navigator-skeleton'
 import { RecentTransactions } from '@/components/dashboard/recent-transactions'
 
 // searchParams tipados como Promise para Next.js 15
@@ -83,7 +84,7 @@ export default async function AdminPanel({ searchParams }: PageProps) {
 		<>
 			<div>
 				{/* Navegación entre meses con datos */}
-				<Suspense>
+				<Suspense fallback={<MonthNavigatorSkeleton />}>
 					<MonthNavigator availableMonths={availableMonths} />
 				</Suspense>
 			</div>

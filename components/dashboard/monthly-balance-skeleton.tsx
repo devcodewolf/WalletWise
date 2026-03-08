@@ -2,43 +2,38 @@ import { Skeleton } from '@/components/ui/skeleton'
 
 export function MonthlyBalanceSkeleton() {
 	return (
-		<div className='flex flex-col items-center pt-4 pb-2'>
+		<div className='flex flex-col items-center justify-center flex-1 select-none gap-3'>
 			{/* Mes */}
-			<Skeleton className='h-3 w-20 mb-3' />
+			<Skeleton className='h-3 w-16 mb-1' />
 
-			{/* Zona del gráfico */}
-			<div className='relative w-[200px] h-[200px]'>
-				{/* Etiqueta ingresos arriba izquierda */}
-				<div className='absolute top-2 -left-1 flex flex-col gap-1'>
-					<Skeleton className='h-3 w-14' />
-					<Skeleton className='h-4 w-20 ml-4' />
+			{/* Donut chart */}
+			<div className='relative w-full max-w-[230px] h-[240px]'>
+				{/* Etiqueta gastos — arriba izquierda */}
+				<div className='absolute top-2 left-0 flex flex-col gap-1'>
+					<Skeleton className='h-3 w-12' />
+					<Skeleton className='h-4 w-20' />
 				</div>
 
 				{/* Donut circular */}
 				<div className='absolute inset-0 flex items-center justify-center'>
-					<Skeleton className='w-[176px] h-[176px] rounded-full' />
+					<Skeleton className='w-[190px] h-[190px] rounded-full' />
+					{/* Agujero interior */}
 					<div className='absolute flex items-center justify-center'>
-						<Skeleton className='w-[124px] h-[124px] rounded-full bg-card' />
+						<Skeleton className='w-[130px] h-[130px] rounded-full bg-card' />
 					</div>
 				</div>
 
-				{/* Centro */}
+				{/* Centro: Balance */}
 				<div className='absolute inset-0 flex flex-col items-center justify-center gap-1'>
-					<Skeleton className='h-3 w-8' />
+					<Skeleton className='h-3 w-12' />
 					<Skeleton className='h-5 w-20' />
 				</div>
 
-				{/* Etiqueta gastos abajo derecha */}
-				<div className='absolute bottom-2 -right-1 flex flex-col items-end gap-1'>
+				{/* Etiqueta ingresos — abajo derecha */}
+				<div className='absolute bottom-2 -right-2 flex flex-col items-end gap-1'>
 					<Skeleton className='h-3 w-14' />
-					<Skeleton className='h-4 w-20 mr-4' />
+					<Skeleton className='h-4 w-20' />
 				</div>
-			</div>
-
-			{/* Balance */}
-			<div className='mt-3 flex items-center gap-2'>
-				<Skeleton className='h-3 w-12' />
-				<Skeleton className='h-4 w-16' />
 			</div>
 		</div>
 	)
