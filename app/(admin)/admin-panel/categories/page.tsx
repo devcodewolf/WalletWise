@@ -1,27 +1,30 @@
-import { CategoryList } from '@/components/categories/category-list';
-
-import { Card } from '@/components/ui/card';
-import HeaderCategory from '@/components/categories/header-category';
-import { Separator } from '@/components/ui/separator';
-import { Suspense } from 'react';
-import { TableListSkeleton } from '@/components/table-list-skeleton';
-
-// Forzar el renderizado dinámico de la página
-// export const dynamic = 'force-dynamic';
+import { Suspense } from 'react'
+import { CreateCategoryPanel } from '@/components/categories/create-category-panel'
+import { CategoryListPanel } from '@/components/categories/category-list-panel'
+import { TableListSkeleton } from '@/components/table-list-skeleton'
+import HeaderCategory from '@/components/categories/header-category'
+import { Separator } from '@/components/ui/separator'
 
 export default function CategoriesPage() {
 	return (
 		<>
-			<div className="pt-4">
+			<div className='pt-4'>
 				<HeaderCategory />
 			</div>
-			<Separator className="mt-4 mb-6" />
-			<Card className="p-6 gap-4">
-				{/* category */}
-				<Suspense fallback={<TableListSkeleton />}>
-					<CategoryList />
-				</Suspense>
-			</Card>
+			<Separator className='mt-4 mb-6' />
+			<div className='lg:flex gap-10 items-start '>
+				{/* Panel izquierdo — sticky */}
+				<aside className='lg:w-96 shrink-0 sticky top-4'>
+					<CreateCategoryPanel />
+				</aside>
+
+				{/* Panel derecho — lista de categorías */}
+				<div className='flex-1 min-w-0'>
+					<Suspense fallback={<TableListSkeleton />}>
+						<CategoryListPanel />
+					</Suspense>
+				</div>
+			</div>
 		</>
-	);
+	)
 }
