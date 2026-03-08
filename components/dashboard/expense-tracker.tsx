@@ -30,6 +30,9 @@ export function ExpenseTracker({
 	return (
 		<>
 			{/* Métricas Cards */}
+			<p className='text-[11px] text-gray-400 mb-2 mr-2 mt-3 text-right'>
+				(*) Datos comparativos 3 meses anteriores
+			</p>
 			<section>
 				<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4'>
 					{/* Total Ingresos */}

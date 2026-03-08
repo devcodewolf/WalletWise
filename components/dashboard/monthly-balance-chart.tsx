@@ -39,7 +39,7 @@ export function MonthlyBalanceChartClient({
 			<p className='text-xs text-muted-foreground mb-3'>{month}</p>
 
 			{/* Contenedor del gráfico con etiquetas flotantes */}
-			<div className='relative w-full max-w-[300px] h-[240px]'>
+			<div className='relative w-full max-w-[230px] h-[240px]'>
 				{/* Etiqueta gastos — arriba izquierda */}
 				<div className='absolute top-2 left-0 flex flex-col items-start z-10'>
 					<div className='flex items-center gap-1.5'>
@@ -48,7 +48,7 @@ export function MonthlyBalanceChartClient({
 						</span>
 						<span className='w-2.5 h-2.5 rounded-full bg-[#f5a623] shrink-0' />
 					</div>
-					<span className='text-sm font-bold text-white mr-4'>
+					<span className='text-sm font-bold dark:text-white mr-4'>
 						{expense.toLocaleString('es-ES', {
 							minimumFractionDigits: 2,
 							maximumFractionDigits: 2,
@@ -64,8 +64,8 @@ export function MonthlyBalanceChartClient({
 							data={chartData}
 							cx='50%'
 							cy='50%'
-							innerRadius={88}
-							outerRadius={120}
+							innerRadius={65}
+							outerRadius={95}
 							paddingAngle={isEmpty ? 0 : 4}
 							dataKey='value'
 							startAngle={90}
@@ -97,12 +97,12 @@ export function MonthlyBalanceChartClient({
 				{/* Etiqueta ingresos — abajo derecha */}
 				<div className='absolute bottom-2 -right-2 flex flex-col items-end z-10'>
 					<div className='flex items-center gap-1.5'>
-						<span className='w-2.5 h-2.5 rounded-full bg-[#3b6ee8] shrink-0' />
 						<span className='text-[11px] text-muted-foreground font-medium'>
 							Ingresos
 						</span>
+						<span className='w-2.5 h-2.5 rounded-full bg-[#3b6ee8] shrink-0' />
 					</div>
-					<span className='text-sm font-bold text-white ml-4'>
+					<span className='text-sm font-bold dark:text-white ml-4'>
 						{income.toLocaleString('es-ES', {
 							minimumFractionDigits: 2,
 							maximumFractionDigits: 2,

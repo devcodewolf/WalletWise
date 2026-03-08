@@ -17,7 +17,7 @@ export function YearlySummary({
 	balanceNeto,
 }: YearlySummaryProps) {
 	return (
-		<div className='grid grid-cols-3 gap-2 rounded-xl bg-background/40 border border-border px-4 py-3 mt-5'>
+		<div className='flex md:flex-col lg:flex-row justify-around *:flex-1 *:py-3 gap-2 rounded-xl bg-background/40 border border-border px-4 mt-5 mx-5 md:mx-0 lg:mx-5'>
 			<div className='flex flex-col items-center gap-0.5'>
 				<span className='text-[10px] uppercase tracking-widest text-neutral-500 font-semibold'>
 					Total Ingresos
@@ -26,7 +26,7 @@ export function YearlySummary({
 					€{formatCurrency(totalIngresos)}
 				</span>
 			</div>
-			<div className='flex flex-col items-center gap-0.5 border-x border-border'>
+			<div className='flex flex-col items-center gap-0.5 border-y lg:border-x lg:border-y-0 border-border'>
 				<span className='text-[10px] uppercase tracking-widest text-neutral-500 font-semibold'>
 					Total Gastos
 				</span>
@@ -40,7 +40,7 @@ export function YearlySummary({
 				</span>
 				<span
 					className={`text-base font-bold ${balanceNeto >= 0 ? 'text-blue-500' : 'text-red-400'}`}>
-					{balanceNeto >= 0 ? '+' : ''}€{formatCurrency(balanceNeto)}
+					{balanceNeto >= 0 ? '+' : '-'} €{formatCurrency(balanceNeto)}
 				</span>
 			</div>
 		</div>

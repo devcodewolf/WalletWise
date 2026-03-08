@@ -44,19 +44,19 @@ async function AdminPanelData({
 				referenceMonth={month - 1} // convertir a 0-11
 				referenceYear={year}
 			/>
-			<div className='grid grid-cols-1 grid-rows-2 md:grid-cols-2 lg:grid-cols-4 gap-4 md:h-[calc(100vh-18rem)] 2xl:h-[calc(100vh-26rem)]'>
-				<Card className='p-7 gap-4 justify-between row-span-2 col-span-1 lg:col-span-2 xl:col-span-3 min-h-0 overflow-hidden'>
+			<section className='grid grid-cols-1 grid-rows-2 md:grid-cols-2 lg:grid-cols-4 gap-4 md:h-[calc(100vh-18rem)] 2xl:h-[calc(100vh-26rem)]'>
+				<Card className='p-7 gap-4 justify-between row-span-2 col-span-1 lg:col-span-3 min-h-0 overflow-hidden'>
 					<YearlyChartSwitcher transactions={yearlyTransactions} year={year} />
 				</Card>
-				<div className='flex flex-col md:col-span-1 lg:col-span-2 xl:col-span-1 row-span-2 gap-4'>
+				<div className='flex flex-col md:col-span-1 lg:col-span-1 row-span-2 gap-4'>
 					<Card className='p-6'>
 						<CurrentDay />
 					</Card>
-					<Card className='px-5 py-5 flex-1 overflow-hidden'>
+					<Card className='px-5 py-5 flex-1 overflow-hidden max-h-96 md:max-h-none'>
 						<RecentTransactions transactions={transactions} />
 					</Card>
 				</div>
-			</div>
+			</section>
 		</>
 	)
 }
@@ -86,14 +86,11 @@ export default async function AdminPanel({ searchParams }: PageProps) {
 				<Suspense>
 					<MonthNavigator availableMonths={availableMonths} />
 				</Suspense>
-				<p className='text-[11px] text-gray-400 mb-2 mr-2 mt-3 text-right'>
-					(*) Datos comparativos 3 meses anteriores
-				</p>
 			</div>
 			<div className='2xl:flex gap-12'>
-				<div className='2xl:w-2/12 flex 2xl:flex-col justify-between gap-4 mb-4 2xl:mb-0 '>
+				<div className='2xl:w-2/12 md:flex 2xl:flex-col justify-between gap-4 mb-4 2xl:mb-0 space-y-2 pt-8'>
 					{/* bienvenido */}
-					<div className='w-1/3 2xl:w-full'>
+					<div className='md:w-1/3 2xl:w-full'>
 						<WelcomeDashboard />
 					</div>
 

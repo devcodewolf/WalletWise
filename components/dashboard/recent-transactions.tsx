@@ -45,10 +45,10 @@ export function RecentTransactions({ transactions }: RecentTransactionsProps) {
 						return (
 							<li
 								key={t.id}
-								className='2xl:flex items-center gap-3 px-2 py-2 border-b hover:bg-muted/80 transition-colors group'>
+								className=' gap-3 px-2 py-2 border-b hover:bg-muted/80 transition-colors group'>
 								{/* Icono tipo */}
 								<span
-									className={`shrink-0 flex items-center mb-322xl:mb-0 justify-center w-7 h-7 rounded-full transition-transform group-hover:scale-110 ${
+									className={`shrink-0 flex items-center mb-2 justify-center  size-6 rounded-full transition-transform group-hover:scale-110 ${
 										isIncome
 											? 'bg-green-500/15 text-green-400'
 											: 'bg-red-500/15 text-red-400'
