@@ -35,6 +35,8 @@ model Wallet {
   name            String
   initialBalance  Float         @default(0)
   currentBalance  Float         @default(0)
+  color           String        @default("#3b82f6") // Added
+  image           String?                           // Added
   userId          Int
   user            User          @relation(fields: [userId], references: [id])
   createdAt       DateTime      @default(now())

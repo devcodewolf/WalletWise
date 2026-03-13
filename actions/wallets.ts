@@ -12,6 +12,9 @@ export async function getWallets() {
 			return authResult;
 		}
 
+		const now = new Date()
+		const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1)
+
 		const wallets = await db.wallet.findMany({
 			where: {
 				userId: Number(authResult.user!.id),
@@ -21,7 +24,27 @@ export async function getWallets() {
 			},
 		});
 
-		return { success: true, data: wallets };
+		const enrichedWallets = await Promise.all(
+			wallets.map(async (wallet) => {
+				const transactions = await db.transaction.findMany({
+					where: { walletId: wallet.id, date: { gte: firstDayOfMonth } },
+					orderBy: { date: 'desc' },
+				});
+				
+				const lastTransaction = await db.transaction.findFirst({
+					where: { walletId: wallet.id },
+					orderBy: { date: 'desc' },
+				});
+
+				return {
+					...wallet,
+					transactions,
+					lastTransaction,
+				};
+			})
+		);
+
+		return { success: true, data: enrichedWallets };
 	} catch (error) {
 		console.error('Error fetching wallets:', error);
 		return { success: false, error: 'Error al obtener las carteras' };
@@ -60,7 +83,7 @@ export async function createWallet(values: WalletsFormSchema) {
 // Update a wallet for the current user
 export async function updateWallet(
 	id: number,
-	data: { name?: string; initialBalance?: number }
+	data: { name?: string; initialBalance?: number; color?: string; image?: string | null }
 ) {
 	try {
 		const authResult = await requireAuth();
@@ -84,6 +107,8 @@ export async function updateWallet(
 		const toValidate = {
 			name: data.name ?? existingWallet.name,
 			initialBalance: data.initialBalance ?? existingWallet.initialBalance,
+			color: data.color ?? existingWallet.color,
+			image: data.image !== undefined ? data.image : existingWallet.image,
 		};
 
 		const parsed = walletsSchema.safeParse(toValidate);
