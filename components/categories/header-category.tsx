@@ -15,7 +15,7 @@ export default function HeaderCategory() {
 					/>
 					Categorías
 				</h2>
-				<p className='text-gray-400 mt-1'>Gestión de categorías</p>
+				<p className='text-muted-foreground mt-1'>Gestión de categorías</p>
 			</div>
 			{/* <AddCategory /> */}
 		</div>

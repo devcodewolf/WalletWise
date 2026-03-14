@@ -72,16 +72,16 @@ export function WalletCard({ wallet }: WalletCardProps) {
 			<div className='p-5 space-y-4'>
 				{/* Saldos */}
 				<div className='grid grid-cols-2 gap-3'>
-					<div className='bg-secondary rounded-xl p-3 border border-white/5'>
-						<p className='text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-1'>
+					<div className='bg-muted rounded-xl p-3 border border-white/5'>
+						<p className='text-[10px] text-muted-foreground font-bold uppercase tracking-wider mb-1'>
 							Saldo Inicial
 						</p>
 						<p className='font-semibold text-muted-foreground text-sm'>
 							{formatCurrency(wallet.initialBalance)}
 						</p>
 					</div>
-					<div className='bg-secondary rounded-xl p-3 border border-white/5'>
-						<p className='text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-1'>
+					<div className='bg-muted rounded-xl p-3 border border-white/5'>
+						<p className='text-[10px] text-muted-foreground font-bold uppercase tracking-wider mb-1'>
 							Variación Mes
 						</p>
 						<p
@@ -94,11 +94,11 @@ export function WalletCard({ wallet }: WalletCardProps) {
 
 				{/* Último movimiento */}
 				<div>
-					<p className='text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-2 ml-1'>
+					<p className='text-[10px] text-muted-foreground font-bold uppercase tracking-wider mb-2 ml-1'>
 						Último Movimiento
 					</p>
 					{lastTx ? (
-						<div className='bg-secondary rounded-xl p-3 border border-white/5 transition-colors flex items-center gap-3'>
+						<div className='bg-muted rounded-xl p-3 border border-white/5 transition-colors flex items-center gap-3'>
 							<div
 								className={`size-8 rounded-full flex items-center justify-center shrink-0 ${lastTx.type === 'Ingreso' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-red-500/10 text-red-400'}`}>
 								{lastTx.type === 'Ingreso' ? (
@@ -111,7 +111,7 @@ export function WalletCard({ wallet }: WalletCardProps) {
 								<p className='text-sm font-semibold text-muted-foreground truncate'>
 									{lastTx.description || 'Movimiento'}
 								</p>
-								<p className='text-[10px] text-gray-500'>
+								<p className='text-[10px] text-muted-foreground'>
 									{new Date(lastTx.date).toLocaleDateString()}
 								</p>
 							</div>
@@ -123,7 +123,7 @@ export function WalletCard({ wallet }: WalletCardProps) {
 						</div>
 					) : (
 						<div className='bg-secondary rounded-xl p-3 py-4 border border-white/5 flex items-center justify-center'>
-							<p className='text-xs text-gray-500'>Sin movimientos</p>
+							<p className='text-xs text-muted-foreground'>Sin movimientos</p>
 						</div>
 					)}
 				</div>

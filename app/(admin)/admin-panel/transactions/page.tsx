@@ -32,7 +32,7 @@ export default function TransactionsPage() {
 							/>
 							Movimientos
 						</h2>
-						<p className='text-gray-400 mt-1'>
+						<p className='text-muted-foreground mt-1'>
 							Registro de todos los movimientos
 						</p>
 					</div>

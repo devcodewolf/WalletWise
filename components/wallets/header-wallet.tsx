@@ -14,7 +14,7 @@ export default function HeaderWallet() {
 					/>
 					Mis billeteras
 				</h2>
-				<p className='text-gray-400 mt-1'>
+				<p className='text-muted-foreground mt-1'>
 					Gestiona y visualiza el estado actual de todas tus cuentas
 				</p>
 			</div>

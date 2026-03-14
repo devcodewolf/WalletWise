@@ -21,7 +21,9 @@ export function YearlyChartSwitcher({
 		<>
 			{/* Header con título y selector de tipo */}
 			<div className='flex items-center justify-between gap-2'>
-				<p className='text-gray-400 text-xl mt-1'>Estadísticas anual {year}</p>
+				<p className='text-muted-foreground text-xl mt-1'>
+					Estadísticas anual {year}
+				</p>
 				<ChartTypeTabs value={chartType} onChange={setChartType} />
 			</div>
 

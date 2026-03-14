@@ -1,7 +1,1 @@
-export type ColorTheme =
-	| 'default'
-	| 'caffeine'
-	| 'cosmic-night'
-	| 'claude'
-	| 'minimal'
-	| 'clean-slate'
+export type ColorTheme = 'default' | 'caffeine' | 'claude' | 'ocean-breeze'

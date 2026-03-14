@@ -13,12 +13,10 @@ export function ColorThemeProvider({ children }: { children: ReactNode }) {
 
 	useEffect(() => {
 		document.documentElement.classList.remove(
-			'theme-caffeine',
 			'theme-default',
-			'theme-cosmic-night',
+			'theme-caffeine',
+			'theme-ocean-breeze',
 			'theme-claude',
-			'theme-minimal',
-			'theme-clean-slate',
 		)
 		document.documentElement.classList.add(`theme-${colorTheme}`)
 		localStorage.setItem('color-theme', colorTheme)
