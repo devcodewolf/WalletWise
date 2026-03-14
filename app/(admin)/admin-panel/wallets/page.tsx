@@ -1,4 +1,4 @@
-import { TableListSkeleton } from '@/components/table-list-skeleton';
+import { WalletPanelSkeleton } from '@/components/wallets/wallet-panel-skeleton';
 
 import { Separator } from '@/components/ui/separator';
 import HeaderWallet from '@/components/wallets/header-wallet';
@@ -17,7 +17,7 @@ export default function WalletsPage() {
 			</div>
 			<Separator className="mt-4 mb-6" />
 			<div className="pt-2">
-				<Suspense fallback={<TableListSkeleton />}>
+				<Suspense fallback={<WalletPanelSkeleton />}>
 					<WalletPanel />
 				</Suspense>
 			</div>
