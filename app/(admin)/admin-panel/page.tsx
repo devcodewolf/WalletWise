@@ -12,6 +12,8 @@ import { MonthlyBalanceSkeleton } from '@/components/dashboard/monthly-balance-s
 import { MonthNavigator } from '@/components/dashboard/month-navigator'
 import { MonthNavigatorSkeleton } from '@/components/dashboard/month-navigator-skeleton'
 import { RecentTransactions } from '@/components/dashboard/recent-transactions'
+import { RecurringAlert } from '@/components/transactions/recurring-alert'
+import { RecurringAlertSkeleton } from '@/components/transactions/recurring-alert-skeleton'
 
 // searchParams tipados como Promise para Next.js 15
 type PageProps = {
@@ -89,15 +91,19 @@ export default async function AdminPanel({ searchParams }: PageProps) {
 				</Suspense>
 			</div>
 			<div className='2xl:flex gap-12'>
-				<div className='2xl:w-2/12 md:flex 2xl:flex-col justify-between gap-4 mb-4 2xl:mb-0 space-y-2 pt-8'>
+				<div className='2xl:w-2/12 lg:flex 2xl:flex-col justify-between  gap-4 mb-4 2xl:mb-0 space-y-2 pt-8'>
 					{/* bienvenido */}
-					<div className='md:w-1/3 2xl:w-full'>
+					<div className='md:w-1/3 2xl:w-full flex-1'>
 						<WelcomeDashboard />
 					</div>
 
 					{/* Gráfico balance mensual */}
 					<Suspense fallback={<MonthlyBalanceSkeleton />}>
 						<MonthlyBalanceServer year={year} month={month} />
+					</Suspense>
+
+					<Suspense fallback={<RecurringAlertSkeleton />}>
+						<RecurringAlert />
 					</Suspense>
 				</div>
 				<div className='2xl:w-10/12 space-y-4'>

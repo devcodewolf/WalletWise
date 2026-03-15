@@ -13,6 +13,7 @@ import { Separator } from '@/components/ui/separator'
 
 import { CircleDollarSign } from 'lucide-react'
 import { RecurringAlert } from '@/components/transactions/recurring-alert'
+import { RecurringAlertSkeleton } from '@/components/transactions/recurring-alert-skeleton'
 
 // Forzar el renderizado dinámico de la página
 // export const dynamic = 'force-dynamic';
@@ -40,7 +41,9 @@ export default function TransactionsPage() {
 				</div>
 				<Separator className='mt-4 mb-6' />
 
-				<RecurringAlert />
+				<Suspense fallback={<RecurringAlertSkeleton className='mb-4' />}>
+					<RecurringAlert className='mb-4' />
+				</Suspense>
 
 				<Card className='p-6 '>
 					<Suspense fallback={<TransactionListSkeleton />}>
