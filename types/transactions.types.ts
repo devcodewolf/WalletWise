@@ -14,5 +14,8 @@ export type RecurringTransactionWithRelations =
 		include: {
 			wallet: true
 			category: true
+			_count: {
+				select: { transactions: true }
+			}
 		}
 	}>
