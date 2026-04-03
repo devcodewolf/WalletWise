@@ -9,13 +9,17 @@ import { Transaction } from '@prisma/client'
 interface YearlyChartSwitcherProps {
 	transactions: Transaction[]
 	year: number
+	chartType?: ChartType
 }
 
 export function YearlyChartSwitcher({
 	transactions,
 	year,
+	chartType,
 }: YearlyChartSwitcherProps) {
-	const [chartType, setChartType] = useState<ChartType>('Linea')
+	const [chartTypeView, setChartTypeView] = useState<ChartType>(
+		chartType ?? 'Linea',
+	)
 
 	return (
 		<>
@@ -24,11 +28,11 @@ export function YearlyChartSwitcher({
 				<p className='text-muted-foreground text-xl mt-1'>
 					Estadísticas anual {year}
 				</p>
-				<ChartTypeTabs value={chartType} onChange={setChartType} />
+				<ChartTypeTabs value={chartTypeView} onChange={setChartTypeView} />
 			</div>
 
 			{/* Gráfico activo */}
-			{chartType === 'Linea' ? (
+			{chartTypeView === 'Linea' ? (
 				<YearlyLineChart transactions={transactions} />
 			) : (
 				<YearlyChart transactions={transactions} />

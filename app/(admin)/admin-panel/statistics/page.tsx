@@ -31,17 +31,17 @@ async function StatisticsData() {
 			{/* Gráficos en 36columnas */}
 			<div className='grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 mt-6'>
 				{/* grafico anual	 */}
-				<Card className='p-5 gap-4'>
+				<Card className='p-5 gap-4 xl:col-span-2 max-h-[500px]'>
 					<StatisticsYear transactions={transactions} />
 				</Card>
 				{/* Gráfico mensual */}
 				<Card className='p-5 gap-4'>
 					<StatisticsMonth transactions={transactions} />
 				</Card>
-				<Card className='p-5 gap-4 lg:col-span-2 xl:col-span-1'>
-					<StatisticsCategories transactions={transactions} />
-				</Card>
 			</div>
+			<Card className='p-5 gap-4 lg:col-span-2 xl:col-span-1'>
+				<StatisticsCategories transactions={transactions} />
+			</Card>
 			{/* Resúmenes mensuales y trimestrales */}
 			<Card className='p-5 px-6 gap-4'>
 				<StatisticsSumary transactions={transactions} />
@@ -80,7 +80,7 @@ export default function StatisticsPage() {
 						Estadísticas
 					</h2>
 					<p className='text-muted-foreground mt-1'>
-						Análisis detallado de tus finanzas
+						Análisis detallado de tus finanzas personales
 					</p>
 				</div>
 			</div>

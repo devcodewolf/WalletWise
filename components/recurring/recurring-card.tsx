@@ -93,7 +93,7 @@ export function RecurringCard({ recurring }: RecurringCardProps) {
 	return (
 		<Card
 			className='relative overflow-hidden flex flex-col justify-between py-0 gap-2'
-			style={{ borderTop: `4px solid ${borderColor}` }}>
+			style={{ borderTop: `2px solid ${borderColor}` }}>
 			<div className='p-5 space-y-4 flex-1'>
 				<div className='flex justify-between items-start gap-4'>
 					{/* Logo y título */}

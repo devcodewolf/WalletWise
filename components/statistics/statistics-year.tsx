@@ -3,9 +3,10 @@
 import { YearSelect } from '@/components/statistics/select-year'
 import { Transaction } from '@prisma/client'
 import { useStatistics } from '@/hooks/use-statistics'
-import { YearlyChart } from './chart-yearly'
+
 import { Calendar } from 'lucide-react'
 import { Separator } from '../ui/separator'
+import { YearlyChartSwitcher } from './yearly-chart-switcher'
 
 export default function StatisticsYear({
 	transactions,
@@ -26,7 +27,7 @@ export default function StatisticsYear({
 						orientation='vertical'
 						className='data-[orientation=vertical]:h-6'
 					/>
-					<h3 className='text-lg font-semibold'>Anual</h3>
+					<h3 className='text-lg font-semibold'>Estadística anual</h3>
 				</div>
 				<YearSelect
 					value={selectedYear}
@@ -35,7 +36,11 @@ export default function StatisticsYear({
 				/>
 			</div>
 			<Separator />
-			<YearlyChart transactions={yearlyTransactions} />
+			<YearlyChartSwitcher
+				transactions={yearlyTransactions}
+				year={Number(selectedYear)}
+				chartType='Barras'
+			/>
 		</>
 	)
 }
