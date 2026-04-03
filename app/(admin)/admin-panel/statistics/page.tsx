@@ -39,7 +39,7 @@ async function StatisticsData() {
 					<StatisticsMonth transactions={transactions} />
 				</Card>
 			</div>
-			<Card className='p-5 gap-4 lg:col-span-2 xl:col-span-1'>
+			<Card className='p-5 gap-4'>
 				<StatisticsCategories transactions={transactions} />
 			</Card>
 			{/* Resúmenes mensuales y trimestrales */}
