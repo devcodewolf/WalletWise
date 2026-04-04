@@ -42,7 +42,7 @@ export function SummaryMonthly({ transactions }: SummaryMonthlyProps) {
 	}).filter((data) => data.hasData)
 
 	return (
-		<div className='max-h-[420px] overflow-y-auto pr-1 space-y-2 scrollbar-thin scrollbar-thumb-border scrollbar-track-transparent'>
+		<div className='max-h-[420px] overflow-y-auto pr-3 space-y-2 scrollbar-thin scrollbar-thumb-border scrollbar-track-transparent'>
 			{monthlyData.length === 0 ? (
 				<div className='text-center text-muted-foreground py-10 text-sm'>
 					No hay datos para este año

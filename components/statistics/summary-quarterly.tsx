@@ -84,7 +84,7 @@ export function QuarterlySummary({
 			: new Date().getFullYear()
 
 	return (
-		<div className='space-y-3 max-h-[420px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-border scrollbar-track-transparent'>
+		<div className='space-y-3 max-h-[420px] overflow-y-auto pr-3 scrollbar-thin scrollbar-thumb-border scrollbar-track-transparent'>
 			{quarterlyData.length === 0 ? (
 				<div className='text-center text-muted-foreground py-10 text-sm'>
 					No hay datos para este año
@@ -104,7 +104,7 @@ export function QuarterlySummary({
 
 							{/* Info principal */}
 							<div className='flex-1 min-w-0'>
-								<div className='flex items-center gap-2 mb-1'>
+								<div className='flex items-center gap-2 '>
 									<p className='text-sm font-semibold text-foreground'>
 										{quarter.label} {year}
 									</p>
@@ -128,7 +128,7 @@ export function QuarterlySummary({
 									{quarter.balance >= 0 ? '+' : ''}
 									{formatAmount(quarter.balance)}
 								</p>
-								<div className='flex items-center gap-1 justify-end mt-0.5'>
+								<div className='flex items-center gap-1 justify-end'>
 									{quarter.isCurrent ? (
 										<p className='text-[10px] text-muted-foreground'>
 											Saldo actual
@@ -146,7 +146,7 @@ export function QuarterlySummary({
 						</div>
 
 						{/* Fila secundaria: ingresos / gastos */}
-						<div className='mt-3 pt-3 border-t border-border/60 grid grid-cols-3 gap-2 text-center'>
+						<div className='mt-2 pt-2 border-t border-border/60 grid grid-cols-3 gap-2 text-center'>
 							<div>
 								<p className='text-[9px] uppercase tracking-wider text-muted-foreground font-semibold mb-0.5'>
 									Ingresos
