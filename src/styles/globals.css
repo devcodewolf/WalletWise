@@ -232,4 +232,31 @@ body {
 			@apply cursor-pointer;
 		}
 	}
+
+	/* hacer la barra de scroll mas thin */
+
+	/* Para Chrome, Safari y Edge */
+	::-webkit-scrollbar {
+		width: 6px; /* Ancho de la barra vertical */
+		height: 6px; /* Alto de la barra horizontal */
+	}
+
+	::-webkit-scrollbar-track {
+		background: transparent; /* Fondo transparente */
+	}
+
+	::-webkit-scrollbar-thumb {
+		background: #cbd5e1; /* Color gris claro */
+		border-radius: 3px;
+	}
+
+	::-webkit-scrollbar-thumb:hover {
+		background: #94a3b8; /* Un poco más oscuro al pasar el mouse */
+	}
+
+	/* Para Firefox */
+	* {
+		scrollbar-width: thin; /* Estrecho */
+		scrollbar-color: #cbd5e1 transparent; /* Color del pulgar y del track */
+	}
 }

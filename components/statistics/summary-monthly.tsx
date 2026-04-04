@@ -2,14 +2,22 @@
 
 import { Transaction } from '@prisma/client'
 import { monthNames } from '@/lib/utils'
-import { TrendingDown, TrendingUp, Wallet } from 'lucide-react'
+import { ChartLine, Euro, Minus } from 'lucide-react'
 
 interface SummaryMonthlyProps {
 	transactions: Transaction[]
 }
 
+function formatAmount(amount: number, prefix = '') {
+	return `${prefix}${new Intl.NumberFormat('es-ES', {
+		style: 'currency',
+		currency: 'EUR',
+		minimumFractionDigits: 0,
+		maximumFractionDigits: 0,
+	}).format(Math.abs(amount))}`
+}
+
 export function SummaryMonthly({ transactions }: SummaryMonthlyProps) {
-	// Calcular datos por mes
 	const monthlyData = Array.from({ length: 12 }, (_, i) => {
 		const month = i + 1
 		const monthTransactions = transactions.filter(
@@ -34,78 +42,85 @@ export function SummaryMonthly({ transactions }: SummaryMonthlyProps) {
 	}).filter((data) => data.hasData)
 
 	return (
-		<>
-			<div className='max-h-80 overflow-y-auto'>
-				{monthlyData.length === 0 ? (
-					<div className='text-center text-muted-foreground py-8'>
-						No hay datos para este año
-					</div>
-				) : (
-					monthlyData.map((data) => (
-						<div
-							key={data.month}
-							className='border-b border-border pb-4 pt-2 last:border-b-0'>
-							<h4 className='font-medium  text-sm mb-1'>{data.month}</h4>
-							<div className='grid grid-cols-3 gap-3'>
-								{/* Ingresos Card */}
-								<div className='bg-muted rounded-lg p-3 flex items-center gap-3 dark:bg-zinc-700'>
-									<div className='p-2 bg-green-500/20 rounded-lg'>
-										<TrendingUp className='h-4 w-4 text-green-500' />
-									</div>
-									<div className='flex-1 min-w-0'>
-										<p className='text-xs text-black dark:text-muted-foreground'>
-											Ingresos
-										</p>
-										<p className='text-sm font-semibold text-green-500 truncate'>
-											{data.income.toLocaleString()}€
-										</p>
-									</div>
-								</div>
+		<div className='max-h-[420px] overflow-y-auto pr-1 space-y-2 scrollbar-thin scrollbar-thumb-border scrollbar-track-transparent'>
+			{monthlyData.length === 0 ? (
+				<div className='text-center text-muted-foreground py-10 text-sm'>
+					No hay datos para este año
+				</div>
+			) : (
+				monthlyData.map((data) => (
+					<div
+						key={data.month}
+						className='rounded-xl border border-border bg-muted/30 px-4 py-3 hover:bg-muted/50 transition-colors'>
+						{/* Nombre del mes */}
+						<p className='text-sm font-semibold mb-1.5 text-foreground'>
+							{data.month}
+						</p>
 
-								{/* Gastos Card */}
-								<div className='bg-muted rounded-lg p-3 flex items-center gap-3 dark:bg-zinc-700'>
-									<div className='p-2 bg-red-500/20 rounded-lg'>
-										<TrendingDown className='h-4 w-4 text-red-500' />
-									</div>
-									<div className='flex-1 min-w-0'>
-										<p className='text-xs text-black dark:text-muted-foreground'>
-											Gastos
-										</p>
-										<p className='text-sm font-semibold text-red-500 truncate'>
-											{data.expenses.toLocaleString()}€
-										</p>
-									</div>
+						{/* Fila de métricas */}
+						<div className='grid grid-cols-3 gap-2'>
+							{/* Ingresos */}
+							<div className='flex  items-center gap-1.5'>
+								<div className='size-8 rounded-full bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center'>
+									{/* Icono $ en verde */}
+									<Euro className='size-4 text-emerald-400' />
 								</div>
+								<div>
+									<p className='text-xs text-muted-foreground font-medium'>
+										Ingresos
+									</p>
+									<p className='text-sm font-semibold text-emerald-400'>
+										+{formatAmount(data.income)}
+									</p>
+								</div>
+							</div>
 
-								{/* Balance Card */}
-								<div className='bg-muted rounded-lg p-3 flex items-center gap-3 dark:bg-zinc-700'>
-									<div
-										className={`p-2 rounded-lg ${
-											data.balance >= 0 ? 'bg-blue-500/20' : 'bg-orange-500/20'
+							{/* Gastos */}
+							<div className='flex items-center gap-1.5'>
+								<div className='size-8 rounded-full bg-red-500/15 border border-red-500/30 flex items-center justify-center'>
+									{/* Icono — en rojo */}
+									<Minus className='size-4 text-red-400' />
+								</div>
+								<div>
+									<p className='text-xs text-muted-foreground font-medium'>
+										Gastos
+									</p>
+									<p className='text-sm font-semibold text-red-400'>
+										-{formatAmount(data.expenses)}
+									</p>
+								</div>
+							</div>
+
+							{/* Balance */}
+							<div className='flex items-center gap-1.5'>
+								<div
+									className={`size-8 rounded-md flex items-center justify-center ${
+										data.balance >= 0
+											? 'bg-blue-500/15 border border-blue-500/30'
+											: 'bg-orange-500/15 border border-orange-500/30'
+									}`}>
+									{/* Icono flecha */}
+									<ChartLine
+										className={`size-3.5 ${data.balance >= 0 ? 'text-blue-400' : 'text-orange-400'}`}
+									/>
+								</div>
+								<div>
+									<p className='text-xs text-muted-foreground font-medium'>
+										Balance
+									</p>
+									<p
+										className={`text-sm font-semibold ${
+											data.balance >= 0 ? 'text-blue-400' : 'text-orange-400'
 										}`}>
-										<Wallet
-											className={`h-4 w-4 ${
-												data.balance >= 0 ? 'text-blue-500' : 'text-orange-500'
-											}`}
-										/>
-									</div>
-									<div className='flex-1 min-w-0'>
-										<p className='text-xs text-black dark:text-muted-foreground'>
-											Balance
-										</p>
-										<p
-											className={`text-sm font-semibold truncate ${
-												data.balance >= 0 ? 'text-blue-500' : 'text-orange-500'
-											}`}>
-											{data.balance.toLocaleString()}€
-										</p>
-									</div>
+										{data.balance >= 0 ? '+' : '-'}
+										{formatAmount(data.balance)}
+									</p>
 								</div>
 							</div>
 						</div>
-					))
-				)}
-			</div>
-		</>
+					</div>
+				))
+			)}
+		</div>
 	)
 }

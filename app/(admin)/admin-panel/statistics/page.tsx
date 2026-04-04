@@ -42,25 +42,28 @@ async function StatisticsData() {
 			<Card className='p-5 gap-4'>
 				<StatisticsCategories transactions={transactions} />
 			</Card>
-			{/* Resúmenes mensuales y trimestrales */}
-			<Card className='p-5 px-6 gap-4'>
-				<StatisticsSumary transactions={transactions} />
-			</Card>
-			{/* Balance anual */}
-			<Card className='p-5 gap-2'>
-				<div className='mb-4'>
-					<div className='flex items-center gap-2'>
-						<CircleDollarSign className='size-5' />
-						<h3 className='text-xl font-semibold leading-none flex items-center gap-2'>
-							Balance Anual
-						</h3>
+
+			<div className='grid grid-cols-1 lg:grid-cols-3 gap-4 mt-6'>
+				{/* Resúmenes mensuales y trimestrales */}
+				<Card className='p-5 px-6 gap-4 lg:col-span-2'>
+					<StatisticsSumary transactions={transactions} />
+				</Card>
+				{/* Balance anual */}
+				<Card className='p-5 gap-2'>
+					<div className='mb-4'>
+						<div className='flex items-center gap-2'>
+							<CircleDollarSign className='size-5' />
+							<h3 className='text-xl font-semibold leading-none flex items-center gap-2'>
+								Balance Anual
+							</h3>
+						</div>
+						<p className='text-sm text-muted-foreground mt-1'>
+							Resumen financiero por años
+						</p>
 					</div>
-					<p className='text-sm text-muted-foreground mt-1'>
-						Resumen financiero por años
-					</p>
-				</div>
-				<AnnualBalance transactions={transactions} />
-			</Card>
+					<AnnualBalance transactions={transactions} />
+				</Card>
+			</div>
 		</>
 	)
 }

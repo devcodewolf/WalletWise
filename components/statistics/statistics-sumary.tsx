@@ -20,6 +20,13 @@ export default function StatisticsSumary({
 
 	return (
 		<>
+			<div className='flex items-center justify-end '>
+				<YearSelect
+					value={selectedYear}
+					onChange={setSelectedYear}
+					years={availableYears}
+				/>
+			</div>
 			<div className='grid grid-cols-1 lg:grid-cols-2'>
 				<div className='border-r pr-8 border-border'>
 					<div className='flex items-center justify-between mb-4'>
@@ -30,21 +37,16 @@ export default function StatisticsSumary({
 									orientation='vertical'
 									className='data-[orientation=vertical]:h-6'
 								/>
-								<h3 className='text-xl font-semibold leading-none flex items-center gap-2'>
-									Resumen Mensual
+								<h3 className='text-lg font-semibold leading-none flex items-center gap-2'>
+									Resumen Mensual - {selectedYear}
 								</h3>
 							</div>
-							<p className='text-sm text-muted-foreground mt-1'>
+							{/* <p className='text-sm text-muted-foreground mt-1'>
 								Desglose por meses año {selectedYear}
-							</p>
+							</p> */}
 						</div>
-						<YearSelect
-							value={selectedYear}
-							onChange={setSelectedYear}
-							years={availableYears}
-						/>
 					</div>
-					<Separator className='my-2' />
+					{/* <Separator className='my-2' /> */}
 					<SummaryMonthly transactions={yearlyTransactions} />
 				</div>
 				<div className='pl-8'>
@@ -56,22 +58,17 @@ export default function StatisticsSumary({
 									orientation='vertical'
 									className='data-[orientation=vertical]:h-6'
 								/>
-								<h3 className='text-xl font-semibold leading-none flex items-center gap-2'>
-									Resumen Trimestral
+								<h3 className='text-lg font-semibold leading-none flex items-center gap-2'>
+									Resumen Trimestral - {selectedYear}
 								</h3>
 							</div>
-							<p className='text-sm text-muted-foreground mt-1'>
+							{/* <p className='text-sm text-muted-foreground mt-1'>
 								Año {selectedYear}
-							</p>
+							</p> */}
 						</div>
-						<YearSelect
-							value={selectedYear}
-							onChange={setSelectedYear}
-							years={availableYears}
-						/>
 					</div>
-					<Separator className='my-2' />
-					<QuarterlySummary transactions={yearlyTransactions} />
+					{/* <Separator className='my-2' /> */}
+					<QuarterlySummary transactions={yearlyTransactions} selectedYear={selectedYear} />
 				</div>
 			</div>
 		</>

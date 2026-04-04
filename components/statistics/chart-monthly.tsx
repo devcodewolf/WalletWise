@@ -8,6 +8,7 @@ import {
 	ChartTooltipContent,
 } from '@/components/ui/chart'
 import { Transaction } from '@prisma/client'
+import { useTheme } from 'next-themes'
 
 function formatCurrency(amount: number) {
 	return new Intl.NumberFormat('es-ES', {
@@ -35,6 +36,11 @@ const chartConfig = {
 } satisfies ChartConfig
 
 export function MonthlyChart({ transactions }: MonthlyChartProps) {
+	const { resolvedTheme } = useTheme()
+	const barBgFill =
+		resolvedTheme === 'light'
+			? 'hsl(220 13% 91% / 0.7)'
+			: 'hsl(220 13% 30% / 0.3)'
 	const totalGastos = transactions
 		.filter((t) => t.type === 'Gasto')
 		.reduce((sum, t) => sum + t.amount, 0)
@@ -67,7 +73,7 @@ export function MonthlyChart({ transactions }: MonthlyChartProps) {
 	}
 
 	return (
-		<div className='flex flex-col gap-2'>
+		<div className='flex flex-col'>
 			{/* Gráfico de barras pill — un solo Bar con Cell por color */}
 			<ChartContainer
 				config={chartConfig}
@@ -96,7 +102,7 @@ export function MonthlyChart({ transactions }: MonthlyChartProps) {
 					<Bar
 						dataKey='valor'
 						radius={12}
-						background={{ fill: 'hsl(var(--muted) / 0.35)', radius: 12 }}>
+						background={{ fill: barBgFill, radius: 12 }}>
 						{chartData.map((_, index) => (
 							<Cell key={`cell-${index}`} fill={barColors[index]} />
 						))}
