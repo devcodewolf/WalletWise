@@ -94,7 +94,7 @@ export function DataTable<TData, TValue>({
 
 	return (
 		<div className='w-full'>
-			<div className='block md:flex items-center justify-end py-4 gap-2'>
+			<div className='block md:flex items-center justify-end pb-4 gap-2'>
 				<div className='flex-1 mb-4 md:mb-0'>{toolbar}</div>
 				<div className='flex items-center gap-2'>
 					<Input
@@ -132,7 +132,7 @@ export function DataTable<TData, TValue>({
 			</div>
 			<div className='rounded-md border overflow-hidden'>
 				<Table>
-					<TableHeader className='bg-muted dark:bg-neutral-700'>
+					<TableHeader className='bg-muted'>
 						{table.getHeaderGroups().map((headerGroup) => (
 							<TableRow key={headerGroup.id}>
 								{headerGroup.headers.map((header) => {
