@@ -27,7 +27,7 @@ export default function StatisticsYear({
 						orientation='vertical'
 						className='data-[orientation=vertical]:h-6'
 					/>
-					<h3 className='text-lg font-semibold'>Estadística anual</h3>
+					<h3 className='text-lg font-semibold'>Resumen Anual</h3>
 				</div>
 				<YearSelect
 					value={selectedYear}

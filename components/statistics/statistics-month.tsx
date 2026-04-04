@@ -35,7 +35,7 @@ export default function StatisticsMonth({
 						className='data-[orientation=vertical]:h-6'
 					/>
 
-					<h3 className='text-lg font-semibold'>Comparativa mensual</h3>
+					<h3 className='text-lg font-semibold'>Mensual</h3>
 				</div>
 				<div className='flex items-center gap-2'>
 					<MonthSelect

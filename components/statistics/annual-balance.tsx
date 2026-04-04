@@ -47,8 +47,8 @@ export function AnnualBalance({ transactions }: AnnualBalanceProps) {
 		}))
 		.sort((a, b) => b.year - a.year)
 
-	let currentYear = new Date().getFullYear()
-	currentYear = 2025
+	const currentYear = new Date().getFullYear()
+	// currentYear = 2025
 
 	if (yearlyBalances.length === 0) {
 		return (

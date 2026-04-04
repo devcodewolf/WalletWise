@@ -2,11 +2,6 @@ import { Suspense } from 'react'
 import { TransactionList } from '@/components/transactions/transaction-list'
 import { TransactionListSkeleton } from '@/components/transactions/transaction-list-skeleton'
 import { AddTransaction } from '@/components/transactions/add-transaction'
-import { CategoryList } from '@/components/categories/category-list'
-import HeaderCategory from '@/components/categories/header-category'
-import { WalletList } from '@/components/wallets/wallet-list'
-import HeaderWallet from '@/components/wallets/header-wallet'
-import { TableListSkeleton } from '@/components/table-list-skeleton'
 
 import { Card } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
@@ -48,25 +43,6 @@ export default function TransactionsPage() {
 				<Card className='p-6 '>
 					<Suspense fallback={<TransactionListSkeleton />}>
 						<TransactionList />
-					</Suspense>
-				</Card>
-			</div>
-
-			<div className='grid grid-cols-1 xl:grid-cols-2 gap-4'>
-				<Card className='p-6 gap-4'>
-					<HeaderCategory />
-					<Separator />
-					{/* category */}
-					<Suspense fallback={<TableListSkeleton />}>
-						<CategoryList limitShow={5} />
-					</Suspense>
-				</Card>
-				<Card className='p-6 gap-4'>
-					<HeaderWallet />
-					<Separator />
-					{/* category */}
-					<Suspense fallback={<TableListSkeleton />}>
-						<WalletList limitShow={5} />
 					</Suspense>
 				</Card>
 			</div>

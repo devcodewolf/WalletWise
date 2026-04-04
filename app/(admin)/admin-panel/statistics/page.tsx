@@ -88,7 +88,7 @@ export default function StatisticsPage() {
 				</div>
 			</div>
 			<Separator />
-			{/* <StatisticsPageSkeleton /> */}
+
 			<Suspense fallback={<StatisticsPageSkeleton />}>
 				<StatisticsData />
 			</Suspense>

@@ -49,7 +49,7 @@ export default function StatisticsSumary({
 					{/* <Separator className='my-2' /> */}
 					<SummaryMonthly transactions={yearlyTransactions} />
 				</div>
-				<div className='mt-6 xl:mt-0 xl-pl-8'>
+				<div className='mt-6 xl:mt-0 xl:pl-8'>
 					<div className='flex items-center justify-between mb-4'>
 						<div>
 							<div className='flex items-center gap-2'>
