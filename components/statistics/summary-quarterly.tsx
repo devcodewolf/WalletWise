@@ -114,7 +114,7 @@ export function QuarterlySummary({
 										</Badge>
 									)}
 								</div>
-								<p className='text-sm text-muted-foreground'>
+								<p className='text-xs text-muted-foreground'>
 									{quarter.txCount} movimientos realizados
 								</p>
 							</div>

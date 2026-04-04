@@ -79,7 +79,7 @@ export function AnnualBalance({ transactions }: AnnualBalanceProps) {
 										</p>
 										<div className='flex items-center gap-1.5'>
 											{/* Icono $ circular verde */}
-											<Euro className='size-6 text-emerald-500 border border-emerald-500 rounded-full p-1' />
+											<Euro className='size-6 text-emerald-500 border border-emerald-500 rounded-full p-1 shrink-0' />
 											<span className='text-sm font-semibold text-muted-foreground leading-tight'>
 												Ingresos
 											</span>
@@ -93,7 +93,7 @@ export function AnnualBalance({ transactions }: AnnualBalanceProps) {
 									<div className='flex flex-col bg-muted justify-end p-5 rounded-br-2xl overflow-hidden'>
 										<div className='flex items-center gap-1.5'>
 											{/* Icono ⊖ circular rojo */}
-											<Minus className='size-6 text-rose-500 border border-rose-500 rounded-full p-1' />
+											<Minus className='size-6 text-rose-500 border border-rose-500 rounded-full p-1 shrink-0' />
 											<span className='text-sm font-semibold text-muted-foreground leading-tight'>
 												Gastos
 											</span>

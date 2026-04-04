@@ -225,7 +225,7 @@ function CategoryPanel({ title, data }: { title: string; data: PieDatum[] }) {
 					</div>
 
 					{/* Lista de categorías: icono izquierda, nombre + cantidad apilados a la derecha */}
-					<div className='flex flex-col gap-2 flex-1 min-w-0 max-h-60 overflow-y-auto px-8'>
+					<div className='flex flex-col gap-2 flex-1 min-w-0 max-h-60 overflow-y-auto px-4'>
 						{data.map((item) => (
 							<div
 								key={item.name}
@@ -280,7 +280,7 @@ export function CategoryPieChart({ transactions }: CategoryPieChartProps) {
 	const ingresosData = getCategoryData(transactions, 'Ingreso')
 
 	return (
-		<div className='flex gap-4 flex-col sm:flex-row py-2'>
+		<div className='2xl:flex gap-4 flex-col sm:flex-row py-2'>
 			<CategoryPanel title='Gastos por Categoría' data={gastosData} />
 			<CategoryPanel title='Ingresos por Categoría' data={ingresosData} />
 		</div>

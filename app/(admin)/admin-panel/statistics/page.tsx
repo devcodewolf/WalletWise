@@ -29,9 +29,9 @@ async function StatisticsData() {
 	return (
 		<>
 			{/* Gráficos en 36columnas */}
-			<div className='grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 mt-6'>
+			<div className='grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-4 mt-6'>
 				{/* grafico anual	 */}
-				<Card className='p-5 gap-4 xl:col-span-2 max-h-[500px]'>
+				<Card className='p-5 gap-4 2xl:col-span-2 max-h-[500px]'>
 					<StatisticsYear transactions={transactions} />
 				</Card>
 				{/* Gráfico mensual */}
@@ -43,9 +43,9 @@ async function StatisticsData() {
 				<StatisticsCategories transactions={transactions} />
 			</Card>
 
-			<div className='grid grid-cols-1 lg:grid-cols-3 gap-4 mt-6'>
+			<div className='grid grid-cols-1 2xl:grid-cols-3 gap-4 mt-6'>
 				{/* Resúmenes mensuales y trimestrales */}
-				<Card className='p-5 px-6 gap-4 lg:col-span-2'>
+				<Card className='p-5 px-6 gap-4 2xl:col-span-2'>
 					<StatisticsSumary transactions={transactions} />
 				</Card>
 				{/* Balance anual */}

@@ -61,9 +61,9 @@ export function SummaryMonthly({ transactions }: SummaryMonthlyProps) {
 						<div className='grid grid-cols-3 gap-2'>
 							{/* Ingresos */}
 							<div className='flex  items-center gap-1.5'>
-								<div className='size-8 rounded-full bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center'>
+								<div className='size-8 rounded-full bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center shrink-0'>
 									{/* Icono $ en verde */}
-									<Euro className='size-4 text-emerald-400' />
+									<Euro className='size-4 text-emerald-400 ' />
 								</div>
 								<div>
 									<p className='text-xs text-muted-foreground font-medium'>
@@ -77,9 +77,9 @@ export function SummaryMonthly({ transactions }: SummaryMonthlyProps) {
 
 							{/* Gastos */}
 							<div className='flex items-center gap-1.5'>
-								<div className='size-8 rounded-full bg-red-500/15 border border-red-500/30 flex items-center justify-center'>
+								<div className='size-8 rounded-full bg-red-500/15 border border-red-500/30 flex items-center justify-center shrink-0'>
 									{/* Icono — en rojo */}
-									<Minus className='size-4 text-red-400' />
+									<Minus className='size-4 text-red-400 ' />
 								</div>
 								<div>
 									<p className='text-xs text-muted-foreground font-medium'>
@@ -94,14 +94,14 @@ export function SummaryMonthly({ transactions }: SummaryMonthlyProps) {
 							{/* Balance */}
 							<div className='flex items-center gap-1.5'>
 								<div
-									className={`size-8 rounded-md flex items-center justify-center ${
+									className={`size-8 rounded-md flex items-center justify-center shrink-0 ${
 										data.balance >= 0
 											? 'bg-blue-500/15 border border-blue-500/30'
 											: 'bg-orange-500/15 border border-orange-500/30'
 									}`}>
 									{/* Icono flecha */}
 									<ChartLine
-										className={`size-3.5 ${data.balance >= 0 ? 'text-blue-400' : 'text-orange-400'}`}
+										className={`size-3.5 ${data.balance >= 0 ? 'text-blue-400' : 'text-orange-400'} `}
 									/>
 								</div>
 								<div>
