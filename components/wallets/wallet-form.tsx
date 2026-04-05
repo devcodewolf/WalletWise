@@ -181,13 +181,13 @@ export function WalletForm({
 											type='button'
 											onClick={() => handleBankSelect(bank)}
 											className={cn(
-												'flex flex-col items-center justify-center p-2 rounded-xl border-2 transition-all bg-card hover:bg-muted/50 h-16',
+												'flex flex-col items-center bg-white justify-center p-2 rounded-xl border-2 transition-all  hover:scale-105 hover:opacity-100 duration-300 h-16',
 												isSelected
-													? 'border-primary ring-2 ring-primary/20'
-													: 'border-border',
+													? 'border-primary ring-2 ring-primary/20 opacity-100'
+													: 'border-border opacity-70',
 											)}>
 											{bank.image ? (
-												<div className='relative w-full h-8 flex items-center justify-center dark:bg-white dark:rounded-[4px] dark:px-1'>
+												<div className='relative w-full h-8 flex items-center justify-center dark:rounded-[4px] dark:px-1'>
 													<Image
 														src={`/img/banks/${bank.image}`}
 														alt={bank.name}
