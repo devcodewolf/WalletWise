@@ -14,7 +14,7 @@ export default function HeaderRecurring() {
 					/>
 					Movimientos Recurrentes
 				</h2>
-				<p className='text-gray-400 mt-1'>
+				<p className='text-muted-foreground mt-1'>
 					Gestiona tus pagos y cobros recurrentes
 				</p>
 			</div>

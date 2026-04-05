@@ -1,15 +1,21 @@
-'use client';
+'use client'
 
-import { Transaction } from '@prisma/client';
-import { useExpenseTracker } from '@/hooks/use-expenseTracker';
-import { TrendingUp, TrendingDown, Target } from 'lucide-react';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Transaction } from '@prisma/client'
+import { useExpenseTracker } from '@/hooks/use-expenseTracker'
+import { TrendingUp, TrendingDown, Target } from 'lucide-react'
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 
 type ExpenseTrackerProps = {
-	data: Transaction[];
-};
+	data: Transaction[]
+	referenceMonth: number // 0-11
+	referenceYear: number
+}
 
-export function ExpenseTracker({ data: transactions }: ExpenseTrackerProps) {
+export function ExpenseTracker({
+	data: transactions,
+	referenceMonth,
+	referenceYear,
+}: ExpenseTrackerProps) {
 	const {
 		currentMonthIncome,
 		currentMonthExpense,
@@ -19,20 +25,20 @@ export function ExpenseTracker({ data: transactions }: ExpenseTrackerProps) {
 		expenseVariation,
 		balance,
 		balancePercentage,
-	} = useExpenseTracker(transactions);
+	} = useExpenseTracker(transactions, referenceMonth, referenceYear)
 
 	return (
 		<>
 			{/* Métricas Cards */}
+			<p className='text-[11px] text-muted-foreground mb-2 mr-2 mt-3 text-right'>
+				(*) Datos comparativos 3 meses anteriores
+			</p>
 			<section>
-				<p className="text-[11px] text-gray-400 mb-2 mr-2 text-right">
-					(*) Datos comparativos 3 meses anteriores
-				</p>
-				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+				<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4'>
 					{/* Total Ingresos */}
-					<Card className="gap-0">
-						<CardHeader className="flex flex-row items-center justify-between pb-2">
-							<CardTitle className="text-sm font-medium text-gray-400">
+					<Card className='gap-0'>
+						<CardHeader className='flex flex-row items-center justify-between pb-2'>
+							<CardTitle className='text-sm font-medium text-muted-foreground'>
 								Total Ingresos
 							</CardTitle>
 							<div
@@ -40,24 +46,24 @@ export function ExpenseTracker({ data: transactions }: ExpenseTrackerProps) {
 									incomeVariation >= 0 ? 'text-green-500' : 'text-red-500'
 								}`}>
 								{incomeVariation >= 0 ? (
-									<TrendingUp className="size-4 mr-1" />
+									<TrendingUp className='size-4 mr-1' />
 								) : (
-									<TrendingDown className="size-4 mr-1" />
+									<TrendingDown className='size-4 mr-1' />
 								)}
 								{incomeVariation >= 0 ? '+' : ''}
 								{incomeVariation.toFixed(1)}%
 							</div>
 						</CardHeader>
 						<CardContent>
-							<div className="text-2xl font-bold text-green-500">
+							<div className='text-2xl font-bold text-green-500'>
 								€{currentMonthIncome.toFixed(2)}
 							</div>
-							<p className="text-xs text-gray-500 mt-1">
+							<p className='text-xs text-muted-foreground mt-1'>
 								{incomeVariation > 0 && 'Aumento en ingresos este mes'}
 								{incomeVariation < 0 && 'Reducción en ingresos este mes'}
 								{incomeVariation === 0 && 'Ingresos estables'}
 							</p>
-							<p className="text-xs text-gray-400">
+							<p className='text-xs text-muted-foreground'>
 								{incomeVariation > 0 && 'Flujo positivo constante'}
 								{incomeVariation < 0 && 'Flujo negativo constante'}
 								{incomeVariation === 0 && 'Flujo constante'}
@@ -65,9 +71,9 @@ export function ExpenseTracker({ data: transactions }: ExpenseTrackerProps) {
 						</CardContent>
 					</Card>
 					{/* Total Gastos */}
-					<Card className="gap-0">
-						<CardHeader className="flex flex-row items-center justify-between pb-2">
-							<CardTitle className="text-sm font-medium text-gray-400">
+					<Card className='gap-0'>
+						<CardHeader className='flex flex-row items-center justify-between pb-2'>
+							<CardTitle className='text-sm font-medium text-muted-foreground'>
 								Total Gastos
 							</CardTitle>
 							<div
@@ -75,24 +81,24 @@ export function ExpenseTracker({ data: transactions }: ExpenseTrackerProps) {
 									expenseVariation >= 0 ? 'text-red-500' : 'text-green-500'
 								}`}>
 								{expenseVariation >= 0 ? (
-									<TrendingUp className="size-4 mr-1" />
+									<TrendingUp className='size-4 mr-1' />
 								) : (
-									<TrendingDown className="size-4 mr-1" />
+									<TrendingDown className='size-4 mr-1' />
 								)}
 								{expenseVariation >= 0 ? '+' : ''}
 								{expenseVariation.toFixed(1)}%
 							</div>
 						</CardHeader>
 						<CardContent>
-							<div className="text-2xl font-bold text-red-500">
+							<div className='text-2xl font-bold text-red-500'>
 								€{currentMonthExpense.toFixed(2)}
 							</div>
-							<p className="text-xs text-gray-500 mt-1">
+							<p className='text-xs text-muted-foreground mt-1'>
 								{expenseVariation > 0 && 'Aumento en gastos este mes'}
 								{expenseVariation < 0 && 'Reducción en gastos este mes'}
 								{expenseVariation === 0 && 'Sin cambios en gastos este mes'}
 							</p>
-							<p className="text-xs text-gray-400">
+							<p className='text-xs text-muted-foreground'>
 								{expenseVariation > 0 &&
 									'Los gastos han aumentado en comparación con el promedio'}
 								{expenseVariation < 0 &&
@@ -102,9 +108,9 @@ export function ExpenseTracker({ data: transactions }: ExpenseTrackerProps) {
 						</CardContent>
 					</Card>
 					{/* Balance */}
-					<Card className="gap-0">
-						<CardHeader className="flex flex-row items-center justify-between pb-2">
-							<CardTitle className="text-sm font-medium text-gray-400">
+					<Card className='gap-0'>
+						<CardHeader className='flex flex-row items-center justify-between pb-2'>
+							<CardTitle className='text-sm font-medium text-muted-foreground'>
 								Balance Total
 							</CardTitle>
 							<div
@@ -112,9 +118,9 @@ export function ExpenseTracker({ data: transactions }: ExpenseTrackerProps) {
 									balance >= 0 ? 'text-green-500' : 'text-red-500'
 								}`}>
 								{balance >= 0 ? (
-									<TrendingUp className="size-4 mr-1" />
+									<TrendingUp className='size-4 mr-1' />
 								) : (
-									<TrendingDown className="size-4 mr-1" />
+									<TrendingDown className='size-4 mr-1' />
 								)}
 								{balancePercentage.toFixed(1)}%
 							</div>
@@ -126,10 +132,10 @@ export function ExpenseTracker({ data: transactions }: ExpenseTrackerProps) {
 								}`}>
 								€{balance.toFixed(2)}
 							</div>
-							<p className="text-xs text-gray-500 mt-1">
+							<p className='text-xs text-muted-foreground mt-1'>
 								{balance >= 0 ? 'Superávit' : 'Déficit'} actual
 							</p>
-							<p className="text-xs text-gray-400">
+							<p className='text-xs text-muted-foreground'>
 								{balance >= 0
 									? 'Situación financiera saludable'
 									: 'Revisar gastos'}
@@ -137,22 +143,24 @@ export function ExpenseTracker({ data: transactions }: ExpenseTrackerProps) {
 						</CardContent>
 					</Card>
 					{/* Promedio Diario */}
-					<Card className="gap-0">
-						<CardHeader className="flex flex-row items-center justify-between pb-2">
-							<CardTitle className="text-sm font-medium text-gray-400">
+					<Card className='gap-0'>
+						<CardHeader className='flex flex-row items-center justify-between pb-2'>
+							<CardTitle className='text-sm font-medium text-muted-foreground'>
 								Gasto Promedio
 							</CardTitle>
-							<div className="flex items-center text-blue-500 text-sm">
-								<Target className="size-4 mr-1" />
+							<div className='flex items-center text-blue-500 text-sm'>
+								<Target className='size-4 mr-1' />
 								Diario
 							</div>
 						</CardHeader>
 						<CardContent>
-							<div className="text-2xl font-bold text-blue-500">
+							<div className='text-2xl font-bold text-blue-500'>
 								€{dailyExpenseAvg.toFixed(2)}
 							</div>
-							<p className="text-xs text-gray-500 mt-1">Por día este mes</p>
-							<p className="text-xs text-gray-400">
+							<p className='text-xs text-muted-foreground mt-1'>
+								Por día este mes
+							</p>
+							<p className='text-xs text-muted-foreground'>
 								{currentMonthTransactionCount} transacciones totales
 							</p>
 						</CardContent>
@@ -160,5 +168,5 @@ export function ExpenseTracker({ data: transactions }: ExpenseTrackerProps) {
 				</div>
 			</section>
 		</>
-	);
+	)
 }

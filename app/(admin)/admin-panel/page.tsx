@@ -1,114 +1,117 @@
-import { getTransactions } from '@/actions/transactions'
-import { TransactionsDashboard } from '@/components/dashboard/transactions-dashboard'
+import { getTransactions, getAvailableMonths } from '@/actions/transactions'
 import type { TransactionWithRelations } from '@/types/transactions.types'
-import { YearlyChart } from '@/components/statistics/chart-yearly'
-import { ChartSpline, HandCoins, HomeIcon } from 'lucide-react'
-import { AddTransaction } from '@/components/transactions/add-transaction'
-import { Card, CardHeader } from '@/components/ui/card'
-import { Separator } from '@/components/ui/separator'
+import { YearlyChartSwitcher } from '@/components/statistics/yearly-chart-switcher'
+import { Card } from '@/components/ui/card'
 import { ExpenseTracker } from '@/components/dashboard/expense-tracker'
-import { RecurringAlert } from '@/components/transactions/recurring-alert'
-import Calendar01 from '@/components/dashboard/calendar-01'
+import { CurrentDay } from '@/components/dashboard/current-day'
 import { Suspense } from 'react'
 import DashboardPageSkeleton from '@/components/dashboard/dashboard-page-skeleton'
+import { WelcomeDashboard } from '@/components/dashboard/welcome-dashboard'
+import { MonthlyBalanceServer } from '@/components/dashboard/monthly-balance-server'
+import { MonthlyBalanceSkeleton } from '@/components/dashboard/monthly-balance-skeleton'
+import { MonthNavigator } from '@/components/dashboard/month-navigator'
+import { MonthNavigatorSkeleton } from '@/components/dashboard/month-navigator-skeleton'
+import { RecentTransactions } from '@/components/dashboard/recent-transactions'
+import { RecurringAlert } from '@/components/transactions/recurring-alert'
+import { RecurringAlertSkeleton } from '@/components/transactions/recurring-alert-skeleton'
 
-// Forzar el renderizado dinámico de la página
-// export const dynamic = 'force-dynamic';
-async function AdminPanelData() {
-	// Obtener transacciones
+// searchParams tipados como Promise para Next.js 15
+type PageProps = {
+	searchParams: Promise<{ year?: string; month?: string }>
+}
+
+async function AdminPanelData({
+	year,
+	month,
+}: {
+	year: number
+	month: number // 1-12
+}) {
 	const respTransaction = await getTransactions()
 
-	// Procesar la respuesta de transacciones
 	const transactions: TransactionWithRelations[] =
 		respTransaction.success && 'data' in respTransaction
 			? respTransaction.data
 			: []
 
-	// Filtrar transacciones para el año actual en el servidor
-	const currentYear = new Date().getFullYear()
+	// Filtrar transacciones del año seleccionado para el gráfico anual
 	const yearlyTransactions = transactions.filter((t) => {
 		const date = t.date instanceof Date ? t.date : new Date(t.date)
-		return date.getFullYear() === currentYear
+		return date.getFullYear() === year
 	})
 
 	return (
 		<>
-			{/* // dashboard */}
-			<div className='flex flex-1 flex-col gap-4'>
-				{/* <ExpenseTrackerSkeleton /> */}
-				<RecurringAlert />
-				<ExpenseTracker data={transactions} />
-				<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4'>
-					<Card className='p-4 flex items-center justify-center w-full sm:w-1/2 md:w-full md:col-span-1 lg:col-span-2 xl:col-span-1'>
-						<Calendar01 />
+			<ExpenseTracker
+				data={transactions}
+				referenceMonth={month - 1} // convertir a 0-11
+				referenceYear={year}
+			/>
+			<section className='grid grid-cols-1 grid-rows-2 md:grid-cols-2 lg:grid-cols-4 gap-4 md:h-[calc(100vh-18rem)] 2xl:h-[calc(100vh-26rem)]'>
+				<Card className='p-7 gap-4 justify-between row-span-2 col-span-1 lg:col-span-3 min-h-0 overflow-hidden'>
+					<YearlyChartSwitcher transactions={yearlyTransactions} year={year} />
+				</Card>
+				<div className='flex flex-col md:col-span-1 lg:col-span-1 row-span-2 gap-4'>
+					<Card className='p-6'>
+						<CurrentDay />
 					</Card>
-					<Card className='p-6 gap-4 justify-between col-span-1 lg:col-span-2 xl:col-span-3'>
-						<CardHeader className='flex-col gap-4 p-0'>
-							<div>
-								<h2 className='text-2xl font-bold flex items-center gap-2'>
-									<ChartSpline className='size-6' />
-									<Separator
-										orientation='vertical'
-										className='data-[orientation=vertical]:h-6'
-									/>
-									Estadística anual
-								</h2>
-								<p className='text-gray-400 mt-1'>
-									Estadísticas año actual {currentYear}
-								</p>
-							</div>
-							<Separator />
-						</CardHeader>
-						{/* <ChartYearlySkeleton /> */}
-						<YearlyChart transactions={yearlyTransactions} />
+					<Card className='px-5 py-5 flex-1 overflow-hidden max-h-96 md:max-h-none'>
+						<RecentTransactions transactions={transactions} />
 					</Card>
 				</div>
-
-				<Card className='p-6 gap-4'>
-					<CardHeader className='block md:flex md:flex-row items-center p-0'>
-						<div className='mb-3 md:mb-0'>
-							<h2 className='text-2xl font-bold flex items-center gap-2'>
-								<HandCoins className='size-6' />
-								<Separator
-									orientation='vertical'
-									className='data-[orientation=vertical]:h-6'
-								/>
-								Resúmen
-							</h2>
-							<p className='text-gray-400 mt-1'>Resúmen de tus finanzas</p>
-						</div>
-						<AddTransaction />
-					</CardHeader>
-					<Separator />
-					{/* <TransactionsDashboardSkeleton /> */}
-					<TransactionsDashboard data={transactions} />
-				</Card>
-			</div>
+			</section>
 		</>
 	)
 }
 
-export default function AdminPanel() {
+export default async function AdminPanel({ searchParams }: PageProps) {
+	// Ambas queries en paralelo para no bloquear
+	const [params, availableMonths] = await Promise.all([
+		searchParams,
+		getAvailableMonths(),
+	])
+
+	// Si no hay searchParams, usamos el último mes con datos (primero de la lista desc)
+	// Si no hay datos en absoluto, fallback al mes actual
+	const now = new Date()
+	const fallback = availableMonths[0] ?? {
+		year: now.getFullYear(),
+		month: now.getMonth() + 1,
+	}
+
+	const year = parseInt(params.year ?? String(fallback.year))
+	const month = parseInt(params.month ?? String(fallback.month))
+
 	return (
-		<div className='py-4 px-1 space-y-4'>
-			{/* Header */}
-			<div className='flex items-center justify-between mb-4'>
-				<div>
-					<h2 className='text-2xl font-bold flex items-center gap-2'>
-						<HomeIcon className='size-6' />
-						<Separator
-							orientation='vertical'
-							className='data-[orientation=vertical]:h-6'
-						/>
-						Dashboard
-					</h2>
+		<>
+			<div>
+				{/* Navegación entre meses con datos */}
+				<Suspense fallback={<MonthNavigatorSkeleton />}>
+					<MonthNavigator availableMonths={availableMonths} />
+				</Suspense>
+			</div>
+			<div className='2xl:flex gap-12'>
+				<div className='2xl:w-2/12 lg:flex 2xl:flex-col justify-between  gap-4 mb-4 2xl:mb-0 space-y-2 pt-8'>
+					{/* bienvenido */}
+					<div className='md:w-1/3 2xl:w-full flex-1'>
+						<WelcomeDashboard />
+					</div>
+
+					{/* Gráfico balance mensual */}
+					<Suspense fallback={<MonthlyBalanceSkeleton />}>
+						<MonthlyBalanceServer year={year} month={month} />
+					</Suspense>
+
+					<Suspense fallback={<RecurringAlertSkeleton />}>
+						<RecurringAlert />
+					</Suspense>
+				</div>
+				<div className='2xl:w-10/12 space-y-4'>
+					<Suspense fallback={<DashboardPageSkeleton />}>
+						<AdminPanelData year={year} month={month} />
+					</Suspense>
 				</div>
 			</div>
-			<Separator />
-			{/* <DashboardPageSkeleton /> */}
-			<Suspense fallback={<DashboardPageSkeleton />}>
-				<AdminPanelData />
-			</Suspense>
-		</div>
+		</>
 	)
 }

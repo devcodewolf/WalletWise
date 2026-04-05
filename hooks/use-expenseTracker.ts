@@ -13,29 +13,17 @@ interface ExpenseTrackerMetrics {
 }
 
 export function useExpenseTracker(
-	transactions: Transaction[]
+	transactions: Transaction[],
+	referenceMonth: number, // 0-11 (igual que Date.getMonth())
+	referenceYear: number
 ): ExpenseTrackerMetrics {
 	return useMemo(() => {
-		const getMonth = (date: Date) => date.getMonth();
-		const getYear = (date: Date) => date.getFullYear();
-
-		// Encontrar el mes más reciente con transacciones
-		const latestDate =
-			transactions.length > 0
-				? transactions.reduce((latest, t) => {
-						const tDate = new Date(t.date);
-						return tDate > latest ? tDate : latest;
-				  }, new Date(transactions[0].date))
-				: new Date();
-
-		const referenceMonth = getMonth(latestDate);
-		const referenceYear = getYear(latestDate);
-
-		// Filtrar transacciones del mes de referencia (último mes con datos)
+		// Filtrar transacciones del mes de referencia
 		const currentMonthTransactions = transactions.filter((t) => {
 			const date = new Date(t.date);
 			return (
-				getMonth(date) === referenceMonth && getYear(date) === referenceYear
+				date.getMonth() === referenceMonth &&
+				date.getFullYear() === referenceYear
 			);
 		});
 
@@ -48,14 +36,14 @@ export function useExpenseTracker(
 				(referenceMonth - 3 + 12) % 12,
 			];
 			const yearForMonth = (month: number) =>
-				month <= referenceMonth ? referenceYear : referenceYear - 1;
+				month < referenceMonth ? referenceYear : referenceYear - 1;
 			return validMonths.some(
 				(month) =>
-					getMonth(date) === month && getYear(date) === yearForMonth(month)
+					date.getMonth() === month && date.getFullYear() === yearForMonth(month)
 			);
 		});
 
-		// Totales del mes actual
+		// Totales del mes de referencia
 		const currentMonthIncome = currentMonthTransactions
 			.filter((t) => t.type === 'Ingreso')
 			.reduce((sum, t) => sum + t.amount, 0);
@@ -93,7 +81,7 @@ export function useExpenseTracker(
 			currentMonthIncome > 0 ? (balance / currentMonthIncome) * 100 : 0;
 
 		const currentMonthTransactionCount = currentMonthTransactions.length;
-		const dailyExpenseAvg = currentMonthExpense / 30; // Aproximado para el mes
+		const dailyExpenseAvg = currentMonthExpense / 30;
 
 		return {
 			currentMonthIncome,
@@ -105,5 +93,5 @@ export function useExpenseTracker(
 			balance,
 			balancePercentage,
 		};
-	}, [transactions]);
+	}, [transactions, referenceMonth, referenceYear]);
 }

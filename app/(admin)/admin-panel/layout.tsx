@@ -1,18 +1,18 @@
-import { AppSidebar } from '@/components/sidebar/app-sidebar';
-import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
-import { auth } from '@/auth';
+import { AppSidebar } from '@/components/sidebar/app-sidebar'
+import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar'
+import { auth } from '@/auth'
 // import { redirect } from 'next/navigation';
-import { AdminUserStore } from '@/components/AdminUserStore';
-import Header from '@/components/header/header';
-import { SessionExpiredModal } from '@/components/auth/SessionExpiredModal';
-import { SessionProvider } from 'next-auth/react';
+import { AdminUserStore } from '@/components/AdminUserStore'
+import Header from '@/components/header/header'
+import { SessionExpiredModal } from '@/components/auth/SessionExpiredModal'
+import { SessionProvider } from 'next-auth/react'
 
 export default async function AdminLayout({
 	children,
 }: Readonly<{
-	children: React.ReactNode;
+	children: React.ReactNode
 }>) {
-	const session = await auth();
+	const session = await auth()
 
 	// if (!session || !session?.user || !session?.user?.id) {
 	// 	return redirect('/');
@@ -30,14 +30,14 @@ export default async function AdminLayout({
 				{/* opcion para poder hacerlo en un server component */}
 				<AdminUserStore user={session?.user} />
 				<AppSidebar />
-				<SidebarInset className="px-6 pb-4 overflow-x-hidden">
+				<SidebarInset className='px-6 overflow-x-clip'>
 					<Header />
 					<SessionProvider>
 						<SessionExpiredModal></SessionExpiredModal>
 					</SessionProvider>
-					{children}
+					<div className='layout-main lg:px-5 py-2'>{children}</div>
 				</SidebarInset>
 			</SidebarProvider>
 		</>
-	);
+	)
 }

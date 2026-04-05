@@ -1,5 +1,5 @@
-import { TableListSkeleton } from '@/components/table-list-skeleton'
-import { Card } from '@/components/ui/card'
+import { RecurringPanelSkeleton } from '@/components/recurring/recurring-panel-skeleton'
+
 import { Separator } from '@/components/ui/separator'
 import HeaderRecurring from '@/components/recurring/header-recurring'
 import { RecurringList } from '@/components/recurring/recurring-list'
@@ -12,11 +12,11 @@ export default function RecurringPage() {
 				<HeaderRecurring />
 			</div>
 			<Separator className='mt-4 mb-6' />
-			<Card className='p-6 gap-4'>
-				<Suspense fallback={<TableListSkeleton />}>
+			<div className='pt-2'>
+				<Suspense fallback={<RecurringPanelSkeleton />}>
 					<RecurringList />
 				</Suspense>
-			</Card>
+			</div>
 		</>
 	)
 }

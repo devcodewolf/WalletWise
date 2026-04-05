@@ -1,32 +1,33 @@
-'use client';
+'use client'
 
-import { YearSelect } from '@/components/statistics/select-year';
-import { Transaction } from '@prisma/client';
-import { useStatistics } from '@/hooks/use-statistics';
-import { YearlyChart } from './chart-yearly';
-import { Calendar } from 'lucide-react';
-import { Separator } from '../ui/separator';
+import { YearSelect } from '@/components/statistics/select-year'
+import { Transaction } from '@prisma/client'
+import { useStatistics } from '@/hooks/use-statistics'
+
+import { Calendar } from 'lucide-react'
+import { Separator } from '../ui/separator'
+import { YearlyChartSwitcher } from './yearly-chart-switcher'
 
 export default function StatisticsYear({
 	transactions,
 }: {
-	transactions: Transaction[];
+	transactions: Transaction[]
 }) {
 	const { selectedYear, setSelectedYear, availableYears, yearlyTransactions } =
 		useStatistics({
 			transactions: transactions,
-		});
+		})
 
 	return (
 		<>
-			<div className="flex items-center justify-between gap-4">
-				<div className="flex items-center gap-2">
-					<Calendar className="size-5" />
+			<div className='flex items-center justify-between gap-4'>
+				<div className='flex items-center gap-2'>
+					<Calendar className='size-5' />
 					<Separator
-						orientation="vertical"
-						className="data-[orientation=vertical]:h-6"
+						orientation='vertical'
+						className='data-[orientation=vertical]:h-6'
 					/>
-					<h3 className="text-lg font-semibold">Anual</h3>
+					<h3 className='text-lg font-semibold'>Resumen Anual</h3>
 				</div>
 				<YearSelect
 					value={selectedYear}
@@ -35,7 +36,11 @@ export default function StatisticsYear({
 				/>
 			</div>
 			<Separator />
-			<YearlyChart transactions={yearlyTransactions} />
+			<YearlyChartSwitcher
+				transactions={yearlyTransactions}
+				year={Number(selectedYear)}
+				chartType='Barras'
+			/>
 		</>
-	);
+	)
 }

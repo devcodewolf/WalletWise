@@ -20,6 +20,9 @@ export async function getRecurringTransactions() {
 			include: {
 				wallet: true,
 				category: true,
+				_count: {
+					select: { transactions: true }
+				}
 			},
 			orderBy: {
 				createdAt: 'desc',

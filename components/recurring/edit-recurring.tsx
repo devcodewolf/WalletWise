@@ -24,7 +24,7 @@ export function EditRecurring({ recurring }: EditRecurringProps) {
 			onSubmit={handleSubmit}
 			triggerButton={
 				<Button variant='ghost' size='sm'>
-					<Edit className='h-4 w-4' />
+					<Edit className='size-4' />
 				</Button>
 			}
 			dialogTitle='Editar Recurrencia'
