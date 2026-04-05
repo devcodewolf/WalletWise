@@ -42,7 +42,7 @@ export function SummaryMonthly({ transactions }: SummaryMonthlyProps) {
 	}).filter((data) => data.hasData)
 
 	return (
-		<div className='max-h-[420px] overflow-y-auto pr-3 space-y-2 scrollbar-thin scrollbar-thumb-border scrollbar-track-transparent'>
+		<div className='max-h-[420px] overflow-y-auto md:pr-3 space-y-2 scrollbar-thin scrollbar-thumb-border scrollbar-track-transparent'>
 			{monthlyData.length === 0 ? (
 				<div className='text-center text-muted-foreground py-10 text-sm'>
 					No hay datos para este año
@@ -58,9 +58,9 @@ export function SummaryMonthly({ transactions }: SummaryMonthlyProps) {
 						</p>
 
 						{/* Fila de métricas */}
-						<div className='grid grid-cols-3 gap-2'>
+						<div className='grid grid-cols-2 md:grid-cols-3 gap-2'>
 							{/* Ingresos */}
-							<div className='flex  items-center gap-1.5'>
+							<div className='flex items-center gap-1.5'>
 								<div className='size-8 rounded-full bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center shrink-0'>
 									{/* Icono $ en verde */}
 									<Euro className='size-4 text-emerald-400 ' />

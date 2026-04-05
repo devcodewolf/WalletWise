@@ -59,7 +59,7 @@ export function AnnualBalance({ transactions }: AnnualBalanceProps) {
 	}
 
 	return (
-		<div className='space-y-3 max-h-[420px] overflow-y-auto pr-3'>
+		<div className='space-y-3 max-h-[420px] overflow-y-auto md:pr-3'>
 			{yearlyBalances.map((yearData) => {
 				const isCurrent = yearData.year === currentYear
 				const balancePositive = yearData.balance >= 0
@@ -73,13 +73,13 @@ export function AnnualBalance({ transactions }: AnnualBalanceProps) {
 							<div className='flex-1'>
 								<div className={`grid grid-cols-3 `}>
 									{/*  Columna izquierda: año + ingresos + gastos */}
-									<div className='flex flex-col bg-muted p-5'>
+									<div className='flex flex-col bg-muted p-3 md:p-5'>
 										<p className='text-md font-semibold text-foreground mb-3'>
 											Año {yearData.year}
 										</p>
 										<div className='flex items-center gap-1.5'>
 											{/* Icono $ circular verde */}
-											<Euro className='size-6 text-emerald-500 border border-emerald-500 rounded-full p-1 shrink-0' />
+											<Euro className='size-6 text-emerald-500 border border-emerald-500 rounded-full p-1 shrink-0 hidden md:block' />
 											<span className='text-sm font-semibold text-muted-foreground leading-tight'>
 												Ingresos
 											</span>
@@ -90,10 +90,10 @@ export function AnnualBalance({ transactions }: AnnualBalanceProps) {
 									</div>
 
 									{/* Gastos */}
-									<div className='flex flex-col bg-muted justify-end p-5 rounded-br-2xl overflow-hidden'>
+									<div className='flex flex-col bg-muted justify-end p-3 md:p-5 rounded-br-2xl overflow-hidden'>
 										<div className='flex items-center gap-1.5'>
 											{/* Icono ⊖ circular rojo */}
-											<Minus className='size-6 text-rose-500 border border-rose-500 rounded-full p-1 shrink-0' />
+											<Minus className='size-6 text-rose-500 border border-rose-500 rounded-full p-1 shrink-0 hidden md:block' />
 											<span className='text-sm font-semibold text-muted-foreground leading-tight'>
 												Gastos
 											</span>
@@ -106,7 +106,7 @@ export function AnnualBalance({ transactions }: AnnualBalanceProps) {
 									{/* Balance inline solo para años pasados */}
 									<div
 										className={cn(
-											'relative flex flex-col justify-end p-5 bg-transparent',
+											'relative flex flex-col justify-end p-3 md:p-5 bg-transparent',
 										)}>
 										{/* Curva cóncava superior (inverted border radius) */}
 										<div
@@ -118,14 +118,14 @@ export function AnnualBalance({ transactions }: AnnualBalanceProps) {
 										/>
 										<span
 											className={cn(
-												'text-base font-bold',
+												'text-sm md:text-base font-bold',
 												isCurrent ? 'text-white' : '',
 											)}>
 											Balance
 										</span>
 										<span
 											className={cn(
-												'text-lg font-semibold',
+												'text-base md:text-lg font-semibold',
 												balancePositive ? 'text-emerald-500' : 'text-rose-500',
 												isCurrent ? 'text-white' : '',
 											)}>

@@ -7,9 +7,9 @@ export async function CategoryListPanel() {
 	const categories: Category[] = resp.success && 'data' in resp ? resp.data : []
 
 	return (
-		<div>
+		<>
 			{/* Cabecera */}
-			<div className='mb-4'>
+			<div className='py-5 md:py-0 mb-4'>
 				<h2 className='text-xl font-bold'>Tus categorías</h2>
 				<p className='text-sm text-muted-foreground mt-0.5'>
 					{categories.length}{' '}
@@ -23,12 +23,12 @@ export async function CategoryListPanel() {
 					<p className='text-xs'>Crea tu primera categoría con el formulario</p>
 				</div>
 			) : (
-				<ul className='grid grid-cols-2 gap-x-5 gap-y-3'>
+				<ul className='grid grid-cols-1 xl:grid-cols-2 gap-x-5 gap-y-3'>
 					{categories.map((cat) => (
 						<CategoryListItem key={cat.id} category={cat} />
 					))}
 				</ul>
 			)}
-		</div>
+		</>
 	)
 }

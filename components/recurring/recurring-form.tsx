@@ -106,7 +106,7 @@ export function RecurringForm({
 
 	// Filter categories based on transaction type
 	const filteredCategories = categories.filter(
-		(category: Category) => category.type === form.watch('type')
+		(category: Category) => category.type === form.watch('type'),
 	)
 
 	// Reset categoryId when type changes
@@ -162,7 +162,7 @@ export function RecurringForm({
 										<Select
 											onValueChange={field.onChange}
 											defaultValue={field.value}>
-											<FormControl>
+											<FormControl className='w-full'>
 												<SelectTrigger>
 													<SelectValue placeholder='Tipo' />
 												</SelectTrigger>
@@ -221,7 +221,7 @@ export function RecurringForm({
 										<Select
 											onValueChange={field.onChange}
 											defaultValue={field.value}>
-											<FormControl>
+											<FormControl className='w-full'>
 												<SelectTrigger>
 													<SelectValue placeholder='Frecuencia' />
 												</SelectTrigger>
@@ -267,7 +267,7 @@ export function RecurringForm({
 										<Select
 											onValueChange={(value) => field.onChange(Number(value))}
 											value={field.value?.toString()}>
-											<FormControl>
+											<FormControl className='w-full'>
 												<SelectTrigger>
 													<SelectValue placeholder='Selecciona' />
 												</SelectTrigger>
@@ -296,7 +296,7 @@ export function RecurringForm({
 										<Select
 											onValueChange={(value) => field.onChange(Number(value))}
 											value={field.value?.toString()}>
-											<FormControl>
+											<FormControl className='w-full'>
 												<SelectTrigger>
 													<SelectValue placeholder='Selecciona' />
 												</SelectTrigger>

@@ -14,7 +14,7 @@ export default function CategoriesPage() {
 			<Separator className='mt-4 mb-6' />
 			<div className='lg:flex gap-10 items-start'>
 				{/* Panel izquierdo — sticky */}
-				<aside className='lg:w-96 shrink-0 sticky top-4'>
+				<aside className='lg:w-96 shrink-0 md:sticky top-4'>
 					<CreateCategoryPanel />
 				</aside>
 

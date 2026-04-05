@@ -158,7 +158,7 @@ function CategoryPanel({ title, data }: { title: string; data: PieDatum[] }) {
 	)
 
 	return (
-		<div className='flex flex-col gap-3 rounded-xl bg-muted/20 border border-border/40 px-8 py-5 flex-1 min-w-0'>
+		<div className='md:flex flex-col gap-3 rounded-xl bg-muted/20 border border-border/40 px-4 md:px-8 py-5 flex-1 min-w-0'>
 			{/* Header */}
 			<h3 className='text-sm font-semibold'>{title}</h3>
 
@@ -167,7 +167,7 @@ function CategoryPanel({ title, data }: { title: string; data: PieDatum[] }) {
 					Sin datos este periodo
 				</div>
 			) : (
-				<div className='flex items-start gap-4'>
+				<div className='md:flex items-start gap-4'>
 					{/* Donut con total centrado */}
 					{/* ── TAMAÑO DEL DONUT ──────────────────────────────────────────
 					     Cambia w-[Xpx] h-[Xpx] para el contenedor.

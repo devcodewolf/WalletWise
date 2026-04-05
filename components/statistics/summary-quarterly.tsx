@@ -115,7 +115,7 @@ export function QuarterlySummary({
 									)}
 								</div>
 								<p className='text-xs text-muted-foreground'>
-									{quarter.txCount} movimientos realizados
+									{quarter.txCount} mov.
 								</p>
 							</div>
 
