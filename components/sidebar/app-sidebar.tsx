@@ -1,6 +1,6 @@
-'use client'
+'use client';
 
-import * as React from 'react'
+import * as React from 'react';
 import {
 	BarChart3,
 	CircleDollarSign,
@@ -8,20 +8,20 @@ import {
 	Inbox,
 	Repeat1,
 	Wallet,
-} from 'lucide-react'
+} from 'lucide-react';
 
-import { NavMain } from '@/components/sidebar/nav-main'
+import { NavMain } from '@/components/sidebar/nav-main';
 
-import { NavUser } from '@/components/sidebar/nav-user'
+import { NavUser } from '@/components/sidebar/nav-user';
 
 import {
 	Sidebar,
 	SidebarContent,
 	SidebarFooter,
 	SidebarHeader,
-} from '@/components/ui/sidebar'
-import { useUserStore } from '@/store/user-store'
-import Image from 'next/image'
+} from '@/components/ui/sidebar';
+import { useUserStore } from '@/store/user-store';
+import Image from 'next/image';
 
 // This is sample data.
 const data = {
@@ -58,26 +58,40 @@ const data = {
 		},
 		// {
 	],
-}
+};
 
 export function AppSidebar() {
-	const { user } = useUserStore()
+	const { user } = useUserStore();
 
 	return (
-		<Sidebar variant='inset' collapsible='icon'>
+		<Sidebar variant="inset" collapsible="icon">
 			<SidebarHeader>
 				{/* <TeamSwitcher teams={data.teams} /> */}
-				<div className='flex items-center '>
+				<div className="flex items-center group-data-[state=collapsed]:hidden">
 					<Image
-						src='/img/logo3.webp'
-						width={100}
-						height={100}
-						className='h-18 w-18 object-contain'
-						alt=''
+						src="/img/logoBlack.webp"
+						width={150}
+						height={150}
+						className="object-contain mx-auto dark:hidden"
+						alt=""
 					/>
-					<p className='text-lg leading-5 color-[#10b981] group-data-[collapsible=icon]:hidden'>
-						Wallet<span className='text-[#3972bf] font-semibold'>Wise</span>
-					</p>
+					<Image
+						src="/img/logoWhite.webp"
+						width={150}
+						height={150}
+						className="object-contain mx-auto hidden dark:block"
+						alt=""
+					/>
+				</div>
+				{/* logo collapse */}
+				<div className="hidden group-data-[state=collapsed]:block">
+					<Image
+						src="/img/logoMini.webp"
+						width={40}
+						height={40}
+						className="object-contain mx-auto"
+						alt=""
+					/>
 				</div>
 			</SidebarHeader>
 			<SidebarContent>
@@ -86,5 +100,5 @@ export function AppSidebar() {
 			</SidebarContent>
 			<SidebarFooter>{user && <NavUser {...user} />}</SidebarFooter>
 		</Sidebar>
-	)
+	);
 }
