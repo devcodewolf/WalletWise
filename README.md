@@ -1,7 +1,7 @@
 # WalletWise - Tu Gestor de Finanzas Personales 💸
 
 <p align="center">
-  <img src="./public/img/logo3.webp" alt="WalletWise Logo" width="150"/>
+  <img src="./public/img/logoWhite.webp" alt="WalletWise Logo" width="400"/>
 </p>
 
 <p align="center">
