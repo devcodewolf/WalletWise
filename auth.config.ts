@@ -1,38 +1,12 @@
-import bcryptjs from 'bcryptjs';
+// auth.config.ts
+// ⚠️ Este archivo debe ser compatible con Edge Runtime (sin Prisma, sin bcryptjs).
+// La lógica de authorize() se define en auth.ts (Node.js runtime).
 import type { NextAuthConfig } from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
-import { getUserByEmail } from './data/user';
-import { signInSchema } from './lib/schemas/singIn';
 
 export default {
 	providers: [
-		Credentials({
-			async authorize(credentials) {
-				const validatedFields = signInSchema.safeParse(credentials);
-
-				if (validatedFields.success) {
-					const { email, password } = validatedFields.data;
-					const user = await getUserByEmail(email);
-
-					if (!user || !user.password) return null;
-
-					const passwordsMatch = await bcryptjs.compare(
-						password,
-						user.password
-					);
-
-					if (passwordsMatch) {
-						// Mapear el usuario de Prisma al formato que espera NextAuth
-						return {
-							id: String(user.id), // Asegurar que el ID sea un string
-							name: user.name,
-							email: user.email,
-							isAdmin: user.isAdmin,
-						};
-					}
-				}
-				return null;
-			},
-		}),
+		// Solo declaramos el provider; authorize se sobreescribe en auth.ts
+		Credentials({}),
 	],
 } satisfies NextAuthConfig;

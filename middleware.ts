@@ -1,29 +1,33 @@
 // middleware.ts
-import { auth } from '@/auth'; // ajusta la ruta a donde exportes `auth`
+// ⚠️ IMPORTANTE: importar desde auth.config (sin Prisma/bcryptjs) para mantener
+// el bundle del Edge Runtime bajo el límite de 1MB de Vercel.
+import NextAuth from 'next-auth';
+import authConfig from '@/auth.config';
 import { NextResponse } from 'next/server';
 
-// export default auth as middleware
+const { auth } = NextAuth(authConfig);
+
 export default auth((req) => {
 	const { nextUrl } = req;
 
-	// permite acceso a assets / auth api / root si lo deseas
+	// Permite acceso a assets, auth api y root
 	if (nextUrl.pathname.startsWith('/api/auth')) return;
 	if (nextUrl.pathname === '/') return;
 
-	// si no hay sesión válida -> redirige a /
+	// Si no hay sesión válida → redirige a /
 	if (!req.auth) {
 		const url = nextUrl.clone();
 		url.pathname = '/';
 		return NextResponse.redirect(url);
 	}
 
-	// si hay sesión, seguir
+	// Si hay sesión, continuar
 	return;
 });
 
-// matcher: ajustar a las rutas que quieras proteger
+// Protege todo excepto _next, ficheros estáticos y /api/auth
 export const config = {
 	matcher: [
-		'/((?!_next|.*\\..*|api/auth).*)', // ejemplo: protege todo menos _next, ficheros estáticos y /api/auth
+		'/((?!_next|.*\\..*|api/auth).*)',
 	],
 };
