@@ -112,8 +112,8 @@ export function WalletForm({
 			if (mode === 'edit' && wallet) {
 				form.reset({
 					name: wallet.name,
-					initialBalance: wallet.initialBalance,
-					currentBalance: wallet.currentBalance,
+					initialBalance: parseFloat(wallet.initialBalance.toFixed(2)),
+					currentBalance: parseFloat(wallet.currentBalance.toFixed(2)),
 					color: wallet.color || '#3b82f6',
 					image: wallet.image,
 				})
@@ -262,7 +262,11 @@ export function WalletForm({
 											type='number'
 											placeholder='0.00'
 											step='0.01'
-											{...field}
+											value={field.value ?? ''}
+											onChange={(e) => field.onChange(e.target.value === '' ? '' : parseFloat(e.target.value))}
+											onBlur={field.onBlur}
+											name={field.name}
+											ref={field.ref}
 										/>
 									</FormControl>
 									<FormMessage />
@@ -281,7 +285,11 @@ export function WalletForm({
 												type='number'
 												placeholder='0.00'
 												step='0.01'
-												{...field}
+												value={field.value ?? ''}
+												onChange={(e) => field.onChange(e.target.value === '' ? '' : parseFloat(e.target.value))}
+												onBlur={field.onBlur}
+												name={field.name}
+												ref={field.ref}
 											/>
 										</FormControl>
 										<FormMessage />
