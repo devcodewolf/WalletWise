@@ -7,6 +7,10 @@ import Header from '@/components/header/header'
 import { SessionExpiredModal } from '@/components/auth/SessionExpiredModal'
 import { SessionProvider } from 'next-auth/react'
 
+// Fuerza renderizado dinámico en todas las rutas del admin-panel
+// ya que usan auth() / headers() internamente
+export const dynamic = 'force-dynamic'
+
 export default async function AdminLayout({
 	children,
 }: Readonly<{

@@ -1,17 +1,51 @@
-// src/auth.ts (o donde lo tengas)
+// auth.ts
+// Este archivo corre en Node.js runtime, puede usar Prisma, bcryptjs, etc.
+// ⚠️ NO importar authConfig aquí con spread: sobrescribiría providers con la versión Edge vacía.
+// authConfig solo se usa en middleware.ts
+import bcryptjs from 'bcryptjs';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import NextAuth from 'next-auth';
+import Credentials from 'next-auth/providers/credentials';
 
-import authConfig from './auth.config';
 import { db } from './lib/db';
+import { getUserByEmail } from './data/user';
+import { signInSchema } from './lib/schemas/singIn';
 
-export const TOKEN_MAX_AGE = 15 * 60; //esta puesto 15 minutos de inactividad
+export const TOKEN_MAX_AGE = 15 * 60; // 15 minutos de inactividad
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
 	adapter: PrismaAdapter(db),
+	providers: [
+		Credentials({
+			async authorize(credentials) {
+				const validatedFields = signInSchema.safeParse(credentials);
+
+				if (validatedFields.success) {
+					const { email, password } = validatedFields.data;
+					const user = await getUserByEmail(email);
+
+					if (!user || !user.password) return null;
+
+					const passwordsMatch = await bcryptjs.compare(
+						password,
+						user.password
+					);
+
+					if (passwordsMatch) {
+						return {
+							id: String(user.id),
+							name: user.name,
+							email: user.email,
+							isAdmin: user.isAdmin,
+						};
+					}
+				}
+				return null;
+			},
+		}),
+	],
 	callbacks: {
 		async session({ session, token }) {
-			// mantengo tu lógica
 			if (token.sub && session.user) session.user.id = token.sub;
 			return session;
 		},
@@ -33,20 +67,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 			const timeSinceLastActivity = now - Number(token.lastActivity);
 
 			if (timeSinceLastActivity > TOKEN_MAX_AGE) {
-				// La sesión ha expirado por inactividad
 				return null;
 			}
 
 			// Si estamos dentro del tiempo límite, actualizamos lastActivity
-			// Esto "refresca" el token con cada interacción
 			token.lastActivity = now;
-
 			return token;
 		},
 	},
 	session: {
 		strategy: 'jwt',
-		maxAge: TOKEN_MAX_AGE, // mantener consistente
+		maxAge: TOKEN_MAX_AGE,
 	},
-	...authConfig,
 });
