@@ -83,7 +83,7 @@ export async function createWallet(values: WalletsFormSchema) {
 // Update a wallet for the current user
 export async function updateWallet(
 	id: number,
-	data: { name?: string; initialBalance?: number; color?: string; image?: string | null }
+	data: { name?: string; initialBalance?: number; currentBalance?: number; color?: string; image?: string | null }
 ) {
 	try {
 		const authResult = await requireAuth();
@@ -103,16 +103,17 @@ export async function updateWallet(
 			return { success: false, error: 'Cartera no encontrada o no autorizada' };
 		}
 
-		// Validar que el resultado final cumpla el esquema (saldo > 0)
 		const toValidate = {
 			name: data.name ?? existingWallet.name,
 			initialBalance: data.initialBalance ?? existingWallet.initialBalance,
+			currentBalance: data.currentBalance ?? existingWallet.currentBalance,
 			color: data.color ?? existingWallet.color,
 			image: data.image !== undefined ? data.image : existingWallet.image,
 		};
 
 		const parsed = walletsSchema.safeParse(toValidate);
 		if (!parsed.success) {
+			console.error('Validación fallida al actualizar cartera:', parsed.error.flatten());
 			return {
 				success: false,
 				error: 'Hay campos vacíos o no válidos',
