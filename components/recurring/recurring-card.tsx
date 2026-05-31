@@ -56,15 +56,27 @@ function formatCurrency(amount: number) {
 	}).format(amount)
 }
 
-function getNextPaymentDate(dayOfMonth: number, frequency: string) {
+function getNextPaymentDate(dayOfMonth: number, frequency: string, month?: number | null) {
 	const today = new Date()
-	const nextDate = new Date(today.getFullYear(), today.getMonth(), dayOfMonth)
-	if (nextDate < today) {
-		if (frequency === 'MONTHLY') {
-			nextDate.setMonth(nextDate.getMonth() + 1)
-		} else {
+	const currentMonth = today.getMonth() + 1 // 1-12
+	
+	if (frequency === 'YEARLY' && month) {
+		// Para anuales, calcular próximo pago basado en el mes configurado
+		let nextDate = new Date(today.getFullYear(), month - 1, dayOfMonth)
+		if (nextDate < today) {
 			nextDate.setFullYear(nextDate.getFullYear() + 1)
 		}
+		return nextDate.toLocaleDateString('es-ES', {
+			year: 'numeric',
+			month: 'short',
+			day: '2-digit',
+		})
+	}
+	
+	// Para mensuales
+	const nextDate = new Date(today.getFullYear(), today.getMonth(), dayOfMonth)
+	if (nextDate < today) {
+		nextDate.setMonth(nextDate.getMonth() + 1)
 	}
 	return nextDate.toLocaleDateString('es-ES', {
 		month: 'short',
@@ -84,6 +96,7 @@ export function RecurringCard({ recurring }: RecurringCardProps) {
 	const nextPaymentStr = getNextPaymentDate(
 		recurring.dayOfMonth,
 		recurring.frequency,
+		recurring.month,
 	)
 	const startDateStr = new Date(recurring.createdAt).toLocaleDateString(
 		'es-ES',

@@ -365,9 +365,16 @@ export async function getPendingRecurringTransactions() {
 		// 3. Filtrar las que faltan
 		const pending = recurringRules.filter((rule) => {
 			if (fulfilledIds.has(rule.id)) return false
-			
-			const currentDay = new Date().getDate()
-			const lastDayOfMonth = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate()
+
+			const currentMonth = now.getMonth() + 1 // 1-12
+
+			// Si es anual, solo mostrar en el mes configurado
+			if (rule.frequency === 'YEARLY' && rule.month !== null) {
+				if (rule.month !== currentMonth) return false
+			}
+		
+			const currentDay = now.getDate()
+			const lastDayOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate()
 			const effectiveDay = Math.min(rule.dayOfMonth, lastDayOfMonth)
 			
 			return currentDay >= effectiveDay

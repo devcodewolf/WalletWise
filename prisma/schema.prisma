@@ -84,6 +84,7 @@ model RecurringTransaction {
   description  String?
   frequency    String        // "MONTHLY", "YEARLY"
   dayOfMonth   Int           @default(1)
+  month        Int?          // 1-12, solo para YEARLY
   walletId     Int?
   wallet       Wallet?       @relation(fields: [walletId], references: [id])
   categoryId   Int?

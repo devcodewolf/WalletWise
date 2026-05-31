@@ -72,6 +72,7 @@ export function RecurringForm({
 			description: recurring?.description || '',
 			frequency: (recurring?.frequency as 'MONTHLY' | 'YEARLY') || 'MONTHLY',
 			dayOfMonth: recurring?.dayOfMonth || 1,
+			month: recurring?.month ?? null,
 			walletId: recurring?.walletId || undefined,
 			categoryId: recurring?.categoryId || undefined,
 			isActive: recurring?.isActive ?? true,
@@ -114,6 +115,9 @@ export function RecurringForm({
 		const subscription = form.watch((value, { name }) => {
 			if (name === 'type') {
 				form.setValue('categoryId', undefined)
+			}
+			if (name === 'frequency') {
+				form.setValue('month', value.frequency === 'YEARLY' ? 1 : null)
 			}
 		})
 		return () => subscription.unsubscribe()
@@ -256,6 +260,42 @@ export function RecurringForm({
 								)}
 							/>
 						</div>
+
+						{form.watch('frequency') === 'YEARLY' && (
+							<FormField
+								control={form.control}
+								name='month'
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel>Mes</FormLabel>
+										<Select
+											onValueChange={(value) => field.onChange(Number(value))}
+											value={field.value?.toString()}>
+											<FormControl className='w-full'>
+												<SelectTrigger>
+													<SelectValue placeholder='Selecciona el mes' />
+												</SelectTrigger>
+											</FormControl>
+											<SelectContent>
+												<SelectItem value='1'>Enero</SelectItem>
+												<SelectItem value='2'>Febrero</SelectItem>
+												<SelectItem value='3'>Marzo</SelectItem>
+												<SelectItem value='4'>Abril</SelectItem>
+												<SelectItem value='5'>Mayo</SelectItem>
+												<SelectItem value='6'>Junio</SelectItem>
+												<SelectItem value='7'>Julio</SelectItem>
+												<SelectItem value='8'>Agosto</SelectItem>
+												<SelectItem value='9'>Septiembre</SelectItem>
+												<SelectItem value='10'>Octubre</SelectItem>
+												<SelectItem value='11'>Noviembre</SelectItem>
+												<SelectItem value='12'>Diciembre</SelectItem>
+											</SelectContent>
+										</Select>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+						)}
 
 						<div className='grid grid-cols-2 gap-4'>
 							<FormField
