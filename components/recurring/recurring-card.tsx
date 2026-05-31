@@ -58,11 +58,10 @@ function formatCurrency(amount: number) {
 
 function getNextPaymentDate(dayOfMonth: number, frequency: string, month?: number | null) {
 	const today = new Date()
-	const currentMonth = today.getMonth() + 1 // 1-12
 	
 	if (frequency === 'YEARLY' && month) {
 		// Para anuales, calcular próximo pago basado en el mes configurado
-		let nextDate = new Date(today.getFullYear(), month - 1, dayOfMonth)
+		const nextDate = new Date(today.getFullYear(), month - 1, dayOfMonth)
 		if (nextDate < today) {
 			nextDate.setFullYear(nextDate.getFullYear() + 1)
 		}
