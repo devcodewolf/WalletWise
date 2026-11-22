@@ -24,6 +24,7 @@ export default function StatisticsCategories({
 		months,
 	} = useStatistics({
 		transactions: transactions,
+		includeAllMonths: true,
 	});
 
 	return (
