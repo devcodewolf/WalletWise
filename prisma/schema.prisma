@@ -95,4 +95,17 @@ model RecurringTransaction {
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
   transactions Transaction[]
+  skips        RecurringSkip[]
+}
+
+// Ocurrencias de una regla recurrente que el usuario ha desechado (no se registran ese mes)
+model RecurringSkip {
+  id                     Int                  @id @default(autoincrement())
+  recurringTransactionId Int
+  recurringTransaction   RecurringTransaction @relation(fields: [recurringTransactionId], references: [id], onDelete: Cascade)
+  year                   Int
+  month                  Int                  // 1-12
+  createdAt              DateTime             @default(now())
+
+  @@unique([recurringTransactionId, year, month])
 }

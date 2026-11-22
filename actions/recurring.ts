@@ -108,6 +108,54 @@ export async function updateRecurringTransaction(
 	}
 }
 
+// Desechar la ocurrencia de un recurrente en un mes concreto (no se registrará ese mes)
+export async function skipRecurringOccurrence(
+	recurringTransactionId: number,
+	year: number,
+	month: number
+) {
+	try {
+		const authResult = await requireAuth()
+		if (!authResult.success) {
+			return authResult
+		}
+
+		if (
+			!Number.isInteger(year) ||
+			!Number.isInteger(month) ||
+			month < 1 ||
+			month > 12
+		) {
+			return { success: false, error: 'Fecha inválida' }
+		}
+
+		const existing = await db.recurringTransaction.findUnique({
+			where: { id: recurringTransactionId },
+		})
+
+		if (!existing || existing.userId !== Number(authResult.user!.id)) {
+			return { success: false, error: 'No autorizado' }
+		}
+
+		await db.recurringSkip.upsert({
+			where: {
+				recurringTransactionId_year_month: {
+					recurringTransactionId,
+					year,
+					month,
+				},
+			},
+			update: {},
+			create: { recurringTransactionId, year, month },
+		})
+
+		return { success: true }
+	} catch (error) {
+		console.error('Error skipping recurring occurrence:', error)
+		return { success: false, error: 'Error al desechar el recurrente' }
+	}
+}
+
 // Eliminar una regla recurrente
 export async function deleteRecurringTransaction(id: number) {
 	try {

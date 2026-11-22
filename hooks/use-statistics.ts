@@ -3,13 +3,18 @@ import { Transaction } from '@prisma/client';
 import { TransactionWithRelations } from '@/types/transactions.types';
 import { monthNames } from '@/lib/utils';
 
+// Valor especial del selector de mes para mostrar el año completo
+export const ALL_MONTHS = 'all';
+
 interface UseStatisticsProps<T extends Transaction | TransactionWithRelations> {
 	transactions: T[];
+	// Añade la opción "Todo el año" al selector de meses
+	includeAllMonths?: boolean;
 }
 
 export function useStatistics<
 	T extends Transaction | TransactionWithRelations
->({ transactions }: UseStatisticsProps<T>) {
+>({ transactions, includeAllMonths = false }: UseStatisticsProps<T>) {
 	// Calcular el último año y mes disponible con datos
 	const { lastYear, lastMonth } = useMemo(() => {
 		if (transactions.length === 0) {
@@ -70,11 +75,15 @@ export function useStatistics<
 
 		const sortedMonths = Array.from(monthsInYear).sort((a, b) => a - b);
 
-		return sortedMonths.map((monthIndex) => ({
+		const months = sortedMonths.map((monthIndex) => ({
 			value: (monthIndex + 1).toString(),
 			label: monthNames[monthIndex],
 		}));
-	}, [yearlyTransactions]);
+
+		return includeAllMonths && months.length > 0
+			? [{ value: ALL_MONTHS, label: 'Todo el año' }, ...months]
+			: months;
+	}, [yearlyTransactions, includeAllMonths]);
 
 	useEffect(() => {
 		// Si el mes seleccionado ya no está disponible en el nuevo año,
@@ -88,6 +97,8 @@ export function useStatistics<
 	}, [availableMonths, selectedMonth]);
 
 	const monthlyTransactions = useMemo(() => {
+		if (selectedMonth === ALL_MONTHS) return yearlyTransactions;
+
 		return transactions.filter((t) => {
 			const date = t.date instanceof Date ? t.date : new Date(t.date);
 			return (
@@ -95,7 +106,7 @@ export function useStatistics<
 				date.getMonth() + 1 === Number(selectedMonth)
 			);
 		});
-	}, [transactions, selectedYear, selectedMonth]);
+	}, [transactions, yearlyTransactions, selectedYear, selectedMonth]);
 
 	return {
 		selectedYear,

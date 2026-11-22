@@ -6,6 +6,12 @@ import {
 	transactionsSchema,
 } from '@/lib/schemas/transactions'
 import { requireAuth } from '@/lib/auth-utils'
+import {
+	RECURRING_PENDING_LOOKBACK_MONTHS,
+	getOccurrenceDate,
+	occurrenceKey,
+} from '@/lib/recurring'
+import type { PendingRecurringOccurrence } from '@/types/transactions.types'
 
 // Get all transactions for the current user
 export async function getTransactions() {
@@ -318,7 +324,9 @@ export async function deleteTransaction(id: number) {
 	}
 }
 
-// Get pending recurring transactions for the current month
+// Obtiene las ocurrencias de recurrentes pendientes de registrar.
+// Revisa el mes actual y los RECURRING_PENDING_LOOKBACK_MONTHS anteriores para que
+// un recurrente no se pierda si no se confirma antes de que acabe su mes.
 export async function getPendingRecurringTransactions() {
 	try {
 		const authResult = await requireAuth()
@@ -328,10 +336,15 @@ export async function getPendingRecurringTransactions() {
 
 		const userId = Number(authResult.user!.id)
 		const now = new Date()
-		const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1)
-		const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0)
+		const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+		const lookbackStart = new Date(
+			now.getFullYear(),
+			now.getMonth() - RECURRING_PENDING_LOOKBACK_MONTHS,
+			1,
+		)
+		const nextMonthStart = new Date(now.getFullYear(), now.getMonth() + 1, 1)
 
-		// 1. Obtener todas las reglas recurrentes activas
+		// 1. Reglas recurrentes activas
 		const recurringRules = await db.recurringTransaction.findMany({
 			where: {
 				userId,
@@ -343,42 +356,82 @@ export async function getPendingRecurringTransactions() {
 			},
 		})
 
-		// 2. Obtener IDs de reglas que ya tienen una transacción este mes
-		const fulfilledRules = await db.transaction.findMany({
-			where: {
-				userId,
-				recurringTransactionId: { not: null },
-				date: {
-					gte: startOfMonth,
-					lte: endOfMonth,
+		if (recurringRules.length === 0) {
+			return { success: true, data: [] as PendingRecurringOccurrence[] }
+		}
+
+		const ruleIds = recurringRules.map((r) => r.id)
+
+		// 2. Ocurrencias ya registradas (transacciones vinculadas) o desechadas
+		const [fulfilledTransactions, skips] = await Promise.all([
+			db.transaction.findMany({
+				where: {
+					userId,
+					recurringTransactionId: { in: ruleIds },
+					date: { gte: lookbackStart, lt: nextMonthStart },
 				},
-			},
-			select: {
-				recurringTransactionId: true,
-			},
-		})
+				select: { recurringTransactionId: true, date: true },
+			}),
+			db.recurringSkip.findMany({
+				where: {
+					recurringTransactionId: { in: ruleIds },
+					year: { gte: lookbackStart.getFullYear() },
+				},
+				select: { recurringTransactionId: true, year: true, month: true },
+			}),
+		])
 
-		const fulfilledIds = new Set(
-			fulfilledRules.map((r) => r.recurringTransactionId)
-		)
+		const doneKeys = new Set<string>([
+			...fulfilledTransactions.map((t) =>
+				occurrenceKey(
+					t.recurringTransactionId!,
+					t.date.getFullYear(),
+					t.date.getMonth() + 1,
+				),
+			),
+			...skips.map((s) =>
+				occurrenceKey(s.recurringTransactionId, s.year, s.month),
+			),
+		])
 
-		// 3. Filtrar las que faltan
-		const pending = recurringRules.filter((rule) => {
-			if (fulfilledIds.has(rule.id)) return false
+		// 3. Generar las ocurrencias de cada regla en la ventana y quedarnos con las pendientes
+		const pending: PendingRecurringOccurrence[] = []
 
-			const currentMonth = now.getMonth() + 1 // 1-12
+		for (const rule of recurringRules) {
+			const createdDay = new Date(
+				rule.createdAt.getFullYear(),
+				rule.createdAt.getMonth(),
+				rule.createdAt.getDate(),
+			)
+			// Reglas anuales antiguas sin mes: se usa el mes en que se crearon
+			const yearlyMonth = rule.month ?? rule.createdAt.getMonth() + 1
 
-			// Si es anual, solo mostrar en el mes configurado
-			if (rule.frequency === 'YEARLY' && rule.month !== null) {
-				if (rule.month !== currentMonth) return false
+			for (let i = RECURRING_PENDING_LOOKBACK_MONTHS; i >= 0; i--) {
+				const ref = new Date(now.getFullYear(), now.getMonth() - i, 1)
+				const year = ref.getFullYear()
+				const month = ref.getMonth() + 1
+
+				if (rule.frequency === 'YEARLY' && month !== yearlyMonth) continue
+
+				const occurrence = getOccurrenceDate(rule.dayOfMonth, year, month)
+				const occurrenceDay = new Date(year, month - 1, occurrence.getDate())
+
+				// Aún no ha llegado el día o es anterior a la creación de la regla
+				if (occurrenceDay > today || occurrenceDay < createdDay) continue
+				if (doneKeys.has(occurrenceKey(rule.id, year, month))) continue
+
+				pending.push({
+					...rule,
+					occurrenceYear: year,
+					occurrenceMonth: month,
+				})
 			}
-		
-			const currentDay = now.getDate()
-			const lastDayOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate()
-			const effectiveDay = Math.min(rule.dayOfMonth, lastDayOfMonth)
-			
-			return currentDay >= effectiveDay
-		})
+		}
+
+		// Más antiguas primero
+		const byDate = (p: PendingRecurringOccurrence) =>
+			getOccurrenceDate(p.dayOfMonth, p.occurrenceYear, p.occurrenceMonth).getTime()
+		pending.sort((a, b) => byDate(a) - byDate(b))
 
 		return { success: true, data: pending }
 	} catch (error) {
@@ -390,9 +443,14 @@ export async function getPendingRecurringTransactions() {
 	}
 }
 
-// Confirm and insert multiple recurring transactions
+// Confirma e inserta ocurrencias de recurrentes (una transacción por regla y mes)
 export async function confirmRecurringTransactions(
-	items: { recurringTransactionId: number; amount: number; date: Date }[]
+	items: {
+		recurringTransactionId: number
+		amount: number
+		year: number
+		month: number // 1-12
+	}[]
 ) {
 	try {
 		const authResult = await requireAuth()
@@ -411,6 +469,20 @@ export async function confirmRecurringTransactions(
 				})
 
 				if (!rule) continue
+				if (!(item.amount > 0)) continue
+
+				// Evitar duplicados si esa ocurrencia ya se registró (doble clic, otra pestaña…)
+				const alreadyRegistered = await prisma.transaction.findFirst({
+					where: {
+						recurringTransactionId: rule.id,
+						date: {
+							gte: new Date(item.year, item.month - 1, 1),
+							lt: new Date(item.year, item.month, 1),
+						},
+					},
+					select: { id: true },
+				})
+				if (alreadyRegistered) continue
 
 				// Crear la transacción real
 				const transaction = await prisma.transaction.create({
@@ -418,7 +490,7 @@ export async function confirmRecurringTransactions(
 						type: rule.type,
 						amount: item.amount,
 						description: rule.description,
-						date: item.date,
+						date: getOccurrenceDate(rule.dayOfMonth, item.year, item.month),
 						walletId: rule.walletId,
 						categoryId: rule.categoryId,
 						userId: userId,
