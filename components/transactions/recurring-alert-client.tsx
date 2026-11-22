@@ -13,78 +13,95 @@ import {
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { confirmRecurringTransactions } from '@/actions/transactions'
-import { Bell, CheckCircle2, Loader2, Plus } from 'lucide-react'
+import { skipRecurringOccurrence } from '@/actions/recurring'
+import { Bell, CheckCircle2, Loader2, Plus, Trash2 } from 'lucide-react'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
-import { RecurringTransactionWithRelations } from '@/types/transactions.types'
+import { PendingRecurringOccurrence } from '@/types/transactions.types'
+import { getOccurrenceDate, occurrenceKey } from '@/lib/recurring'
+import { monthLabel } from '@/lib/constants'
 import { cn } from '@/lib/utils'
 
 interface RecurringAlertClientProps {
 	className?: string
-	initialPending: RecurringTransactionWithRelations[]
+	initialPending: PendingRecurringOccurrence[]
 }
+
+const keyOf = (item: PendingRecurringOccurrence) =>
+	occurrenceKey(item.id, item.occurrenceYear, item.occurrenceMonth)
+
+const isPastMonth = (item: PendingRecurringOccurrence) => {
+	const now = new Date()
+	return (
+		item.occurrenceYear < now.getFullYear() ||
+		(item.occurrenceYear === now.getFullYear() &&
+			item.occurrenceMonth < now.getMonth() + 1)
+	)
+}
+
+type SubmittingState =
+	| { kind: 'confirm' | 'skip'; key: string }
+	| { kind: 'all' }
+	| null
 
 export function RecurringAlertClient({
 	className,
 	initialPending,
 }: RecurringAlertClientProps) {
 	const [pending, setPending] =
-		useState<RecurringTransactionWithRelations[]>(initialPending)
+		useState<PendingRecurringOccurrence[]>(initialPending)
 	const [isOpen, setIsOpen] = useState(false)
-	const [submitting, setSubmitting] = useState<number | 'all' | null>(null)
-	const [amounts, setAmounts] = useState<{ [key: number]: number }>(() => {
-		const initialAmounts: { [key: number]: number } = {}
-		initialPending.forEach((item) => {
-			initialAmounts[item.id] = item.amount
-		})
-		return initialAmounts
-	})
-	const [confirmedCount, setConfirmedCount] = useState(0)
+	const [submitting, setSubmitting] = useState<SubmittingState>(null)
+	const [amounts, setAmounts] = useState<Record<string, number>>(() =>
+		Object.fromEntries(initialPending.map((item) => [keyOf(item), item.amount])),
+	)
+	const [changedCount, setChangedCount] = useState(0)
 	const router = useRouter()
 
-	const handleAmountChange = (id: number, val: string) => {
-		setAmounts((prev) => ({ ...prev, [id]: parseFloat(val) || 0 }))
-	}
-
-	const getScheduledDate = (dayOfMonth: number) => {
-		const now = new Date()
-		const year = now.getFullYear()
-		const month = now.getMonth()
-		const lastDayOfMonth = new Date(year, month + 1, 0).getDate()
-		const effectiveDay = Math.min(dayOfMonth, lastDayOfMonth)
-		// Configurar a las 12 PM para evitar problemas de zona horaria
-		return new Date(year, month, effectiveDay, 12, 0, 0)
+	const handleAmountChange = (key: string, val: string) => {
+		setAmounts((prev) => ({ ...prev, [key]: parseFloat(val) || 0 }))
 	}
 
 	const handleDialogChange = (open: boolean) => {
 		setIsOpen(open)
-		if (!open && confirmedCount > 0) {
+		if (!open && changedCount > 0) {
 			router.refresh()
-			setConfirmedCount(0)
+			setChangedCount(0)
 		}
 	}
 
-	async function handleConfirmSingle(item: RecurringTransactionWithRelations) {
-		setSubmitting(item.id)
+	// Quita una ocurrencia de la lista; si era la última, cierra y refresca
+	const removeFromList = (key: string) => {
+		const remaining = pending.filter((p) => keyOf(p) !== key)
+		setPending(remaining)
+		if (remaining.length === 0) {
+			setIsOpen(false)
+			setChangedCount(0)
+			router.refresh()
+		} else {
+			setChangedCount((prev) => prev + 1)
+		}
+	}
+
+	async function handleConfirmSingle(item: PendingRecurringOccurrence) {
+		const key = keyOf(item)
+		if (!(amounts[key] > 0)) {
+			toast.error('El importe debe ser mayor que 0')
+			return
+		}
+		setSubmitting({ kind: 'confirm', key })
 		try {
-			const itemsToConfirm = [
+			const res = await confirmRecurringTransactions([
 				{
 					recurringTransactionId: item.id,
-					amount: amounts[item.id],
-					date: getScheduledDate(item.dayOfMonth),
+					amount: amounts[key],
+					year: item.occurrenceYear,
+					month: item.occurrenceMonth,
 				},
-			]
-
-			const res = await confirmRecurringTransactions(itemsToConfirm)
+			])
 			if (res.success) {
-				toast.success(`${item.description} agregada correctamente`)
-				setPending((prev) => prev.filter((p) => p.id !== item.id))
-				setConfirmedCount((prev) => prev + 1)
-				if (pending.length === 1) {
-					setIsOpen(false)
-					router.refresh()
-					setConfirmedCount(0)
-				}
+				toast.success(`${item.description ?? 'Movimiento'} agregado correctamente`)
+				removeFromList(key)
 			} else {
 				toast.error((res as { error?: string }).error || 'Error al procesar')
 			}
@@ -96,20 +113,51 @@ export function RecurringAlertClient({
 		}
 	}
 
-	async function handleConfirmAll() {
-		setSubmitting('all')
+	async function handleSkip(item: PendingRecurringOccurrence) {
+		const key = keyOf(item)
+		setSubmitting({ kind: 'skip', key })
 		try {
-			const itemsToConfirm = pending.map((p) => ({
-				recurringTransactionId: p.id,
-				amount: amounts[p.id],
-				date: getScheduledDate(p.dayOfMonth),
-			}))
+			const res = await skipRecurringOccurrence(
+				item.id,
+				item.occurrenceYear,
+				item.occurrenceMonth,
+			)
+			if (res.success) {
+				toast.success(
+					`${item.description ?? 'Movimiento'} desechado para ${monthLabel(item.occurrenceMonth, item.occurrenceYear)}`,
+				)
+				removeFromList(key)
+			} else {
+				toast.error((res as { error?: string }).error || 'Error al desechar')
+			}
+		} catch (err) {
+			console.error('Error skipping recurring occurrence:', err)
+			toast.error('Error inesperado')
+		} finally {
+			setSubmitting(null)
+		}
+	}
 
-			const res = await confirmRecurringTransactions(itemsToConfirm)
+	async function handleConfirmAll() {
+		if (pending.some((p) => !(amounts[keyOf(p)] > 0))) {
+			toast.error('Todos los importes deben ser mayores que 0')
+			return
+		}
+		setSubmitting({ kind: 'all' })
+		try {
+			const res = await confirmRecurringTransactions(
+				pending.map((p) => ({
+					recurringTransactionId: p.id,
+					amount: amounts[keyOf(p)],
+					year: p.occurrenceYear,
+					month: p.occurrenceMonth,
+				})),
+			)
 			if (res.success) {
 				toast.success('Transacciones procesadas correctamente')
 				setIsOpen(false)
 				setPending([])
+				setChangedCount(0)
 				router.refresh()
 			} else {
 				toast.error((res as { error?: string }).error || 'Error al procesar')
@@ -124,6 +172,8 @@ export function RecurringAlertClient({
 
 	if (pending.length === 0) return null
 
+	const hasPastMonths = pending.some(isPastMonth)
+
 	return (
 		<div className={cn('flex-1 @container', className)}>
 			<Alert className='bg-primary/5 border-primary/20 flex flex-col items-center gap-4 py-4 text-center @md:flex-row @md:justify-between @md:text-left @md:gap-0'>
@@ -136,8 +186,12 @@ export function RecurringAlertClient({
 							Movimientos recurrentes pendientes
 						</AlertTitle>
 						<AlertDescription className='text-sm'>
-							Tienes {pending.length} transacciones programadas para este mes
-							que aún no has registrado.
+							Tienes {pending.length}{' '}
+							{pending.length === 1
+								? 'movimiento programado'
+								: 'movimientos programados'}{' '}
+							que aún no has registrado
+							{hasPastMonths ? ', algunos de meses anteriores.' : '.'}
 						</AlertDescription>
 					</div>
 				</div>
@@ -151,59 +205,88 @@ export function RecurringAlertClient({
 							Revisar
 						</Button>
 					</DialogTrigger>
-					<DialogContent className='sm:max-w-[600px]'>
+					<DialogContent className='sm:max-w-[640px]'>
 						<DialogHeader>
 							<DialogTitle>Transacciones Recurrentes</DialogTitle>
 							<DialogDescription>
 								Revisa los montos antes de incorporarlos a tu historial. Puedes
-								editarlos si este mes han variado.
+								editarlos si este mes han variado, o desecharlos si ya los
+								registraste a mano.
 							</DialogDescription>
 						</DialogHeader>
 
-						<div className='space-y-3  max-h-[400px] overflow-y-auto pr-2'>
-							{pending.map((item) => (
-								<div
-									key={item.id}
-									className='flex items-center justify-between gap-3'>
-									<div className='p-3 rounded-lg border bg-accent/5 flex items-center justify-between gap-3 flex-1 min-w-0'>
-										<div className=''>
-											<p className='font-medium text-sm truncate'>
-												{item.description}
-											</p>
-											<p className='text-xs text-muted-foreground italic'>
-												{item.category?.name} • {item.wallet?.name} •{' '}
-												{getScheduledDate(item.dayOfMonth).toLocaleDateString()}
-											</p>
-										</div>
-										<div className='flex items-center gap-2'>
-											<div className='w-24 flex items-center gap-1'>
+						<div className='space-y-3 max-h-[400px] overflow-y-auto pr-2'>
+							{pending.map((item) => {
+								const key = keyOf(item)
+								const busy =
+									submitting !== null &&
+									submitting.kind !== 'all' &&
+									submitting.key === key
+								return (
+									<div
+										key={key}
+										className='flex items-center justify-between gap-2'>
+										<div className='p-3 rounded-lg border bg-accent/5 flex items-center justify-between gap-3 flex-1 min-w-0'>
+											<div className='min-w-0'>
+												<p className='font-medium text-sm truncate'>
+													{item.description}
+												</p>
+												<p className='text-xs text-muted-foreground italic'>
+													{item.category?.name} • {item.wallet?.name} •{' '}
+													{getOccurrenceDate(
+														item.dayOfMonth,
+														item.occurrenceYear,
+														item.occurrenceMonth,
+													).toLocaleDateString('es-ES')}
+												</p>
+												{isPastMonth(item) && (
+													<span className='mt-1 inline-block rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-semibold text-primary'>
+														{monthLabel(item.occurrenceMonth, item.occurrenceYear)}
+													</span>
+												)}
+											</div>
+											<div className='w-24 flex items-center gap-1 shrink-0'>
 												<Input
 													type='number'
 													step='0.01'
-													value={amounts[item.id]}
-													onChange={(e) =>
-														handleAmountChange(item.id, e.target.value)
-													}
+													value={amounts[key]}
+													onChange={(e) => handleAmountChange(key, e.target.value)}
 													className='h-9 text-right'
 												/>
 												<span className='text-sm font-bold'>€</span>
 											</div>
 										</div>
+										<Button
+											variant='outline'
+											size='sm'
+											onClick={() => handleConfirmSingle(item)}
+											disabled={submitting !== null}
+											aria-label='Registrar movimiento'
+											title='Registrar'
+											className='h-9'>
+											{busy && submitting?.kind === 'confirm' ? (
+												<Loader2 className='h-4 w-4 animate-spin' />
+											) : (
+												<Plus className='h-4 w-4' />
+											)}
+										</Button>
+										<Button
+											variant='outline'
+											size='sm'
+											onClick={() => handleSkip(item)}
+											disabled={submitting !== null}
+											aria-label='Desechar este mes'
+											title='Desechar este mes'
+											className='h-9 text-destructive hover:text-destructive'>
+											{busy && submitting?.kind === 'skip' ? (
+												<Loader2 className='h-4 w-4 animate-spin' />
+											) : (
+												<Trash2 className='h-4 w-4' />
+											)}
+										</Button>
 									</div>
-									<Button
-										variant='outline'
-										size='sm'
-										onClick={() => handleConfirmSingle(item)}
-										disabled={submitting !== null}
-										className='h-9'>
-										{submitting === item.id ? (
-											<Loader2 className='h-4 w-4 animate-spin' />
-										) : (
-											<Plus className='h-4 w-4' />
-										)}
-									</Button>
-								</div>
-							))}
+								)
+							})}
 						</div>
 
 						<div className='flex flex-col gap-3'>
@@ -211,7 +294,7 @@ export function RecurringAlertClient({
 								onClick={handleConfirmAll}
 								disabled={submitting !== null}
 								className='w-full'>
-								{submitting === 'all' ? (
+								{submitting?.kind === 'all' ? (
 									<>
 										<Loader2 className='mr-2 h-4 w-4 animate-spin' />
 										Procesando...
