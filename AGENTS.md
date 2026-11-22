@@ -68,7 +68,9 @@ No hay suite de tests: verifica con `pnpm lint` y `pnpm build`.
 
 - **Middleware / Edge Runtime**: `middleware.ts` importa solo `auth.config.ts`, que **no debe importar Prisma ni bcryptjs** (el bundle Edge de Vercel tiene límite de 1 MB). La lógica de `authorize()` vive en `auth.ts` (Node runtime).
 - `next.config.ts` usa `staleTimes` de 1 h en el router cache: tras mutaciones hay que invalidar con `router.refresh()` o `revalidatePath`.
-- Cambios en `schema.prisma` requieren migración en `prisma/migrations/` (no uses `db push` sobre producción).
+- Cambios en `schema.prisma` requieren migración en `prisma/migrations/` (no uses `db push` sobre producción, rompe el historial de migraciones). Si no hay acceso a una BD de desarrollo, escribe el SQL de la migración a mano siguiendo el formato de las existentes.
+- **Migraciones en despliegue**: `pnpm start` ejecuta `scripts/migrate-deploy.mjs` (`prisma migrate deploy`, con baseline automático para BD creadas con `db push`) antes de `next start`. Así se aplican solas en el servidor propio (Dokploy). Vercel no usa `start`: allí hay que aplicarlas aparte (BD en Neon). Por eso `prisma` (CLI) está en `dependencies`.
+- Hay dos entornos con BD separadas: Vercel + Neon (demo para portfolio) y Dokploy (uso personal, datos reales). Ambos despliegan desde `main`.
 - Los ficheros `.env*` están en `.gitignore`; nunca los subas ni muestres secretos.
 
 ## Git
